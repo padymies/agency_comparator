@@ -6,6 +6,7 @@
 package tdt.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -48,31 +49,52 @@ public class AppController implements Initializable {
     private void showProviders(ActionEvent event) {
 
         try {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("providers/providers.fxml"));
+
             Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
+
             this.stage = stage;
+
             stage.setScene(new Scene(root1));
+
             stage.show();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            e.getMessage();
         }
     }
 
     @FXML
     private void openFileChooser(ActionEvent event) {
+
         ArrayList<String> registerList;
+
         Register reg;
+
         fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter
+                = new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
         File file = fileChooser.showOpenDialog(stage);
+
         if (file != null) {
+
             FileHandler fh = new FileHandler();
             registerList = fh.extractRegisters(file);
-            for(String register : registerList) {
-                System.out.println("Size => " + register.length());
+
+            for (String register : registerList) {
+
                 reg = RegisterFactory.generateRegister(register);
-                System.out.println(reg.toString());
+
+                if (reg != null) {
+                    // TODO: Show Object in UI    
+                    System.out.println(reg.toString());
+                } else {
+                    System.out.println("ERROR EN FORMATO DE FICHERO: " + file.getName());
+                    break;
+                }
             }
 
         }

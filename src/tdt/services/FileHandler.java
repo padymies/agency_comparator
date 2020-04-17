@@ -11,22 +11,28 @@ import java.util.ArrayList;
 public class FileHandler {
 
     public ArrayList<String> extractRegisters(File file) {
+
         BufferedReader br = null;
         FileReader fr = null;
+
         ArrayList<String> registerList = new ArrayList();
+
         try {
-            br = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(file), "ISO-8859-1"));
+
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-1"));
+
             String sCurrentLine;
 
             while ((sCurrentLine = br.readLine()) != null) {
+
                 if (sCurrentLine.length() > 0) {
+
                     registerList.add(sCurrentLine);
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error Leyendo archivo");
-            e.printStackTrace();
+            System.out.println("ERROR LEYENDO ARCHIVO: " + e.getMessage());
+            e.getMessage();
         } finally {
             try {
                 if (br != null) {
@@ -36,8 +42,8 @@ public class FileHandler {
                     fr.close();
                 }
             } catch (IOException ex) {
-                System.out.println("Error cerrando archivo");
-                ex.printStackTrace();
+                System.out.println("ERROR CERRANDO ARCHIVO: " + ex.getMessage());
+                ex.getMessage();
             }
         }
         return registerList;

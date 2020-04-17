@@ -10,13 +10,13 @@ package tdt.model;
  * @author Usuario
  */
 public class Provider {
+    
     private int id;
+   
     private String name;
+    
     private String cif;
     
-    public Provider() {
-        
-    }
     public Provider(String name, String cif) {
         this.name = name;
         this.cif = cif;

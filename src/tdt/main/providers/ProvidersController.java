@@ -66,7 +66,7 @@ public class ProvidersController implements Initializable {
 
     private TableColumn<?, ?> cif1;
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-    private ArrayList<Provider> selections = new ArrayList<>();
+    private ArrayList<Provider> selections;
     private DBHandler db;
 
     /**
@@ -74,24 +74,35 @@ public class ProvidersController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        selections = new ArrayList<>();
         // Get Providers from DB
         db = new DBHandler();
+
         list = db.getProviders();
+
         addButton.setOnAction(e -> addProvider());
+
         deleteButton.setOnAction(e -> deleteProviders());
+
         // Set the rowData
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
+
         cif.setCellValueFactory(new PropertyValueFactory<>("cif"));
 
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(10);
+
         // Populate tabview
         TableViewSelectionModel<Provider> selectionModel = table.getSelectionModel();
         selectionModel.setSelectionMode(SelectionMode.SINGLE);
+
         table.setItems(list);
 
         table.setRowFactory(tv -> {
+
             TableRow<Provider> row = new TableRow<>();
 
             row.setOnDragDetected(event -> {
@@ -103,30 +114,41 @@ public class ProvidersController implements Initializable {
 
                     ObservableList<Provider> items = table.getSelectionModel().getSelectedItems();
 
-                    for (Provider iI : items) {
+                    items.forEach((iI) -> {
                         selections.add(iI);
-                    }
+                    });
 
                     Dragboard drag = row.startDragAndDrop(TransferMode.MOVE);
+
                     drag.setDragView(row.snapshot(null, null));
+
                     ClipboardContent cc = new ClipboardContent();
+
                     cc.put(SERIALIZED_MIME_TYPE, index);
+
                     drag.setContent(cc);
+
                     event.consume();
                 }
             });
 
             row.setOnDragOver(event -> {
+
                 Dragboard drag = event.getDragboard();
+
                 if (drag.hasContent(SERIALIZED_MIME_TYPE)) {
-                    if (row.getIndex() != ((Integer) drag.getContent(SERIALIZED_MIME_TYPE)).intValue()) {
+
+                    if (row.getIndex() != ((Integer) drag.getContent(SERIALIZED_MIME_TYPE))) {
+
                         event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+
                         event.consume();
                     }
                 }
             });
 
             row.setOnDragDropped(event -> {
+
                 Dragboard drag = event.getDragboard();
 
                 if (drag.hasContent(SERIALIZED_MIME_TYPE)) {
@@ -135,19 +157,30 @@ public class ProvidersController implements Initializable {
                     Provider dI = null;
 
                     if (row.isEmpty()) {
+
                         dropIndex = table.getItems().size();
                     } else {
+
                         dropIndex = row.getIndex();
+
                         dI = table.getItems().get(dropIndex);
                     }
                     int delta = 0;
+
                     if (dI != null) {
+
                         while (selections.contains(dI)) {
+
                             delta = 1;
+
                             --dropIndex;
+
                             if (dropIndex < 0) {
+
                                 dI = null;
+
                                 dropIndex = 0;
+
                                 break;
                             }
                             dI = table.getItems().get(dropIndex);
@@ -186,12 +219,12 @@ public class ProvidersController implements Initializable {
     }
 
     private void addProvider() {
-        String name = inputName.getText().trim();
-        String cif = inputCif.getText().trim();
-        Provider p = new Provider(name, cif);
-        int id = db.addProvider(p);
-        if (id != 0) {
-            p.setId(id);
+        String nameText = inputName.getText().trim();
+        String cifText = inputCif.getText().trim();
+        Provider p = new Provider(nameText, cifText);
+        int idProvider = db.addProvider(p);
+        if (idProvider != 0) {
+            p.setId(idProvider);
             list.add(p);
         } else {
             Alert alert = new Alert(AlertType.ERROR);
@@ -212,13 +245,12 @@ public class ProvidersController implements Initializable {
         ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(okButton, noButton);
         alert.showAndWait().ifPresent(type -> {
-            System.out.println(" Type=>"+ type + " || " + ButtonType.OK);
             if (type == okButton) {
                 ObservableList<Provider> allProviders = table.getItems();
                 Provider selectedProvider = table.getSelectionModel().getSelectedItem();
                 db.deleteProvider(selectedProvider);
                 allProviders.remove(selectedProvider);
-            
+
             } else {
                 alert.close();
             }
