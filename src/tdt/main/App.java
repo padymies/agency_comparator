@@ -10,9 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import tdt.services.FileHandler;
 
 /**
  *
@@ -22,7 +20,6 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
         Parent root = FXMLLoader.load(getClass().getResource("App.fxml"));
         stage.getIcons().add(0, new Image("file:resources/tdt.jpg"));
         stage.setTitle("TDT Profesional");
@@ -36,10 +33,7 @@ public class App extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        FileHandler fh = new FileHandler();
-        fh.getTextFile();
-        
-        launch(args);
+      launch(args);
     }
     
 }

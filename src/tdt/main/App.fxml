@@ -28,7 +28,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="fileChosoer" layoutX="150.0" layoutY="105.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="46.0" prefWidth="168.0" text="Calcular tarifas">
+      <Button fx:id="fileChosoer" layoutX="150.0" layoutY="105.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="46.0" prefWidth="168.0" text="Cargar archivo...">
          <font>
             <Font size="16.0" />
          </font></Button>

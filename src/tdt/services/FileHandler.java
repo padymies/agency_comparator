@@ -1,41 +1,45 @@
 package tdt.services;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class FileHandler {
 
-    File file;
-    
-    public FileHandler() {
-        this.file = new File("testFile.txt");
-    }
-    
-    public void getTextFile() {
+    public ArrayList<String> extractRegisters(File file) {
+        BufferedReader br = null;
+        FileReader fr = null;
+        ArrayList<String> registerList = new ArrayList();
         try {
-            Scanner sc = new Scanner(file);
-            sc.useDelimiter("\\Z");
-            // we just need to use \\Z as delimiter
-            while(sc.hasNextLine()) {
-            String line = sc.nextLine();
-            String [] vals = line.split(" ");
-            for(String value : vals) {
-                if(value.length() > 0) {
-                    System.out.println(value);
+            br = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(file), "ISO-8859-1"));
+            String sCurrentLine;
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                if (sCurrentLine.length() > 0) {
+                    registerList.add(sCurrentLine);
                 }
-                
             }
-            }     
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            System.out.println("Error Leyendo archivo");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("Error cerrando archivo");
+                ex.printStackTrace();
+            }
         }
+        return registerList;
     }
-    
-    
-    
-    
 }
