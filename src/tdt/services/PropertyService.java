@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.services;
 
 import java.io.File;
@@ -11,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Properties;
 
 
@@ -60,7 +57,7 @@ public class PropertyService {
         result = Integer.parseInt(props.get(prop).toString());
             
         }catch(NumberFormatException e) {
-            System.out.println("ERROR CONVIRTIENDO A NUMERO LA PROPIEDAD" + e.getStackTrace());
+            System.out.println("ERROR CONVIRTIENDO A NUMERO LA PROPIEDAD" + Arrays.toString(e.getStackTrace()));
         }
         return result;
     }
@@ -76,7 +73,7 @@ public class PropertyService {
             props.store(out, null);
 
         } catch (IOException e) {
-            System.out.println("ERROR GUARDANDO PROPIEDADES: " + e.getMessage());
+            System.out.println("ERROR GUARDANDO PROPIEDADES: " + Arrays.toString(e.getStackTrace()));
         } finally {
 
             try {
@@ -84,7 +81,7 @@ public class PropertyService {
                 out.close();
 
             } catch (IOException e) {
-                System.out.println("ERROR CERRANDO ARCHIVO DE PROPIEDADES" + e.getMessage());
+                System.out.println("ERROR CERRANDO ARCHIVO DE PROPIEDADES" + Arrays.toString(e.getStackTrace()));
             }
         }
     }

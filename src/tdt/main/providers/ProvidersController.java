@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.main.providers;
 
 import java.net.URL;
@@ -33,11 +29,7 @@ import javafx.scene.layout.VBox;
 import tdt.db.DBHandler;
 import tdt.model.Provider;
 
-/**
- * FXML Controller class
- *
- * @author Usuario
- */
+
 public class ProvidersController implements Initializable {
 
     private ObservableList<Provider> list;
@@ -69,9 +61,7 @@ public class ProvidersController implements Initializable {
     private ArrayList<Provider> selections;
     private DBHandler db;
 
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         

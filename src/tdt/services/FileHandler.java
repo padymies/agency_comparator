@@ -32,7 +32,7 @@ public class FileHandler {
             }
         } catch (IOException e) {
             System.out.println("ERROR LEYENDO ARCHIVO: " + e.getMessage());
-            e.getMessage();
+            e.printStackTrace();
         } finally {
             try {
                 if (br != null) {
@@ -43,7 +43,7 @@ public class FileHandler {
                 }
             } catch (IOException ex) {
                 System.out.println("ERROR CERRANDO ARCHIVO: " + ex.getMessage());
-                ex.getMessage();
+                ex.printStackTrace();
             }
         }
         return registerList;

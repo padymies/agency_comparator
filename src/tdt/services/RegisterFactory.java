@@ -1,5 +1,6 @@
 package tdt.services;
 
+import java.util.Arrays;
 import tdt.model.Register;
 
 public class RegisterFactory {
@@ -62,8 +63,7 @@ public class RegisterFactory {
 
         } catch (Exception e) {
 
-            System.out.println("ERROR AL GENERAR ALBARÁN: " + e.getMessage());
-            e.getMessage();
+            System.out.println("ERROR AL GENERAR ALBARÁN: " + Arrays.toString(e.getStackTrace()));
         }
         return register;
     }
