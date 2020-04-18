@@ -40,8 +40,8 @@ public class DBHandler {
             System.out.println("Connecting db ...");
             conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             System.out.println("DB Connection succesful");
-        } catch (Exception ex) {
-            System.out.println("ERROR => DB Connect");
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println("ERROR CONECTANDO A LA BASE DE DATOS " + ex.getMessage());
             ex.getMessage();
         }
     }

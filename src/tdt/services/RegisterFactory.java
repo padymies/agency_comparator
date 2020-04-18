@@ -6,48 +6,50 @@ public class RegisterFactory {
 
     private static Register register;
 
-    public static Register generateRegister(String data) {
+    private static PropertyService props;
 
+    public static Register generateRegister(String data) {
+        props = new PropertyService();
         try {
 
-            String cliente = data.substring(0, 4);
-            String departamento = data.substring(5, 9);
-            String ref = data.substring(10, 39);
-            String fecha = data.substring(40, 47);
-            String typeSer = data.substring(48, 51);
-            String variante = data.substring(52, 52);
-            String nombreRem = data.substring(53, 82);
-            String direcRem = data.substring(83, 112);
-            String poblacionRem = data.substring(113, 142);
-            String nombreDestino = data.substring(143, 182);
-            String direcDestino = data.substring(183, 282);
-            String viaDestino = data.substring(283, 285);
-            String numeroDestino = data.substring(286, 295);
-            String pisoDestino = data.substring(296, 297);
-            String tfnoDestino = data.substring(298, 309);
-            String poblaDestino = data.substring(310, 349);
-            String postalDestino = data.substring(350, 354);
-            String bultos = data.substring(355, 357);
-            String documentos = data.substring(358, 360);
-            String paquetes = data.substring(361, 363);
-            String ancho = data.substring(364, 366);
-            String alto = data.substring(367, 369);
-            String largo = data.substring(370, 372);
-            String peso = data.substring(373, 384);
-            String reembolso = data.substring(385, 396);
-            String valor = data.substring(397, 408);
-            String ctaCliente = data.substring(409, 420);
-            String moneda = data.substring(421, 421);
-            String observaciones = data.substring(422, 491);
-            String sabado = data.substring(492, 492);
-            String horaEntr = data.substring(493, 497);
-            String retorno = data.substring(498, 498);
-            String gestionDest = data.substring(499, 499);
-            String portesDebidos = data.substring(500, 500);
-            String formaPago = data.substring(501, 503);
-            String email = data.substring(504, 553);
-            String pais = data.substring(554, 593);
-            String gls = data.substring(594, 599);
+            String cliente = data.substring(props.getPropsInt("CLIENTE.START"), props.getPropsInt("CLIENTE.END"));
+            String departamento = data.substring(props.getPropsInt("DEPARTAMENTO.START"), props.getPropsInt("DEPARTAMENTO.END"));
+            String ref = data.substring(props.getPropsInt("REF.START"), props.getPropsInt("REF.END"));
+            String fecha = data.substring(props.getPropsInt("FECHA.START"), props.getPropsInt("FECHA.END"));
+            String typeSer = data.substring(props.getPropsInt("TYPESERV.START"), props.getPropsInt("TYPESERV.END"));
+            String variante = data.substring(props.getPropsInt("VARIANTE.START"), props.getPropsInt("VARIANTE.END"));
+            String nombreRem = data.substring(props.getPropsInt("NOMBREREM.START"), props.getPropsInt("NOMBREREM.END"));
+            String direcRem = data.substring(props.getPropsInt("DIRECREM.START"), props.getPropsInt("DIRECREM.END"));
+            String poblacionRem = data.substring(props.getPropsInt("POBLACIONREM.START"), props.getPropsInt("POBLACIONREM.END"));
+            String nombreDestino = data.substring(props.getPropsInt("NOMBREDESTINO.START"), props.getPropsInt("NOMBREDESTINO.END"));
+            String direcDestino = data.substring(props.getPropsInt("DIRECDESTINO.START"), props.getPropsInt("DIRECDESTINO.END"));
+            String viaDestino = data.substring(props.getPropsInt("VIADESTINO.START"), props.getPropsInt("VIADESTINO.END"));
+            String numeroDestino = data.substring(props.getPropsInt("NUMERODESTINO.START"), props.getPropsInt("NUMERODESTINO.END"));
+            String pisoDestino = data.substring(props.getPropsInt("PISODESTINO.START"), props.getPropsInt("PISODESTINO.END"));
+            String tfnoDestino = data.substring(props.getPropsInt("TFNODESTINO.START"), props.getPropsInt("TFNODESTINO.END"));
+            String poblaDestino = data.substring(props.getPropsInt("POBLADESTINO.START"), props.getPropsInt("POBLADESTINO.END"));
+            String postalDestino = data.substring(props.getPropsInt("POSTALDESTINO.START"), props.getPropsInt("POSTALDESTINO.END"));
+            String bultos = data.substring(props.getPropsInt("BULTOS.START"), props.getPropsInt("BULTOS.END"));
+            String documentos = data.substring(props.getPropsInt("DOCUMENTOS.START"), props.getPropsInt("DOCUMENTOS.END"));
+            String paquetes = data.substring(props.getPropsInt("PAQUETES.START"), props.getPropsInt("PAQUETES.END"));
+            String ancho = data.substring(props.getPropsInt("ANCHO.START"), props.getPropsInt("ANCHO.END"));
+            String alto = data.substring(props.getPropsInt("ALTO.START"), props.getPropsInt("ALTO.END"));
+            String largo = data.substring(props.getPropsInt("LARGO.START"), props.getPropsInt("LARGO.END"));
+            String peso = data.substring(props.getPropsInt("PESO.START"), props.getPropsInt("PESO.END"));
+            String reembolso = data.substring(props.getPropsInt("REEMBOLSO.START"), props.getPropsInt("REEMBOLSO.END"));
+            String valor = data.substring(props.getPropsInt("VALOR.START"), props.getPropsInt("VALOR.END"));
+            String ctaCliente = data.substring(props.getPropsInt("CTACLIENTE.START"), props.getPropsInt("CTACLIENTE.END"));
+            String moneda = data.substring(props.getPropsInt("MONEDA.START"), props.getPropsInt("MONEDA.END"));
+            String observaciones = data.substring(props.getPropsInt("OBSERVACIONES.START"), props.getPropsInt("OBSERVACIONES.END"));
+            String sabado = data.substring(props.getPropsInt("SABADO.START"), props.getPropsInt("SABADO.END"));
+            String horaEntr = data.substring(props.getPropsInt("HORAENTR.START"), props.getPropsInt("HORAENTR.END"));
+            String retorno = data.substring(props.getPropsInt("RETORNO.START"), props.getPropsInt("RETORNO.END"));
+            String gestionDest = data.substring(props.getPropsInt("GESTIONDEST.START"), props.getPropsInt("GESTIONDEST.END"));
+            String portesDebidos = data.substring(props.getPropsInt("PORTESDEBIDOS.START"), props.getPropsInt("PORTESDEBIDOS.END"));
+            String formaPago = data.substring(props.getPropsInt("FORMAPAGO.START"), props.getPropsInt("FORMAPAGO.END"));
+            String email = data.substring(props.getPropsInt("EMAIL.START"), props.getPropsInt("EMAIL.END"));
+            String pais = data.substring(props.getPropsInt("PAIS.START"), props.getPropsInt("PAIS.END"));
+            String gls = data.substring(props.getPropsInt("GLS.START"), props.getPropsInt("GLS.END"));
 
             register = new Register(
                     cliente, departamento, ref, fecha, typeSer, variante,
