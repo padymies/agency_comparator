@@ -1,4 +1,3 @@
-
 package tdt.services;
 
 import java.io.File;
@@ -9,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Properties;
-
 
 public class PropertyService {
 
@@ -50,13 +48,13 @@ public class PropertyService {
     public Object getProps(String prop) {
         return props.get(prop);
     }
-    
+
     public Integer getPropsInt(String prop) {
         int result = -1;
         try {
-        result = Integer.parseInt(props.get(prop).toString());
-            
-        }catch(NumberFormatException e) {
+            result = Integer.parseInt(props.get(prop).toString());
+
+        } catch (NumberFormatException e) {
             System.out.println("ERROR CONVIRTIENDO A NUMERO LA PROPIEDAD" + Arrays.toString(e.getStackTrace()));
         }
         return result;

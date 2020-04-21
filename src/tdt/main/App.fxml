@@ -18,7 +18,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Configuración">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem id="import" fx:id="importFile" mnemonicParsing="false" onAction="#configMapFile" text="Mapeo de Archivo" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

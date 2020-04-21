@@ -7,8 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import tdt.db.DBHandler;
 
 public class App extends Application {
+    
+    
+    private DBHandler db;
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,6 +29,13 @@ public class App extends Application {
         stage.setScene(scene);
         
         stage.show();
+        
+        // Inicio de Conexion BD
+        db = new DBHandler();
+        db.createTableMappedFile();
+        db.insertMappedData();
+        db.createTableProviders();
+        
     }
 
 

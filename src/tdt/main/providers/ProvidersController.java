@@ -56,20 +56,17 @@ public class ProvidersController implements Initializable {
     private HBox hBox;
     @FXML
 
-    private TableColumn<?, ?> cif1;
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
     private ArrayList<Provider> selections;
-    private DBHandler db;
-
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         selections = new ArrayList<>();
         // Get Providers from DB
-        db = new DBHandler();
+        
 
-        list = db.getProviders();
+        list = DBHandler.getProviders();
 
         addButton.setOnAction(e -> addProvider());
 
@@ -212,7 +209,7 @@ public class ProvidersController implements Initializable {
         String nameText = inputName.getText().trim();
         String cifText = inputCif.getText().trim();
         Provider p = new Provider(nameText, cifText);
-        int idProvider = db.addProvider(p);
+        int idProvider = DBHandler.addProvider(p);
         if (idProvider != 0) {
             p.setId(idProvider);
             list.add(p);
@@ -238,7 +235,7 @@ public class ProvidersController implements Initializable {
             if (type == okButton) {
                 ObservableList<Provider> allProviders = table.getItems();
                 Provider selectedProvider = table.getSelectionModel().getSelectedItem();
-                db.deleteProvider(selectedProvider);
+                DBHandler.deleteProvider(selectedProvider);
                 allProviders.remove(selectedProvider);
 
             } else {

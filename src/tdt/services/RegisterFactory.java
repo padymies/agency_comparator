@@ -1,6 +1,9 @@
 package tdt.services;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import tdt.db.DBHandler;
+import tdt.model.MappedFileModel;
 import tdt.model.Register;
 
 public class RegisterFactory {
@@ -8,49 +11,60 @@ public class RegisterFactory {
     private static Register register;
 
     private static PropertyService props;
+    
+    private static DBHandler db;
+    
+    private static HashMap<String, MappedFileModel> list;
 
     public static Register generateRegister(String data) {
+        
+        list = DBHandler.getMappedFileData();
+       
         props = new PropertyService();
         try {
+            
+            // SE RESTA 1 A CADA VALOR PORQUE EL CLIENTE EMPIEZA A CONTAR EN 1 Y NO EN 0 COMO UN ARRAY
 
-            String cliente = data.substring(props.getPropsInt("CLIENTE.START"), props.getPropsInt("CLIENTE.END"));
-            String departamento = data.substring(props.getPropsInt("DEPARTAMENTO.START"), props.getPropsInt("DEPARTAMENTO.END"));
-            String ref = data.substring(props.getPropsInt("REF.START"), props.getPropsInt("REF.END"));
-            String fecha = data.substring(props.getPropsInt("FECHA.START"), props.getPropsInt("FECHA.END"));
-            String typeSer = data.substring(props.getPropsInt("TYPESERV.START"), props.getPropsInt("TYPESERV.END"));
-            String variante = data.substring(props.getPropsInt("VARIANTE.START"), props.getPropsInt("VARIANTE.END"));
-            String nombreRem = data.substring(props.getPropsInt("NOMBREREM.START"), props.getPropsInt("NOMBREREM.END"));
-            String direcRem = data.substring(props.getPropsInt("DIRECREM.START"), props.getPropsInt("DIRECREM.END"));
-            String poblacionRem = data.substring(props.getPropsInt("POBLACIONREM.START"), props.getPropsInt("POBLACIONREM.END"));
-            String nombreDestino = data.substring(props.getPropsInt("NOMBREDESTINO.START"), props.getPropsInt("NOMBREDESTINO.END"));
-            String direcDestino = data.substring(props.getPropsInt("DIRECDESTINO.START"), props.getPropsInt("DIRECDESTINO.END"));
-            String viaDestino = data.substring(props.getPropsInt("VIADESTINO.START"), props.getPropsInt("VIADESTINO.END"));
-            String numeroDestino = data.substring(props.getPropsInt("NUMERODESTINO.START"), props.getPropsInt("NUMERODESTINO.END"));
-            String pisoDestino = data.substring(props.getPropsInt("PISODESTINO.START"), props.getPropsInt("PISODESTINO.END"));
-            String tfnoDestino = data.substring(props.getPropsInt("TFNODESTINO.START"), props.getPropsInt("TFNODESTINO.END"));
-            String poblaDestino = data.substring(props.getPropsInt("POBLADESTINO.START"), props.getPropsInt("POBLADESTINO.END"));
-            String postalDestino = data.substring(props.getPropsInt("POSTALDESTINO.START"), props.getPropsInt("POSTALDESTINO.END"));
-            String bultos = data.substring(props.getPropsInt("BULTOS.START"), props.getPropsInt("BULTOS.END"));
-            String documentos = data.substring(props.getPropsInt("DOCUMENTOS.START"), props.getPropsInt("DOCUMENTOS.END"));
-            String paquetes = data.substring(props.getPropsInt("PAQUETES.START"), props.getPropsInt("PAQUETES.END"));
-            String ancho = data.substring(props.getPropsInt("ANCHO.START"), props.getPropsInt("ANCHO.END"));
-            String alto = data.substring(props.getPropsInt("ALTO.START"), props.getPropsInt("ALTO.END"));
-            String largo = data.substring(props.getPropsInt("LARGO.START"), props.getPropsInt("LARGO.END"));
-            String peso = data.substring(props.getPropsInt("PESO.START"), props.getPropsInt("PESO.END"));
-            String reembolso = data.substring(props.getPropsInt("REEMBOLSO.START"), props.getPropsInt("REEMBOLSO.END"));
-            String valor = data.substring(props.getPropsInt("VALOR.START"), props.getPropsInt("VALOR.END"));
-            String ctaCliente = data.substring(props.getPropsInt("CTACLIENTE.START"), props.getPropsInt("CTACLIENTE.END"));
-            String moneda = data.substring(props.getPropsInt("MONEDA.START"), props.getPropsInt("MONEDA.END"));
-            String observaciones = data.substring(props.getPropsInt("OBSERVACIONES.START"), props.getPropsInt("OBSERVACIONES.END"));
-            String sabado = data.substring(props.getPropsInt("SABADO.START"), props.getPropsInt("SABADO.END"));
-            String horaEntr = data.substring(props.getPropsInt("HORAENTR.START"), props.getPropsInt("HORAENTR.END"));
-            String retorno = data.substring(props.getPropsInt("RETORNO.START"), props.getPropsInt("RETORNO.END"));
-            String gestionDest = data.substring(props.getPropsInt("GESTIONDEST.START"), props.getPropsInt("GESTIONDEST.END"));
-            String portesDebidos = data.substring(props.getPropsInt("PORTESDEBIDOS.START"), props.getPropsInt("PORTESDEBIDOS.END"));
-            String formaPago = data.substring(props.getPropsInt("FORMAPAGO.START"), props.getPropsInt("FORMAPAGO.END"));
-            String email = data.substring(props.getPropsInt("EMAIL.START"), props.getPropsInt("EMAIL.END"));
-            String pais = data.substring(props.getPropsInt("PAIS.START"), props.getPropsInt("PAIS.END"));
-            String gls = data.substring(props.getPropsInt("GLS.START"), props.getPropsInt("GLS.END"));
+            String cliente = data.substring(list.get("CLIENTE").getStart() -1, list.get("CLIENTE").getEnd()  -1);
+            // TODO: Seguir cogiendo los datos del hasmap
+            
+            String departamento = data.substring(list.get("DEPARTAMENTO").getStart() -1, list.get("DEPARTAMENTO").getEnd()  -1);
+            String ref = data.substring(list.get("REF").getStart() -1, list.get("REF").getEnd()  -1);
+            String fecha = data.substring(list.get("FECHA").getStart() -1, list.get("FECHA").getEnd()  -1);
+            String typeSer = data.substring(list.get("TIPO_SERV").getStart() -1, list.get("TIPO_SERV").getEnd()  -1);
+            String variante = data.substring(list.get("VARIANTE").getStart() -1, list.get("VARIANTE").getEnd()  -1);
+            String nombreRem = data.substring(list.get("NOMBRE_REM").getStart() -1, list.get("NOMBRE_REM").getEnd()  -1);
+            String direcRem = data.substring(list.get("DIRECC_REM").getStart() -1, list.get("DIRECC_REM").getEnd()  -1);
+            String poblacionRem = data.substring(list.get("POBLACION_REM").getStart() -1, list.get("POBLACION_REM").getEnd()  -1);
+            String nombreDestino = data.substring(list.get("NOMBRE_DESTINO").getStart() -1, list.get("NOMBRE_DESTINO").getEnd()  -1);
+            String direcDestino = data.substring(list.get("DIRECC_DESTINO").getStart() -1, list.get("DIRECC_DESTINO").getEnd()  -1);
+            String viaDestino = data.substring(list.get("VIA_DESTINO").getStart() -1, list.get("VIA_DESTINO").getEnd()  -1);
+            String numeroDestino = data.substring(list.get("NUMERO_DESTINO").getStart() -1, list.get("NUMERO_DESTINO").getEnd()  -1);
+            String pisoDestino = data.substring(list.get("PISO_DESTINO").getStart() -1, list.get("PISO_DESTINO").getEnd()  -1);
+            String tfnoDestino = data.substring(list.get("TFNO_DESTINO").getStart() -1, list.get("TFNO_DESTINO").getEnd()  -1);
+            String poblaDestino = data.substring(list.get("POBLACION_DESTINO").getStart() -1, list.get("POBLACION_DESTINO").getEnd()  -1);
+            String postalDestino = data.substring(list.get("POSTAL_DESTINO").getStart() -1, list.get("POSTAL_DESTINO").getEnd()  -1);
+            String bultos = data.substring(list.get("BULTOS").getStart() -1, list.get("BULTOS").getEnd()  -1);
+            String documentos = data.substring(list.get("DOCUMENTOS").getStart() -1, list.get("DOCUMENTOS").getEnd()  -1);
+            String paquetes = data.substring(list.get("PAQUETES").getStart() -1, list.get("PAQUETES").getEnd()  -1);
+            String ancho = data.substring(list.get("ANCHO").getStart() -1, list.get("ANCHO").getEnd()  -1);
+            String alto = data.substring(list.get("ALTO").getStart() -1, list.get("ALTO").getEnd()  -1);
+            String largo = data.substring(list.get("LARGO").getStart() -1, list.get("LARGO").getEnd()  -1);
+            String peso = data.substring(list.get("PESO").getStart() -1, list.get("PESO").getEnd()  -1);
+            String reembolso = data.substring(list.get("REEMBOLSO").getStart() -1, list.get("REEMBOLSO").getEnd() -1);
+            String valor = data.substring(list.get("VALOR").getStart() -1, list.get("VALOR").getEnd()  -1);
+            String ctaCliente = data.substring(list.get("CUENTA_CLIENTE").getStart() -1, list.get("CUENTA_CLIENTE").getEnd()  -1);
+            String moneda = data.substring(list.get("MONEDA").getStart() -1, list.get("MONEDA").getEnd()  -1);
+            String observaciones = data.substring(list.get("OBSERVACIONES").getStart() -1, list.get("OBSERVACIONES").getEnd()  -1);
+            String sabado = data.substring(list.get("SABADO").getStart() -1, list.get("SABADO").getEnd()  -1);
+            String horaEntr = data.substring(list.get("HORA_ENTRADA").getStart() -1, list.get("HORA_ENTRADA").getEnd()  -1);
+            String retorno = data.substring(list.get("RETORNO").getStart() -1, list.get("RETORNO").getEnd()  -1);
+            String gestionDest = data.substring(list.get("GESTION_DESTINO").getStart() -1, list.get("GESTION_DESTINO").getEnd()  -1);
+            String portesDebidos = data.substring(list.get("PORTES_DEBIDOS").getStart() -1, list.get("PORTES_DEBIDOS").getEnd()  -1);
+            String formaPago = data.substring(list.get("FORMA_PAGO").getStart() -1, list.get("FORMA_PAGO").getEnd()  -1);
+            String email = data.substring(list.get("EMAIL").getStart() -1, list.get("EMAIL").getEnd()  -1);
+            String pais = data.substring(list.get("PAIS").getStart() -1, list.get("PAIS").getEnd()  -1);
+            String gls = data.substring(list.get("GLS").getStart() -1, list.get("GLS").getEnd()  -1);
 
             register = new Register(
                     cliente, departamento, ref, fecha, typeSer, variante,

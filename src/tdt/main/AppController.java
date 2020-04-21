@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tdt.model.Register;
@@ -27,12 +28,14 @@ public class AppController implements Initializable {
     private MenuBar menu;
     @FXML
     private Button providerList;
-    @FXML
-    private Button fileChoser;
 
     private FileChooser fileChooser;
 
     private Stage stage;
+    @FXML
+    private MenuItem importFile;
+    @FXML
+    private Button fileChosoer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -94,6 +97,30 @@ public class AppController implements Initializable {
             }
 
         }
+    }
+
+    @FXML
+    private void configMapFile(ActionEvent event) {
+        
+         try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mapFile/MapFile.fxml"));
+
+            Parent root1 = (Parent) fxmlLoader.load();
+            
+            // Create new Stage for new Window
+            Stage stage = new Stage();
+            
+            this.stage = stage;
+
+            stage.setScene(new Scene(root1));
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.getMessage();
+        }
+        
     }
 
 }
