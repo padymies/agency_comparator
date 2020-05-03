@@ -1,6 +1,6 @@
 package tdt.model;
 
-public class Register {
+public class Albaran {
 
     private String cliente; // 0-4
     private String departamento; // 5-9
@@ -41,7 +41,7 @@ public class Register {
     private String pais; // 554-593
     private String gls; // 594-635
 
-    public Register(String cliente, String departamento, String ref, String fecha, String typeServ, String variante, String nombreRem, String direcRem, String poblacionRem, String nombreDestino, String direcDestino, String viaDestino, String numeroDestino, String pisoDestino, String tfnoDestino, String poblaDestino, String postalDestino, String bultos, String documentos, String paquetes, String ancho, String alto, String largo, String peso, String reembolso, String valor, String ctaCliente, String moneda, String observaciones, String sabado, String horaEntr, String retorno, String gestionDest, String portesDebidos, String formaPago, String email, String pais, String gls) {
+    public Albaran(String cliente, String departamento, String ref, String fecha, String typeServ, String variante, String nombreRem, String direcRem, String poblacionRem, String nombreDestino, String direcDestino, String viaDestino, String numeroDestino, String pisoDestino, String tfnoDestino, String poblaDestino, String postalDestino, String bultos, String documentos, String paquetes, String ancho, String alto, String largo, String peso, String reembolso, String valor, String ctaCliente, String moneda, String observaciones, String sabado, String horaEntr, String retorno, String gestionDest, String portesDebidos, String formaPago, String email, String pais, String gls) {
         this.cliente = cliente;
         this.departamento = departamento;
         this.ref = ref;

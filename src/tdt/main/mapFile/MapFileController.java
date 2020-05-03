@@ -13,8 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import tdt.model.MappedFileModel;
-import tdt.services.MapFileService;
+import tdt.db.dao.IVariableArchivoDao;
+import tdt.db.daoImpl.VariableArchivoImpl;
+import tdt.model.VariableArchivo;
 
 /**
  * FXML Controller class
@@ -24,32 +25,37 @@ import tdt.services.MapFileService;
 public class MapFileController implements Initializable {
 
     @FXML
-    private TableView<MappedFileModel> mapFileTable;
+    private TableView<VariableArchivo> mapFileTable;
     @FXML
-    private TableColumn<MappedFileModel, String>key;
+    private TableColumn<VariableArchivo, String> key;
     @FXML
-    private TableColumn<MappedFileModel, Integer> start;
+    private TableColumn<VariableArchivo, Integer> start;
     @FXML
-    private TableColumn<MappedFileModel, Integer> end;
-    
-    private MapFileService service;
-    
-    private ObservableList<MappedFileModel> list;
-    
-    
+    private TableColumn<VariableArchivo, Integer> end;
+
+    private IVariableArchivoDao variableDao;
+
+    private ObservableList<VariableArchivo> list;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       key.setCellValueFactory(new PropertyValueFactory<>("key")); 
-       start.setCellValueFactory(new PropertyValueFactory<>("start")); 
-       end.setCellValueFactory(new PropertyValueFactory<>("end")); 
         
-       service = new MapFileService();
-       list = service.getMapedFileList();
-       mapFileTable.setItems(list);
-    }    
-    
+        key.setCellValueFactory(new PropertyValueFactory<>("key"));
+        
+        start.setCellValueFactory(new PropertyValueFactory<>("start"));
+        
+        end.setCellValueFactory(new PropertyValueFactory<>("end"));
+
+        variableDao = new VariableArchivoImpl();
+
+        list = variableDao.ObservableVariableArchivo();
+        
+        mapFileTable.setItems(list);
+    }
+
 }

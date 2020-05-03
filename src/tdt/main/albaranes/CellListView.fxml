@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" prefHeight="35.0" prefWidth="100.0" text="Referencia nº">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="ref" prefHeight="25.0" prefWidth="160.0" textAlignment="CENTER">
+         <HBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </HBox.margin>
+      </Label>
+      <Label alignment="CENTER" prefHeight="20.0" prefWidth="53.0" text="Cliente" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="cliente" prefHeight="25.0" prefWidth="160.0" textOverrun="CLIP">
+         <HBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </HBox.margin>
+      </Label>
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="Editar" textAlignment="CENTER">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+</HBox>

@@ -2,14 +2,14 @@
 package tdt.model;
 
 
-public class MappedFileModel {
+public class VariableArchivo {
     
     private int id;
     private String key;
     private int start;
     private int end;
 
-    public MappedFileModel(String key, int start, int end) {
+    public VariableArchivo(String key, int start, int end) {
         this.key = key;
         this.start = start;
         this.end = end;

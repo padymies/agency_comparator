@@ -153,3 +153,23 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Usu
 	at org.h2.mvstore.FileStore.open(FileStore.java:172)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:381)
 	... 30 more
+2020-04-22 22:54:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "VARIABLES_ARCHIVO" no encontrada
+Table "VARIABLES_ARCHIVO" not found; SQL statement:
+ SELECT * FROM VARIABLES_ARCHIVO [42102-200]
+2020-04-23 20:56:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "VARIABLES_ARCHIVO" no encontrada
+Table "VARIABLES_ARCHIVO" not found; SQL statement:
+ SELECT * FROM VARIABLES_ARCHIVO [42102-200]
+2020-04-23 20:57:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "VARIABLES_ARCHIVO" no encontrada
+Table "VARIABLES_ARCHIVO" not found; SQL statement:
+ SELECT * FROM VARIABLES_ARCHIVO [42102-200]
+2020-04-23 21:35:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "VARIABLES_ARCHIVO" no encontrada
+Table "VARIABLES_ARCHIVO" not found; SQL statement:
+ SELECT * FROM VARIABLES_ARCHIVO [42102-200]
+2020-04-24 22:56:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "VARIABLES_ARCHIVO" no encontrada
+Table "VARIABLES_ARCHIVO" not found; SQL statement:
+ SELECT * FROM VARIABLES_ARCHIVO [42102-200]
