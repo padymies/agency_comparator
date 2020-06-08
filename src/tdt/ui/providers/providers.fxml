@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="640.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.providers.ProvidersController">
+    <stylesheets>
+        <URL value="@providers.css" />
+    </stylesheets>
+   <children>
+      <VBox id="vBox" fx:id="vBox" prefHeight="427.0" prefWidth="640.0">
+         <children>
+            <TableView id="table" fx:id="table" prefHeight="439.0" prefWidth="449.0">
+              <columns>
+                <TableColumn id="id" fx:id="id" prefWidth="35.0" text="ID" />
+                <TableColumn id="nombre" fx:id="nombre" prefWidth="116.0" text="Nombre" />
+                  <TableColumn id="cif" fx:id="plazo_entrega" prefWidth="91.0" text="Plazo Entrega" />
+                  <TableColumn fx:id="bultos" prefWidth="49.0" text="Bultos" />
+                  <TableColumn fx:id="recargo_combustible" prefWidth="133.0" text="Recargo Combustible" />
+                  <TableColumn fx:id="minimo_reembolso" prefWidth="115.0" text="Minimo Reembolso" />
+                  <TableColumn fx:id="envio_grande" prefWidth="99.0" text="Envio Grande" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <AnchorPane layoutY="425.0">
+         <children>
+            <HBox id="hBox" fx:id="hBox" prefHeight="45.0" prefWidth="640.0" spacing="10.0">
+               <children>
+                  <TextField id="inputNombre" fx:id="inputNombre" prefHeight="25.0" prefWidth="148.0" promptText="Nombre" HBox.hgrow="ALWAYS" />
+                  <TextField id="inputPlazo" fx:id="inputPlazo" promptText="Plazo entrega" />
+                  <TextField id="inputBultos" fx:id="inputBultos" prefHeight="25.0" prefWidth="120.0" promptText="Bultos" />
+                  <TextField id="inputRecargo" fx:id="inputRecargo" promptText="Recargo combustible" />
+                  <TextField id="inputMinimo" fx:id="inputMinimo" prefHeight="25.0" prefWidth="124.0" promptText="Minimo reembolso" />
+                  <TextField id="inputGrande" fx:id="inputGrande" promptText="Envio grande" />
+                  <Button id="deleteButton" fx:id="addButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Add" />
+                  <Button id="deleteButton" fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" text="Delete" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

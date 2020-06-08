@@ -1,0 +1,15 @@
+
+.invalid {
+    -fx-border-color: red ;  
+    -fx-border-width: 2px ;  
+}
+
+.noZona {
+    -fx-text-fill: red!important;
+}
+/*
+
+.list-view .list-cell:selected:odd,
+.list-view .list-cell:selected:even {
+    -fx-background-color: #777;
+}*/

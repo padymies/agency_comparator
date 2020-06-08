@@ -8,18 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TextArea;
 import tdt.db.DBConnection;
 import tdt.db.dao.IAgenciaDao;
 import tdt.model.Agencia;
-import tdt.services.MyLogger;
-import tdt.services.MyLogger.Severity;
 
 public class AgenciaImpl implements IAgenciaDao {
 
     private final String TABLE_NAME = "AGENCIAS";
-
-    private TextArea log;
 
     @Override
     public ObservableList<Agencia> obtenerAgencias() {
@@ -42,7 +37,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recueprando Agencias ------------>" + sql);
+                System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
 
                 while (result.next()) {
 
@@ -64,17 +59,6 @@ public class AgenciaImpl implements IAgenciaDao {
                 }
             }
 
-            MyLogger.writeLog(
-                    "Conectando a la base de datos...", Severity.INFO);
-            MyLogger.writeLog(
-                    "Conexión establecida", Severity.SUCCESS);
-            MyLogger.writeLog(
-                    "Error al cargar albarán nº 14402", Severity.WARNING);
-            MyLogger.writeLog(
-                    "Error al cargar albarán nº 14402", Severity.ERROR);
-            System.out.println(
-                    "Agencias recuperadas !!" + list);
-
         } catch (SQLException ex) {
 
             System.out.println("Error recuperando Agencias");
@@ -92,7 +76,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -107,7 +91,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
         Agencia agencia = null;
 
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id_agencia=" + agenciaId;
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE `id_agencia`=" + agenciaId;
 
         try {
 
@@ -140,14 +124,14 @@ public class AgenciaImpl implements IAgenciaDao {
                 agencia = new Agencia(id, nombre, plazo_entrega, bultos, recargo_combustible, minimo_reembolso, envio_grande);
             }
 
-            MyLogger.writeLog("PADY", Severity.INFO);
-
             System.out.println("Agencia recuperada !!");
+
         } catch (SQLException ex) {
 
             System.out.println("Error recuperando agencia");
 
-            Logger.getLogger(IAgenciaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+
         } finally {
             try {
                 if (stat != null) {
@@ -158,7 +142,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return agencia;
@@ -190,9 +174,13 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 ResultSet result = stat.getGeneratedKeys();
 
-                result.next();
+                if (result.next()) {
 
-                id = result.getInt("id_agencia");
+                    id = result.getInt(1);
+
+                } else {
+                    System.out.println("Error de inserción");
+                }
 
                 System.out.println("Agencia insertada !!");
             }
@@ -200,7 +188,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
             System.out.println("Error insertando agencia");
 
-            Logger.getLogger(IAgenciaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
             try {
@@ -212,7 +200,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return id;
@@ -228,11 +216,11 @@ public class AgenciaImpl implements IAgenciaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "name='" + agencia.getNombre() + "', plazo_entrega=" + agencia.getPlazo_entrega()
-                + ", bultos=" + agencia.getBultos() + ", recargo_combustible=" + agencia.getRecargo_combustible()
-                + ", minimo_reembolso=" + agencia.getMinimo_reembolso()
-                + ", envio_grande=" + agencia.isEnvio_grande()
-                + "', WHERE id_agencia=" + agencia.getId_agencia();
+                + "`name`='" + agencia.getNombre() + "', `plazo_entrega`=" + agencia.getPlazo_entrega()
+                + ", `bultos`=" + agencia.getBultos() + ", `recargo_combustible`=" + agencia.getRecargo_combustible()
+                + ", `minimo_reembolso`=" + agencia.getMinimo_reembolso()
+                + ", `envio_grande`=" + agencia.isEnvio_grande()
+                + "', WHERE `id_agencia`=" + agencia.getId_agencia();
         try {
 
             conn = DBConnection.getConnection();
@@ -253,7 +241,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
             System.out.println("Error actualizando agencia");
 
-            Logger.getLogger(IAgenciaDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
             try {
@@ -265,7 +253,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class
+                Logger.getLogger(AgenciaImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -274,37 +262,37 @@ public class AgenciaImpl implements IAgenciaDao {
 
     @Override
     public boolean borrarAgencia(int agenciaId) {
-        
+
         Connection conn = null;
-        
+
         Statement stat = null;
-        
+
         boolean result = false;
-        
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id_agencia=" + agenciaId;
-        
+
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE `id_agencia`=" + agenciaId;
+
         try {
-        
+
             conn = DBConnection.getConnection();
-            
+
             if (conn != null) {
-            
+
                 stat = conn.createStatement();
-                
+
                 stat.execute(sql);
-                
+
                 System.out.println("Eliminando agencia-----------------> " + sql);
-                
+
                 result = true;
-                
+
                 System.out.println("Agencia eliminada !!");
             }
         } catch (SQLException ex) {
-            
+
             System.out.println("Error borrando agencia");
-            
+
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
-        
+
         } finally {
             try {
                 if (stat != null) {
@@ -315,11 +303,64 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class
+                Logger.getLogger(AgenciaImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
+    }
+
+    @Override
+    public ObservableList<String> obtenerNombresAgencias() {
+        Connection conn = null;
+
+        Statement stat = null;
+
+        String sql = " SELECT nombre FROM " + TABLE_NAME;
+
+        ObservableList<String> list = FXCollections.observableArrayList();
+
+        try {
+
+            conn = DBConnection.getConnection();
+
+            if (conn != null) {
+
+                stat = conn.createStatement();
+
+                ResultSet result = stat.executeQuery(sql);
+
+                System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
+
+                while (result.next()) {
+
+                    String nombre = result.getString("nombre");
+
+                    list.add(nombre);
+                }
+            }
+
+        } catch (SQLException ex) {
+
+            System.out.println("Error recuperando Nombre de Agencias");
+
+            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return list;
     }
 
 }

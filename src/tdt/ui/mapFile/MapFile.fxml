@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="570.0" prefWidth="385.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.mapFile.MapFileController">
+    <stylesheets>
+        <URL value="@mapfile.css" />
+    </stylesheets>
+   <children>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="570.0" prefWidth="385.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="583.0" prefWidth="387.0">
+               <children>
+                  <TableView fx:id="mapFileTable" prefHeight="576.0" prefWidth="387.0" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn id="key" fx:id="key" prefWidth="176.0" text="Campo" />
+                      <TableColumn id="start" fx:id="start" onEditCommit="#saveStart" prefWidth="104.0" text="Posicion Inicio" />
+                        <TableColumn id="end" fx:id="end" onEditCommit="#saveEnd" onEditStart="#iniStartEdit" prefWidth="104.0" text="Posicion Fin" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

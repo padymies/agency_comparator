@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="hBox" fx:id="hBox" alignment="CENTER_LEFT" layoutX="99.0" layoutY="77.0" prefHeight="48.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label id="textAgencia" fx:id="textAgencia" prefHeight="17.0" prefWidth="146.0" text="Agencia">
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+            </Label>
+         
+            <TextField id="txtIncremento" fx:id="txtIncremento" editable="false" prefHeight="25.0" prefWidth="78.0" promptText="Incremento">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
+           
+            <TextField id="txtMaxKilos" fx:id="txtMaxKilos" editable="false" layoutX="245.0" layoutY="22.0" prefHeight="25.0" prefWidth="97.0" promptText="Maximo Kilos">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
+            <Button id="btnEditar" fx:id="btnEditar" layoutX="463.0" layoutY="22.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Editar">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button id="btnEliminar" fx:id="btnEliminar" mnemonicParsing="false"prefHeight="25.0" prefWidth="84.0" text="Eliminar">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

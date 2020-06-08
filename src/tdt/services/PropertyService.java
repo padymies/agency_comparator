@@ -12,8 +12,11 @@ import java.util.Properties;
 public class PropertyService {
 
     private File file;
+    
     private InputStream propsFile;
+    
     private OutputStream out;
+    
     private Properties props;
 
     public PropertyService() {
@@ -26,19 +29,26 @@ public class PropertyService {
             }
 
             propsFile = new FileInputStream(file);
+            
             props = new Properties();
+            
             props.load(propsFile);
 
         } catch (IOException e) {
+            
             System.out.println("ERROR CARGANDO PROPIEDADES: " + e.getMessage());
+            
             e.getMessage();
+        
         } finally {
             try {
 
                 propsFile.close();
 
             } catch (IOException e) {
+        
                 System.out.println("ERROR CERRANDO ARCHIVO DE PROPIEDADES: " + e.getMessage());
+                
                 e.getMessage();
             }
         }
@@ -46,17 +56,25 @@ public class PropertyService {
     }
 
     public Object getProps(String prop) {
+        
         return props.get(prop);
+    
     }
 
     public Integer getPropsInt(String prop) {
+    
         int result = -1;
+        
         try {
+        
             result = Integer.parseInt(props.get(prop).toString());
 
         } catch (NumberFormatException e) {
+            
             System.out.println("ERROR CONVIRTIENDO A NUMERO LA PROPIEDAD" + Arrays.toString(e.getStackTrace()));
+        
         }
+        
         return result;
     }
 
@@ -71,7 +89,9 @@ public class PropertyService {
             props.store(out, null);
 
         } catch (IOException e) {
+          
             System.out.println("ERROR GUARDANDO PROPIEDADES: " + Arrays.toString(e.getStackTrace()));
+        
         } finally {
 
             try {
@@ -79,6 +99,7 @@ public class PropertyService {
                 out.close();
 
             } catch (IOException e) {
+        
                 System.out.println("ERROR CERRANDO ARCHIVO DE PROPIEDADES" + Arrays.toString(e.getStackTrace()));
             }
         }

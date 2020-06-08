@@ -13,5 +13,7 @@ public interface IVariableArchivoDao {
     public ObservableList<VariableArchivo> ObservableVariableArchivo();
 
     public boolean actualizarVariableArchivo(VariableArchivo albaran);
+    
+    public VariableArchivo getVariable(String key);
 
 }

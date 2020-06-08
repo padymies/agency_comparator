@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tdt.db.daoImpl;
 
 import java.sql.Connection;
@@ -18,10 +13,6 @@ import tdt.db.DBConnection;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.model.VariableArchivo;
 
-/**
- *
- * @author Usuario
- */
 public class VariableArchivoImpl implements IVariableArchivoDao {
 
     private final String TABLE_NAME = "VARIABLES_ARCHIVO";
@@ -43,24 +34,24 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            System.out.println("Obteniendo VARIABLES_ARCHIVO ------------>" + sql);
+            System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
-                String key = result.getString("key");
+                String clave = result.getString("clave");
 
-                int start = result.getInt("start");
+                int inicio = result.getInt("inicio");
 
-                int end = result.getInt("end");
+                int fin = result.getInt("fin");
 
-                list.put(key, new VariableArchivo(key, start, end));
+                list.put(clave, new VariableArchivo(clave, inicio, fin));
             }
 
-            System.out.println("Get VARIABLES_ARCHIVO successful");
+            System.out.println("VARIABLES_ARCHIVO obtenidas");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error obteniendo listado de VARIABLES_ARCHIVO");
+            System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -98,24 +89,24 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            System.out.println("Obteniendo VARIABLES_ARCHIVO ------------>" + sql);
+            System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
-                String key = result.getString("key");
+                String clave = result.getString("clave");
 
-                int start = result.getInt("start");
+                int inicio = result.getInt("inicio");
 
-                int end = result.getInt("end");
+                int fin = result.getInt("fin");
 
-                list.add(new VariableArchivo(key, start, end));
+                list.add(new VariableArchivo(clave, inicio, fin));
             }
 
-            System.out.println("Get VARIABLES_ARCHIVO successful");
+            System.out.println("VARIABLES_ARCHIVO obtenida");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error obteniendo listado de VARIABLES_ARCHIVO");
+            System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -142,8 +133,8 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
         Statement stat = null;
 
         String sql = "UPDATE " + TABLE_NAME + " SET "
-                + "key='" + variableArchivo.getKey() + "', start='" + variableArchivo.getStart()
-                + "', end='" + variableArchivo.getEnd() + "'";
+                + "`clave`='" + variableArchivo.getKey() + "', `inicio`=" + variableArchivo.getStart()
+                + ", `fin`=" + variableArchivo.getEnd() + " WHERE `clave`='" + variableArchivo.getKey() + "'";
         try {
 
             conn = DBConnection.getConnection();
@@ -179,6 +170,59 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
             }
         }
         return false;
+    }
+
+    @Override
+    public VariableArchivo getVariable(String clave) {
+        Connection conn = null;
+
+        Statement stat = null;
+
+        String sql = "SELECT inicio, fin FROM " + TABLE_NAME + " WHERE clave='" + clave +"'";
+
+        System.out.println(sql);
+        VariableArchivo var = null;
+        
+        conn = DBConnection.getConnection();
+        
+        try {
+
+            stat = conn.createStatement();
+
+            ResultSet result = stat.executeQuery(sql);
+
+            System.out.println("Obtenifino VARIABLE ARCHIVO ------------>" + sql);
+
+            while (result.next()) {
+
+                int inicio = result.getInt("inicio");
+
+                int fin = result.getInt("fin");
+
+                var = new VariableArchivo(clave, inicio, fin);
+            }
+
+            System.out.println("VARIABLE_ARCHIVO obtenida");
+
+        } catch (SQLException ex) {
+
+            System.out.println("Error obtenido VARIABLE_ARCHIVO");
+
+            Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return var;
     }
 
 }

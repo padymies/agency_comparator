@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.albaranes.CellListViewController">
+   <children>
+      <Label fx:id="ref" prefHeight="25.0" prefWidth="91.0" text="numero ref" textAlignment="CENTER" textOverrun="CLIP">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <Label fx:id="txtNombreDestino" prefHeight="17.0" prefWidth="166.0" text="Nombre Destino" textOverrun="CLIP">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <Label id="lbZona" fx:id="lbZona" prefHeight="17.0" prefWidth="106.0" text="Zona">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <TextField fx:id="txtPais" prefHeight="25.0" prefWidth="110.0" promptText="Pais" text="txtPais">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </TextField>
+      <Label fx:id="txtPoblacion" layoutX="143.0" layoutY="19.0" prefHeight="17.0" prefWidth="136.0" text="Poblacion" textOverrun="CLIP">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <Label id="lbCP" fx:id="lbCP" prefHeight="17.0" prefWidth="55.0" text="29003">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Label>
+      <CheckBox id="chkAgencia" fx:id="chkAgencia" mnemonicParsing="false">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </CheckBox>
+      <ComboBox id="comboAgencia" fx:id="comboAgencia" disable="true" prefWidth="150.0" promptText="Forzar Agencia">
+         <HBox.margin>
+            <Insets left="2.0" />
+         </HBox.margin>
+      </ComboBox>
+      <TextField fx:id="txtBultos" prefHeight="25.0" prefWidth="59.0" text="Bultos">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </TextField>
+      <Button fx:id="btnVer" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="Editar" textAlignment="CENTER">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </Button>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+</HBox>

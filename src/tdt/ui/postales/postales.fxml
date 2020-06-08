@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="571.0" prefWidth="293.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tdt.ui.postales.PostalesController">
+    <stylesheets>
+        <URL value="@postales.css" />
+    </stylesheets>
+   <children>
+      <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="10.0" prefHeight="571.0" prefWidth="293.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="583.0" prefWidth="298.0">
+               <children>
+                  <TableView fx:id="tablaProvincias" prefHeight="583.0" prefWidth="298.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TableColumn id="key" fx:id="provincia" prefWidth="180.0" text="Provincia" />
+                        <TableColumn id="start" fx:id="codigo" prefWidth="110.0" text="Código" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

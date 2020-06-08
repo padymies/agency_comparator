@@ -16,13 +16,13 @@ public class MyLogger {
 
     private static TextFlow log;
     
-    private static Text t;
+    private static Text text;
 
-    public static void writeLog(String text, Severity severity) {
+    public static void writeLog(String message, Severity severity) {
        
-        t = new Text(text + "\n");
+        text = new Text(message + "\n");
         
-        System.out.println(t.getStyle());
+        System.out.println(text.getStyle());
         
         log.getChildren().add(generateStyle(severity));
 
@@ -38,36 +38,36 @@ public class MyLogger {
         
             case SUCCESS:
             
-                t.setFill(Color.GREENYELLOW);
+                text.setFill(Color.GREENYELLOW);
                 
-                t.setFont(Font.font("System", 14));
+                text.setFont(Font.font("System", 14));
                 
                 break;
             
             case INFO:
             
-                t.setFill(Color.ALICEBLUE);
+                text.setFill(Color.ALICEBLUE);
                 
-                t.setFont(Font.font("System", 14));
+                text.setFont(Font.font("System", 14));
                 
                 break;
             
             case WARNING:
             
-                t.setFill(Color.YELLOW);
+                text.setFill(Color.YELLOW);
                 
-                t.setFont(Font.font("System", 14));
+                text.setFont(Font.font("System", 14));
                 
                 break;
             
             default:
             
-                t.setFill(Color.valueOf("#f5aebb"));
+                text.setFill(Color.valueOf("#f5aebb"));
                 
-                t.setFont(Font.font("System", 14));
+                text.setFont(Font.font("System", 14));
                 
                 break;
         }
-        return t;
+        return text;
     }
 }

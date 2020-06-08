@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="545.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.albaranes.AlbaranesController">
+   <children>
+      <AnchorPane layoutY="67.0" prefHeight="503.0" prefWidth="1101.0">
+               <stylesheets>
+              <URL value="@albaranes.css" />
+          </stylesheets>
+         <children>
+            <ScrollPane hbarPolicy="NEVER" layoutX="17.0" layoutY="31.0" prefHeight="402.0" prefWidth="1083.0" vbarPolicy="NEVER">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="1084.0">
+                     <children>
+                        <ListView id="albaranList" fx:id="listView" layoutX="-9.0" layoutY="-8.0" prefHeight="426.0" prefWidth="1093.0" style="-fx-control-inner-background:: #f000" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-9.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-8.0">
+                           <padding>
+                              <Insets bottom="15.0" top="15.0" />
+                           </padding>
+                        </ListView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+            <Label layoutX="27.0" layoutY="6.0" text="Referencia" />
+            <Label layoutX="118.0" layoutY="6.0" text="Nombre del Cliente" />
+            <Label layoutX="285.0" layoutY="6.0" text="Zona" />
+            <Label layoutX="594.0" layoutY="6.0" text="Poblacion" />
+            <Label layoutX="960.0" layoutY="6.0" text="Bultos" />
+            <Label layoutX="730.0" layoutY="6.0" text="C.P." />
+            <Label layoutX="808.0" layoutY="6.0" text="Agencia" />
+            <Label layoutX="486.0" layoutY="6.0" text="País" />
+            <HBox alignment="CENTER" layoutY="430.0" prefHeight="73.0" prefWidth="1100.0">
+               <children>
+                  <Button fx:id="btnComparar" mnemonicParsing="false" onAction="#iniciarComparacion" prefHeight="34.0" prefWidth="169.0" text="Comparar Albaranes">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1100.0">
+         <children>
+            <Label text="Filtro">
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </Label>
+            <TextField id="txtBuscar" fx:id="txtBuscar">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <Separator layoutX="20.0" layoutY="58.0" prefHeight="5.0" prefWidth="1067.0" />
+   </children>
+</AnchorPane>
