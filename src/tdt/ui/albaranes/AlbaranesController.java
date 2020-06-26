@@ -3,7 +3,10 @@ package tdt.ui.albaranes;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -14,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -44,6 +48,7 @@ import tdt.services.ConfigStage;
 import tdt.services.FileService;
 import tdt.services.ValidatorService;
 import tdt.ui.albaranes.form.AlbaranFormController;
+import tdt.ui.salidaComparacion.SalidaController;
 
 public class AlbaranesController implements Initializable {
 
@@ -64,14 +69,11 @@ public class AlbaranesController implements Initializable {
 
     private ObservableList<String> nombreZonas;
 
-    private boolean validSelection;
-
     private FilteredList<Albaran> filteredList;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-          
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         agenciaDao = new AgenciaImpl();
@@ -96,30 +98,29 @@ public class AlbaranesController implements Initializable {
 
         String busqueda = txtBuscar.getText();
 
-         filteredList.setPredicate(data -> {
+        filteredList.setPredicate(data -> {
 
-             if (busqueda == null || busqueda.isEmpty()){
+            if (busqueda == null || busqueda.isEmpty()) {
                 return true;
             }
-             
-            String lowerCaseBusqueda=busqueda.toLowerCase();
-            
+
+            String lowerCaseBusqueda = busqueda.toLowerCase();
+
             String nombre = data.getNombreDestino().toLowerCase();
-            
+
             String poblacion = data.getPoblaDestino().toLowerCase();
-            
-            
+
             String zona = "";
-            if(data.getZona() != null) {
+            if (data.getZona() != null) {
                 zona = data.getZona().getNombre().toLowerCase();
             } else {
                 zona = "No se ha encontrado una Zona";
             }
-            
-            return (data.getRef().matches("(.*)" + lowerCaseBusqueda + "(.*)") ||
-                    nombre.matches("(.*)" + lowerCaseBusqueda + "(.*)") ||
-                    zona.matches("(.*)" + lowerCaseBusqueda + "(.*)") ||
-                    poblacion.matches("(.*)" + lowerCaseBusqueda + "(.*)"));
+
+            return (data.getRef().matches("(.*)" + lowerCaseBusqueda + "(.*)")
+                    || nombre.matches("(.*)" + lowerCaseBusqueda + "(.*)")
+                    || zona.matches("(.*)" + lowerCaseBusqueda + "(.*)")
+                    || poblacion.matches("(.*)" + lowerCaseBusqueda + "(.*)"));
         });
 
     }
@@ -130,8 +131,8 @@ public class AlbaranesController implements Initializable {
 
             listView.setCellFactory((ListView<Albaran> param) -> new AlbaranCell());
 
-            filteredList = new FilteredList<>(albaranes,  data -> true);
-            
+            filteredList = new FilteredList<>(albaranes, data -> true);
+
             listView.setItems(filteredList);
 
         }
@@ -159,24 +160,62 @@ public class AlbaranesController implements Initializable {
 
             ArrayList<Albaran> albaranes = new ArrayList<>();
 
-            listView.getSelectionModel().getSelectedItems().forEach(action -> {
-
-                if (action.getZona() != null) {
+            filasSeleccionadas.forEach(action -> {
+                if (ValidatorService.albaranValidator(action)) {
                     albaranes.add(action);
 
                 }
 
+                //TODO: BORRAR ALBARANES QUE SE COMPARAN DEL LISTVIEW PARA DEJAR SOLO LOS QUE NO SE HAN
+                //      COMPARADO POR TENER ERRORES?????
             });
 
             ComparatorService service = new ComparatorService();
 
             service.compararAlbaranes(albaranes);
+            
+            int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null).count();
+            int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() == null).count();
+            
+            Map<String, List<Albaran>> result  = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
+                    .collect(Collectors.groupingBy(Albaran::getMEJOR_AGENCIA));
+            
+            boolean resultado = FileService.writeOutFiles(result);
+            
+            if(resultado) {
+                    //TODO: VENTANA DE SALIDA AGRUPADAS POR AGENCIA
+                    
+        try {
 
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/salidaComparacion/salida.fxml"));
+
+            Parent root1 = (Parent) fxmlLoader.load();
+
+            SalidaController salidaController = fxmlLoader.getController();
+
+            salidaController.loadData(result);
+
+            Stage stageAlbaranes = new Stage();
+
+            ConfigStage.configStage(stageAlbaranes, "Albaranes comparados", Modality.APPLICATION_MODAL);
+
+            stageAlbaranes.setScene(new Scene(root1));
+
+            stageAlbaranes.show();
+            
+             ((Node) event.getSource()).getScene().getWindow().hide();
+
+        } catch (IOException e) {
+        }
+                    
+            }
+            
         }
     }
 
     public class AlbaranCell extends ListCell<Albaran> {
 
+        
         @Override
         public void updateItem(Albaran albaran, boolean empty) {
 
@@ -260,7 +299,7 @@ public class AlbaranesController implements Initializable {
                         albaran.setZona(newZona);
 
                         cell.lbZona.setText(albaran.getZona().getNombre());
-                        
+
                         cell.lbZona.setStyle(null);
 
                         albaran.setMEJOR_AGENCIA(null);
@@ -292,6 +331,14 @@ public class AlbaranesController implements Initializable {
 
                 });
                 setGraphic(cell);
+
+                if (!cell.isValidCP() || !cell.isValidPais() || !cell.isValidPoblacion() || !cell.isValidRef()) {
+                    cell.getStyleClass().add("invalidRow");
+                } else {
+                    cell.getStyleClass().clear();
+
+                }
+
             } else {
                 setGraphic(null); // ESTO ES IMPORTANTE PARA ACTUALIZAR LA LISTA. SINO, NUNCA SE ELIMINAN LAS FILAS QUE TENGAN QUE BORRARSE
             }
@@ -322,7 +369,6 @@ public class AlbaranesController implements Initializable {
             stageForm.setOnHidden(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
-                    System.out.println("refreshh");
                     listView.refresh();
                 }
             });
@@ -345,6 +391,28 @@ public class AlbaranesController implements Initializable {
         protected final TextField txtBultos;
         protected final Button btnVer;
 
+        private boolean validRef;
+        private boolean validCP;
+        private boolean validPais;
+        private boolean validPoblacion;
+        private boolean validNombre;
+        
+        public boolean isValidRef() {
+            return validRef;
+        }
+
+        public boolean isValidCP() {
+            return validCP;
+        }
+
+        public boolean isValidPais() {
+            return validPais;
+        }
+
+        public boolean isValidPoblacion() {
+            return validPoblacion;
+        }
+
         public CellListViewBase(String id) {
 
             setId(id);
@@ -359,6 +427,43 @@ public class AlbaranesController implements Initializable {
             comboAgencia = new ComboBox();
             txtBultos = new TextField();
             btnVer = new Button();
+
+            validRef = true;
+            validCP = true;
+            validPoblacion = true;
+            validPais = true;
+            validNombre = true;
+
+            txtNombreDestino.textProperty().addListener(listener -> {
+                validNombre = !txtNombreDestino.getText().isEmpty();
+            });
+
+            txtPoblacion.textProperty().addListener(listener -> {
+                validPoblacion = !txtPoblacion.getText().isEmpty();
+            });
+            ref.textProperty().addListener(listener -> {
+                validRef = !ref.getText().isEmpty();
+            });
+            lbCP.textProperty().addListener(listener -> {
+                validCP = !lbCP.getText().isEmpty();
+
+            });
+            txtPais.textProperty().addListener(listener -> {
+                
+                validPais = !txtPais.getText().isEmpty();
+                
+                if (!validPais || !validPoblacion || !validCP || !validRef || !validNombre) {
+                    this.getStyleClass().add("invalidRow");
+                } else {
+                    this.getStyleClass().clear();
+
+                }
+
+            });
+            txtPoblacion.textProperty().addListener(listener -> {
+                validPoblacion = !txtPoblacion.getText().isEmpty();
+
+            });
 
             setAlignment(javafx.geometry.Pos.CENTER_LEFT);
             setPrefHeight(35.0);
@@ -443,4 +548,5 @@ public class AlbaranesController implements Initializable {
 
         }
     }
+
 }

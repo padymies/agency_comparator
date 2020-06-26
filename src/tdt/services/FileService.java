@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
@@ -76,7 +80,7 @@ public class FileService {
     }
 
     public static void actualizarAlbaran(Albaran albaran) {
-        System.out.println("PAIS =============> "+ albaran.getPais());
+
         variableDao = new VariableArchivoImpl();
 
         VariableArchivo var = null;
@@ -112,12 +116,6 @@ public class FileService {
 
                         String newLine = RegisterFactory.generarRegistroAlbaran(albaran);
 
-                        System.out.println(sCurrentLine);
-
-                        System.out.println(newLine);
-
-                        System.out.println(newLine.equals(sCurrentLine));
-
                         out.write(newLine + "\n");
 
                     } else {
@@ -143,7 +141,7 @@ public class FileService {
                     out.close();
                 }
                 if (tempFile.exists() && tempFile.canRead()) {
-                    
+
                     file.delete();
 
                     tempFile.renameTo(file);
@@ -160,6 +158,74 @@ public class FileService {
             }
         }
 
+    }
+
+    public static boolean writeOutFiles(Map<String, List<Albaran>> result) {
+        boolean resultado = true;
+
+        for (String key : result.keySet()) {
+
+            List<Albaran> albaranes = result.get(key);
+
+            BufferedReader br = null;
+
+            FileReader fr = null;
+
+            String desktopPath = System.getProperty("user.home") + "\\Desktop";
+            
+            new File(desktopPath, key.toUpperCase()).mkdir();
+            
+            File newFile = new File(desktopPath + "\\" + key.toUpperCase(),  "Listado de facturas.txt");
+
+           
+            BufferedWriter out = null;
+
+            try {
+
+                out = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(newFile), "ISO-8859-1"));
+
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(newFile), "ISO-8859-1"));
+
+                for (Albaran line : albaranes) {
+                    String newLine = RegisterFactory.generarRegistroAlbaran(line);
+
+                    try {
+                        out.write(newLine + "\n");
+                    } catch (IOException ex) {
+                        Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            } catch (IOException e) {
+
+                System.out.println("ERROR ESCRIBIENDO ARCHIVO DE SALIDA: " + e.getMessage());
+
+                resultado = false;
+
+                e.printStackTrace();
+
+            } finally {
+                try {
+                    if (br != null) {
+                        br.close();
+                    }
+                    if (fr != null) {
+                        fr.close();
+                    }
+                    if (out != null) {
+                        out.close();
+                    }
+
+                } catch (IOException ex) {
+
+                    System.out.println("ERROR ESCRIBIENDO ARCHIVO DE SALIDA: " + ex.getMessage());
+
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return resultado;
     }
 
 }

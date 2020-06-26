@@ -21,7 +21,6 @@ public interface ITarifaDao {
     public boolean añadirTarifa(Tarifa tarifa);
 
     public boolean actualizarTarifa(Tarifa tarifa);
-
     
     public ComparadorTarifa compararTarifasAlbaran(double peso, int idZona, int idAgencia);
     
@@ -29,9 +28,9 @@ public interface ITarifaDao {
     
     public ObservableList<String> obtenerNombresAgenciasPorZona(String nombreZona);
     
-    public boolean añadirAgenciaZona(int idAgencia, int idZona,double incremento, int maxKilos);
+    public boolean añadirAgenciaZona(int idAgencia, int idZona,double incremento, int plazoEntrega, int maxKilos);
     
-    public boolean actualizarAgenciaZona(int idAgencia, int idZona,double incremento, int maxKilos);
+    public boolean actualizarAgenciaZona(int idAgencia, int idZona,double incremento, int plazoEntrega, int maxKilos);
     
     public boolean borrarAgenciaZona(int idAgencia, int idZona);
     

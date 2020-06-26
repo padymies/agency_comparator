@@ -46,6 +46,18 @@ public class Albaran {
     
     private String MEJOR_AGENCIA;
     
+    private String newRef;
+
+    public String getNewRef() {
+        return newRef;
+    }
+
+    public void setNewRef(String newRef) {
+        this.newRef = newRef;
+    }
+    
+    
+    
     public Albaran(String cliente, String departamento, String ref, String fecha, String typeServ, String variante, String nombreRem, String direcRem, String poblacionRem, String nombreDestino, String direcDestino, String viaDestino, String numeroDestino, String pisoDestino, String tfnoDestino, String poblaDestino, String postalDestino, String bultos, String documentos, String paquetes, String ancho, String alto, String largo, String peso, String reembolso, String valor, String ctaCliente, String moneda, String observaciones, String sabado, String horaEntr, String retorno, String gestionDest, String portesDebidos, String formaPago, String email, String pais, String gls) {
         this.CLIENTE = cliente;
         this.DEPARTAMENTO = departamento;

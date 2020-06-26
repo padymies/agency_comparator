@@ -59,6 +59,8 @@ public class AppController implements Initializable {
     private MenuItem menuProvincias;
     @FXML
     private MenuItem menuExclusiones;
+    @FXML
+    private MenuItem menuUrgencia;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -261,6 +263,26 @@ public class AppController implements Initializable {
         } catch (IOException e) {
         }
         
+    }
+
+    @FXML
+    private void showUrgencia(ActionEvent event) {
+         try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("urgencia/urgencia.fxml"));
+
+            Parent root = (Parent) fxmlLoader.load();
+
+            Stage stageMapFIle = new Stage();
+
+            ConfigStage.configStage(stageMapFIle, "Porcentaje de urgencia", Modality.APPLICATION_MODAL);
+
+            stageMapFIle.setScene(new Scene(root));
+
+            stageMapFIle.show();
+
+        } catch (IOException e) {
+        }
     }
 
 }

@@ -4,31 +4,33 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import tdt.db.dao.IAgenciaDao;
 import tdt.db.daoImpl.AgenciaImpl;
 import tdt.model.Agencia;
+import tdt.services.AlertService;
 
 public class ProvidersController implements Initializable {
 
@@ -37,11 +39,7 @@ public class ProvidersController implements Initializable {
     @FXML
     private TableView<Agencia> table;
     @FXML
-    private TableColumn<Agencia, Integer> id;
-    @FXML
     private TableColumn<Agencia, String> nombre;
-    @FXML
-    private TableColumn<?, ?> plazo_entrega;
     @FXML
     private TableColumn<?, ?> bultos;
     @FXML
@@ -49,11 +47,11 @@ public class ProvidersController implements Initializable {
     @FXML
     private TableColumn<?, ?> minimo_reembolso;
     @FXML
+    private TableColumn<?, ?> comision;
+    @FXML
     private TableColumn<Agencia, String> envio_grande;
     @FXML
     private TextField inputNombre;
-    @FXML
-    private TextField inputPlazo;
     @FXML
     private TextField inputBultos;
     @FXML
@@ -61,7 +59,9 @@ public class ProvidersController implements Initializable {
     @FXML
     private TextField inputMinimo;
     @FXML
-    private TextField inputGrande;
+    private TextField inputComision;
+    @FXML
+    private ComboBox<String> cmbGrande;
     @FXML
     private Button addButton;
     @FXML
@@ -80,6 +80,17 @@ public class ProvidersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ObservableList<String> cmbList = FXCollections.observableArrayList();
+
+        cmbList.add("Sí");
+
+        cmbList.add("No");
+
+        
+        cmbGrande.setItems(cmbList);
+
+        cmbGrande.getSelectionModel().select("No");
+
         selections = new ArrayList<>();
 
         agenciaDao = new AgenciaImpl();
@@ -90,17 +101,15 @@ public class ProvidersController implements Initializable {
 
         deleteButton.setOnAction(e -> deleteProviders());
 
-        id.setCellValueFactory(new PropertyValueFactory<>("id_agencia"));
-
         nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-
-        plazo_entrega.setCellValueFactory(new PropertyValueFactory<>("plazo_entrega"));
 
         bultos.setCellValueFactory(new PropertyValueFactory<>("bultos"));
 
         recargo_combustible.setCellValueFactory(new PropertyValueFactory<>("recargo_combustible"));
 
         minimo_reembolso.setCellValueFactory(new PropertyValueFactory<>("minimo_reembolso"));
+
+        comision.setCellValueFactory(new PropertyValueFactory<>("comision"));
 
         envio_grande.setCellValueFactory(param -> {
 
@@ -126,120 +135,18 @@ public class ProvidersController implements Initializable {
 
         table.setItems(list);
 
-        table.setRowFactory(tv -> {
+        MenuItem borrar = new MenuItem("Borrar fila");
 
-            TableRow<Agencia> row = new TableRow<>();
+        borrar.setOnAction(new EventHandler<ActionEvent>() {
 
-            row.setOnDragDetected(event -> {
+            @Override
+            public void handle(ActionEvent event) {
+                deleteProviders();
+            }
 
-                if (!row.isEmpty() && event.isControlDown()) {
-                    Integer index = row.getIndex();
-
-                    selections.clear();//important...
-
-                    ObservableList<Agencia> items = table.getSelectionModel().getSelectedItems();
-
-                    items.forEach((iI) -> {
-                        selections.add(iI);
-                    });
-
-                    Dragboard drag = row.startDragAndDrop(TransferMode.MOVE);
-
-                    drag.setDragView(row.snapshot(null, null));
-
-                    ClipboardContent cc = new ClipboardContent();
-
-                    cc.put(SERIALIZED_MIME_TYPE, index);
-
-                    drag.setContent(cc);
-
-                    event.consume();
-                }
-            });
-
-            row.setOnDragOver(event -> {
-
-                Dragboard drag = event.getDragboard();
-
-                if (drag.hasContent(SERIALIZED_MIME_TYPE)) {
-
-                    if (row.getIndex() != ((Integer) drag.getContent(SERIALIZED_MIME_TYPE))) {
-
-                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-
-                        event.consume();
-                    }
-                }
-            });
-
-            row.setOnDragDropped(event -> {
-
-                Dragboard drag = event.getDragboard();
-
-                if (drag.hasContent(SERIALIZED_MIME_TYPE)) {
-
-                    int dropIndex;
-                    Agencia dI = null;
-
-                    if (row.isEmpty()) {
-
-                        dropIndex = table.getItems().size();
-                    } else {
-
-                        dropIndex = row.getIndex();
-
-                        dI = table.getItems().get(dropIndex);
-                    }
-                    int delta = 0;
-
-                    if (dI != null) {
-
-                        while (selections.contains(dI)) {
-
-                            delta = 1;
-
-                            --dropIndex;
-
-                            if (dropIndex < 0) {
-
-                                dI = null;
-
-                                dropIndex = 0;
-
-                                break;
-                            }
-                            dI = table.getItems().get(dropIndex);
-                        }
-                    }
-
-                    for (Agencia sI : selections) {
-                        table.getItems().remove(sI);
-                    }
-
-                    if (dI != null) {
-                        dropIndex = table.getItems().indexOf(dI) + delta;
-                    } else if (dropIndex != 0) {
-                        dropIndex = table.getItems().size();
-                    }
-
-                    table.getSelectionModel().clearSelection();
-
-                    for (Agencia sI : selections) {
-                        //draggedIndex = selections.get(i);
-                        table.getItems().add(dropIndex, sI);
-                        table.getSelectionModel().select(dropIndex);
-                        dropIndex++;
-
-                    }
-
-                    event.setDropCompleted(true);
-                    selections.clear();
-                    event.consume();
-                }
-            });
-
-            return row;
         });
+
+        table.setContextMenu(new ContextMenu(borrar));
 
     }
 
@@ -247,55 +154,91 @@ public class ProvidersController implements Initializable {
 
         String nom = inputNombre.getText().trim();
 
-        int plazoEntrega = Integer.parseInt(inputPlazo.getText().trim());
+        ObservableList<String> nombreAgencias = agenciaDao.obtenerNombresAgencias();
 
-        int bult = Integer.parseInt(inputBultos.getText().trim());
+        if (!nombreAgencias.contains(nom)) {
 
-        double recargo = Double.parseDouble(inputRecargo.getText().trim());
+            int bult = 0;
 
-        double minimoReem = Double.parseDouble(inputMinimo.getText().trim());
+            double recargo = 0;
 
-        boolean envioGrande = Boolean.parseBoolean(inputGrande.getText().trim());
+            double minimoReem = 0;
 
-        Agencia agencia = new Agencia(nom, plazoEntrega, bult, recargo, minimoReem, envioGrande);
+            double comision = 0;
 
-        int idAgencia = agenciaDao.añadirAgencia(agencia);
+            try {
+                if (!inputBultos.getText().isEmpty()) {
+                    bult = Integer.parseInt(inputBultos.getText().trim());
 
-        if (idAgencia != -1) {
+                }
+                if (!inputRecargo.getText().isEmpty()) {
+                    recargo = Double.parseDouble(inputRecargo.getText().trim());
 
-            agencia.setId_agencia(idAgencia);
+                }
+                if (!inputMinimo.getText().isEmpty()) {
+                    minimoReem = Double.parseDouble(inputMinimo.getText().trim());
 
-            list.add(agencia);
+                }
+                if (!inputComision.getText().isEmpty()) {
+                    comision = Double.parseDouble(inputComision.getText().trim());
+
+                }
+                String selected = cmbGrande.getSelectionModel().getSelectedItem();
+
+                boolean envioGrande = false;
+
+                if (selected.equals("Sí")) {
+
+                    envioGrande = true;
+                }
+
+                Agencia agencia = new Agencia(nom, bult, recargo, minimoReem, envioGrande, comision);
+
+                int idAgencia = agenciaDao.añadirAgencia(agencia);
+
+                if (idAgencia != -1) {
+
+                    agencia.setId_agencia(idAgencia);
+
+                    list.add(agencia);
+
+                    inputNombre.clear();
+                    inputBultos.clear();
+                    inputRecargo.clear();
+                    inputMinimo.clear();
+                    inputComision.clear();
+                } else {
+
+                    AlertService alert = new AlertService((Alert.AlertType.ERROR), "Creación de agencia", "No se ha podido crear la agencia \n",
+                            "- Error de guardado en la base de datos");
+
+                    alert.showAndWait();
+                }
+
+            } catch (NumberFormatException e) {
+                AlertService alert = new AlertService((Alert.AlertType.ERROR), "Creación de agencia", "No se ha podido crear la agencia \n",
+                        "- Los bultos debe ser un número entero\n- El recargo combustibloe, mínimo reembolso y la comisión deben ser un número entero o decimal.");
+
+                alert.showAndWait();
+            }
 
         } else {
-
-            Alert alert = new Alert(AlertType.ERROR);
-
-            alert.setTitle("Information Dialog");
-
-            alert.setHeaderText(null);
-
-            alert.setContentText("Error saving Agencia");
+            AlertService alert = new AlertService((Alert.AlertType.ERROR), "Creación de agencia", "No se ha podido crear la agencia \n",
+                    "- No puede haber dos agencias con el mismo nombre ");
 
             alert.showAndWait();
         }
-        inputNombre.clear();
-        inputPlazo.clear();
-        inputBultos.clear();
-        inputRecargo.clear();
-        inputMinimo.clear();
-        inputGrande.clear();
+
     }
 
     private void deleteProviders() {
 
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        Agencia selectedAgencia = table.getSelectionModel().getSelectedItem();
 
-        alert.setContentText("Seguro que quiere eliminar la Agencia? ");
+        AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de agencia", "Seguro que quiere eliminar la Agencia " + selectedAgencia.getNombre() +"?",
+                "");
 
-        alert.setTitle("Borrado de Agencia");
-
-        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
 
         ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
 
@@ -306,8 +249,6 @@ public class ProvidersController implements Initializable {
             if (type == okButton) {
 
                 ObservableList<Agencia> allProviders = table.getItems();
-
-                Agencia selectedAgencia = table.getSelectionModel().getSelectedItem();
 
                 agenciaDao.borrarAgencia(selectedAgencia.getId_agencia());
 

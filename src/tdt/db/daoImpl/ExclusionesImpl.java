@@ -45,7 +45,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO EXCLUSIONES ------------>" + sql);
+                // System.out.println("OBTENIENDO EXCLUSIONES ------------>" + sql);
 
                 while (result.next()) {
 
@@ -63,7 +63,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Exclusiones");
+            // System.out.println("Error recuperando Exclusiones");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -104,7 +104,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando exclusion----------> " + sql);
+                // System.out.println("Recuperando exclusion----------> " + sql);
 
                 if (result.next()) {
 
@@ -119,11 +119,11 @@ public class ExclusionesImpl implements IExclusionesDao {
 
             }
 
-            System.out.println("Exclusion recuperada !!");
+            // System.out.println("Exclusion recuperada !!");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando exclusion");
+            // System.out.println("Error recuperando exclusion");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -163,7 +163,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Insertando exclusion -----------> " + sql);
+                // System.out.println("Insertando exclusion -----------> " + sql);
 
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -174,14 +174,14 @@ public class ExclusionesImpl implements IExclusionesDao {
                     id = result.getInt(1);
 
                 } else {
-                    System.out.println("Error de inserción");
+                    // System.out.println("Error de inserción");
                 }
 
-                System.out.println("Exclusion insertada !!");
+                // System.out.println("Exclusion insertada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error insertando exclusion");
+            // System.out.println("Error insertando exclusion");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -221,17 +221,17 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando exclusion---------------> " + sql);
+                // System.out.println("Actualizando exclusion---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Exclusion actualizada !!");
+                // System.out.println("Exclusion actualizada !!");
 
                 result = true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando exclusion");
+            // System.out.println("Error actualizando exclusion");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -272,15 +272,15 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 stat.execute(sql);
 
-                System.out.println("Eliminando exclusion-----------------> " + sql);
+                // System.out.println("Eliminando exclusion-----------------> " + sql);
 
                 result = true;
 
-                System.out.println("Exclusion eliminada !!");
+                // System.out.println("Exclusion eliminada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error borrando exclusion");
+            // System.out.println("Error borrando exclusion");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -310,7 +310,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
         Exclusion exclusion = null;
 
-        String sql = "SELECT id_exclusion, id_agencia, inclusion_exclusion FROM " + TABLE_NAME + " WHERE cp=" + cp;
+        String sql = "SELECT id_exclusion, id_agencia, inclusion_exclusion FROM " + TABLE_NAME + " WHERE cp='" + cp + "'";
 
         try {
 
@@ -322,7 +322,7 @@ public class ExclusionesImpl implements IExclusionesDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando exclusion----------> " + sql);
+                // System.out.println("Recuperando exclusion----------> " + sql);
 
                 if (result.next()) {
 
@@ -337,11 +337,11 @@ public class ExclusionesImpl implements IExclusionesDao {
 
             }
 
-            System.out.println("Exclusion recuperada !!");
+            // System.out.println("Exclusion recuperada !!");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando exclusion");
+            // System.out.println("Error recuperando exclusion");
 
             Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
 

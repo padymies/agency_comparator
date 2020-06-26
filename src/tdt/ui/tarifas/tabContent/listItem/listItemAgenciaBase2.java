@@ -1,6 +1,5 @@
 package tdt.ui.tarifas.tabContent.listItem;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public abstract class listItemAgenciaBase extends AnchorPane {
+public abstract class listItemAgenciaBase2 extends AnchorPane {
 
     protected final HBox hBox;
     protected final Label textAgencia;
@@ -18,58 +17,7 @@ public abstract class listItemAgenciaBase extends AnchorPane {
     protected final Button btnEditar;
     protected final Button btnEliminar;
 
-    private int idAgencia;
-
-    private int idZona;
-
-    public int getIdAgencia() {
-        return idAgencia;
-    }
-
-    public void setIdAgencia(int idAgencia) {
-        this.idAgencia = idAgencia;
-    }
-
-    public int getIdZona() {
-        return idZona;
-    }
-
-    public void setIdZona(int idZona) {
-        this.idZona = idZona;
-    }
-
-    public HBox gethBox() {
-        return hBox;
-    }
-
-    public Label getTextAgencia() {
-        return textAgencia;
-    }
-
-    public TextField getTxtIncremento() {
-        return txtIncremento;
-    }
-
-    public TextField getTxtMaxKilos() {
-        return txtMaxKilos;
-    }
-
-    public Button getBtnEditar() {
-        return btnEditar;
-    }
-
-    public Button getBtnEliminar() {
-        return btnEliminar;
-    }
-
-    public TextField getTxtPlazoEntrega() {
-        return txtPlazoEntrega;
-    }
-
-    public listItemAgenciaBase(int idAgencia, int idZona) {
-
-        this.idAgencia = idAgencia;
-        this.idZona = idZona;
+    public listItemAgenciaBase2() {
 
         hBox = new HBox();
         textAgencia = new Label();
@@ -99,7 +47,7 @@ public abstract class listItemAgenciaBase extends AnchorPane {
 
         textAgencia.setId("textAgencia");
         textAgencia.setPrefHeight(17.0);
-        textAgencia.setPrefWidth(120.0);
+        textAgencia.setPrefWidth(146.0);
         textAgencia.setText("Agencia");
         HBox.setMargin(textAgencia, new Insets(0.0, 0.0, 0.0, 25.0));
 
@@ -124,8 +72,8 @@ public abstract class listItemAgenciaBase extends AnchorPane {
         txtMaxKilos.setLayoutX(245.0);
         txtMaxKilos.setLayoutY(22.0);
         txtMaxKilos.setPrefHeight(25.0);
-        txtMaxKilos.setPrefWidth(70.0);
-        txtMaxKilos.setPromptText("Kilos Max");
+        txtMaxKilos.setPrefWidth(97.0);
+        txtMaxKilos.setPromptText("Maximo Kilos");
         HBox.setMargin(txtMaxKilos, new Insets(0.0, 0.0, 0.0, 5.0));
 
         btnEditar.setId("btnEditar");
@@ -133,35 +81,24 @@ public abstract class listItemAgenciaBase extends AnchorPane {
         btnEditar.setLayoutY(22.0);
         btnEditar.setMnemonicParsing(false);
         btnEditar.setPrefHeight(25.0);
-        btnEditar.setPrefWidth(60.0);
+        btnEditar.setPrefWidth(79.0);
         btnEditar.setText("Editar");
         HBox.setMargin(btnEditar, new Insets(0.0, 0.0, 0.0, 20.0));
 
         btnEliminar.setId("btnEliminar");
         btnEliminar.setMnemonicParsing(false);
         btnEliminar.setPrefHeight(25.0);
-        btnEliminar.setPrefWidth(60.0);
+        btnEliminar.setPrefWidth(84.0);
         btnEliminar.setText("Eliminar");
         HBox.setMargin(btnEliminar, new Insets(0.0, 0.0, 0.0, 10.0));
 
         hBox.getChildren().add(textAgencia);
-        hBox.getChildren().add(txtPlazoEntrega);
         hBox.getChildren().add(txtIncremento);
+        hBox.getChildren().add(txtPlazoEntrega);
         hBox.getChildren().add(txtMaxKilos);
         hBox.getChildren().add(btnEditar);
         hBox.getChildren().add(btnEliminar);
         getChildren().add(hBox);
 
-        btnEliminar.setOnAction(event -> {
-            borrarItemAgencia(event);
-        });
-        btnEditar.setOnAction(event -> {
-            editarItemAgencia(event);
-        });
     }
-
-    protected abstract void borrarItemAgencia(ActionEvent actionEvent);
-
-    protected abstract void editarItemAgencia(ActionEvent actionEvent);
-
 }

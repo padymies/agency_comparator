@@ -8,16 +8,21 @@ public class AgenciaZona {
     private double incremento;
     private int maxKilos;
     
+    private int plazoEntrega;
+    
     private int bultos;
     
     private boolean envioGrande;
     
+    private double comision;
+    
     private String nombreAgencia;
 
-    public AgenciaZona(int idAgencia, int idZona, double incremento, int maxKilos, String nombreAgencia) {
+    public AgenciaZona(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos, String nombreAgencia) {
         this.idAgencia = idAgencia;
         this.idZona = idZona;
         this.incremento = incremento;
+        this.plazoEntrega = plazoEntrega;
         this.maxKilos = maxKilos;
         this.nombreAgencia = nombreAgencia;
     }
@@ -43,14 +48,24 @@ public class AgenciaZona {
         this.nombreAgencia = nombreAgencia;
     }
 
-    public AgenciaZona(int idAgencia, int idZona, double incremento, int maxKilos, String nombreAgencia, int bultos, boolean envioGrande ) {
+    public AgenciaZona(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos, String nombreAgencia, int bultos, boolean envioGrande, double comision ) {
         this.idAgencia = idAgencia;
         this.idZona = idZona;
         this.incremento = incremento;
+        this.plazoEntrega = plazoEntrega;
         this.maxKilos = maxKilos;
         this.nombreAgencia = nombreAgencia;
         this.bultos = bultos;
         this.envioGrande = envioGrande;
+        this.comision = comision;
+    }
+
+    public double getComision() {
+        return comision;
+    }
+
+    public void setComision(double comision) {
+        this.comision = comision;
     }
 
     public int getBultos() {
@@ -67,6 +82,14 @@ public class AgenciaZona {
 
     public void setEnvioGrande(boolean envioGrande) {
         this.envioGrande = envioGrande;
+    }
+
+    public int getPlazoEntrega() {
+        return plazoEntrega;
+    }
+
+    public void setPlazoEntrega(int plazoEntrega) {
+        this.plazoEntrega = plazoEntrega;
     }
 
     

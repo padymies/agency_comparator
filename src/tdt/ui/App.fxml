@@ -23,6 +23,7 @@
                   <MenuItem id="import" fx:id="menuPostales" mnemonicParsing="false" onAction="#showPostales" text="Códigos Postales" />
                   <MenuItem id="import" fx:id="menuProvincias" mnemonicParsing="false" onAction="#showProvincias" text="Provincias" />
                   <MenuItem id="import" fx:id="menuExclusiones" mnemonicParsing="false" onAction="#showExclusiones" text="Exclusiones" />
+                  <MenuItem id="urgencia" fx:id="menuUrgencia" mnemonicParsing="false" onAction="#showUrgencia" text="\% urgencia" />
             </items>
           </Menu>
         </menus>

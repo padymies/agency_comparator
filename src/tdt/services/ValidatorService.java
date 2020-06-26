@@ -7,6 +7,7 @@ package tdt.services;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import tdt.model.Albaran;
 
 /**
  *
@@ -61,5 +62,12 @@ public class ValidatorService {
              control.getStyleClass().remove("invalid");
         }
         return result;
+    }
+    
+    
+    public static boolean albaranValidator( Albaran al) {
+        return al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
+                && !al.getRef().isEmpty() && !al.getDirecDestino().isEmpty() && !al.getEmail().isEmpty() && !al.getPostalDestino().isEmpty()
+                && !al.getTfnoDestino().isEmpty() && !al.getPeso().isEmpty();
     }
 }

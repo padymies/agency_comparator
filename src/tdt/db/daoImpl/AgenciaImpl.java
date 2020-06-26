@@ -37,7 +37,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
+                // System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
 
                 while (result.next()) {
 
@@ -45,23 +45,23 @@ public class AgenciaImpl implements IAgenciaDao {
 
                     String nombre = result.getString("nombre");
 
-                    int plazo_entrega = result.getInt("plazo_entrega");
-
                     int bultos = result.getInt("bultos");
 
                     double recargo_combustible = result.getDouble("recargo_combustible");
 
                     double minimo_reembolso = result.getDouble("minimo_reembolso");
+                    
+                    double comision = result.getDouble("comision");
 
                     boolean envio_grande = result.getBoolean("envio_grande");
 
-                    list.add(new Agencia(id, nombre, plazo_entrega, bultos, recargo_combustible, minimo_reembolso, envio_grande));
+                    list.add(new Agencia(id, nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision));
                 }
             }
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Agencias");
+            // System.out.println("Error recuperando Agencias");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -103,7 +103,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando agencia----------> " + sql);
+                // System.out.println("Recuperando agencia----------> " + sql);
 
                 result.next();
 
@@ -111,24 +111,24 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 String nombre = result.getString("nombre");
 
-                int plazo_entrega = result.getInt("plazo_entrega");
-
                 int bultos = result.getInt("bultos");
 
                 double recargo_combustible = result.getDouble("recargo_combustible");
 
                 double minimo_reembolso = result.getDouble("minimo_reembolso");
+                
+                double comision = result.getDouble("comision");
 
                 boolean envio_grande = result.getBoolean("envio_grande");
 
-                agencia = new Agencia(id, nombre, plazo_entrega, bultos, recargo_combustible, minimo_reembolso, envio_grande);
+                agencia = new Agencia(id, nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision);
             }
 
-            System.out.println("Agencia recuperada !!");
+            // System.out.println("Agencia recuperada !!");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando agencia");
+            // System.out.println("Error recuperando agencia");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -157,9 +157,9 @@ public class AgenciaImpl implements IAgenciaDao {
 
         int id = -1;
 
-        String sql = "INSERT INTO " + TABLE_NAME + " (nombre, plazo_entrega, bultos, recargo_combustible, minimo_reembolso, envio_grande) VALUES('"
-                + agencia.getNombre() + "', " + agencia.getPlazo_entrega() + ", " + agencia.getBultos() + ", " + agencia.getRecargo_combustible()
-                + ", " + agencia.getMinimo_reembolso() + ", " + agencia.isEnvio_grande() + ")";
+        String sql = "INSERT INTO " + TABLE_NAME + " (nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision) VALUES('"
+                + agencia.getNombre() + "', " + agencia.getBultos() + ", " + agencia.getRecargo_combustible()
+                + ", " + agencia.getMinimo_reembolso() + ", " + agencia.isEnvio_grande() + ", " + agencia.getComision() + ")";
         try {
 
             conn = DBConnection.getConnection();
@@ -168,7 +168,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Insertando agencia -----------> " + sql);
+                // System.out.println("Insertando agencia -----------> " + sql);
 
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -179,14 +179,14 @@ public class AgenciaImpl implements IAgenciaDao {
                     id = result.getInt(1);
 
                 } else {
-                    System.out.println("Error de inserción");
+                    // System.out.println("Error de inserción");
                 }
 
-                System.out.println("Agencia insertada !!");
+                // System.out.println("Agencia insertada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error insertando agencia");
+            // System.out.println("Error insertando agencia");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -216,10 +216,11 @@ public class AgenciaImpl implements IAgenciaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`name`='" + agencia.getNombre() + "', `plazo_entrega`=" + agencia.getPlazo_entrega()
-                + ", `bultos`=" + agencia.getBultos() + ", `recargo_combustible`=" + agencia.getRecargo_combustible()
+                + "`name`='" + agencia.getNombre() + "', `bultos`=" + agencia.getBultos() 
+                + ", `recargo_combustible`=" + agencia.getRecargo_combustible()
                 + ", `minimo_reembolso`=" + agencia.getMinimo_reembolso()
                 + ", `envio_grande`=" + agencia.isEnvio_grande()
+                + ", `comision`=" + agencia.getComision()
                 + "', WHERE `id_agencia`=" + agencia.getId_agencia();
         try {
 
@@ -229,17 +230,17 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando agencia ---------------> " + sql);
+                // System.out.println("Actualizando agencia ---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Agencia actualizada !!");
+                // System.out.println("Agencia actualizada !!");
 
                 result = true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando agencia");
+            // System.out.println("Error actualizando agencia");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -281,15 +282,15 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 stat.execute(sql);
 
-                System.out.println("Eliminando agencia-----------------> " + sql);
+                // System.out.println("Eliminando agencia-----------------> " + sql);
 
                 result = true;
 
-                System.out.println("Agencia eliminada !!");
+                // System.out.println("Agencia eliminada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error borrando agencia");
+            // System.out.println("Error borrando agencia");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -330,7 +331,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
+                // System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
 
                 while (result.next()) {
 
@@ -342,7 +343,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Nombre de Agencias");
+            // System.out.println("Error recuperando Nombre de Agencias");
 
             Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 

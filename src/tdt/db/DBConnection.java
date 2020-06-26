@@ -14,7 +14,7 @@ public class DBConnection {
 
     private static final String TIMEZOME = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     
-    private static final String IP_ADDRESS= "192.168.180.175";
+    private static final String IP_ADDRESS= "192.168.180.192";
     
     private static final String PORT = "3306";
     
@@ -33,7 +33,7 @@ public class DBConnection {
         Connection conn = null;
         try {
 
-            System.out.println("Pady: Connectando a la base de datos ...");
+        //    System.out.println("Pady: Connectando a la base de datos ...");
 
             conn = DriverManager.getConnection(DB_URL + TIMEZOME, USERNAME, PASSWORD);
             
@@ -41,14 +41,14 @@ public class DBConnection {
 
             if (conn != null) {
 
-                System.out.println("Conexión establecida !!");
+          //      System.out.println("Conexión establecida !!");
 
                 MyLogger.writeLog("Conexión establecida", MyLogger.Severity.SUCCESS);
 
             }
         } catch (SQLException ex) {
 
-            System.out.println("ERROR CONECTANDO A LA BASE DE DATOS " + ex.getMessage());
+            //System.out.println("ERROR CONECTANDO A LA BASE DE DATOS " + ex.getMessage());
 
             MyLogger.writeLog("Error de conexión a la base de datos ... ", MyLogger.Severity.ERROR);
 

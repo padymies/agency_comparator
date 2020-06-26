@@ -20,12 +20,15 @@ public class AlbaranService {
 
     private static IZonaDao zonaDao;
 
-        
     public static Zona setAlbaranZona(Albaran albaran, Label lbZona, ListView list) {
 
         String pais = albaran.getPais();
 
-        String cp = albaran.getPostalDestino().substring(0, 2);
+        String cp = null;
+        if (albaran.getPostalDestino() != null && albaran.getPostalDestino().length() >= 2) {
+            cp = albaran.getPostalDestino().substring(0, 2);
+
+        }
 
         Zona zona = null;
 
@@ -35,19 +38,19 @@ public class AlbaranService {
 
             zona = zonaDao.obtenerZonaPorProvincia(cp);
 
-            System.out.println("Zona por provincia => " + zona);
+            // System.out.println("Zona por provincia => " + zona);
         } else {
             zona = zonaDao.obtenerZonaPorPais(albaran.getPais());
-            System.out.println("Zona por Pais => " + zona);
+            // System.out.println("Zona por Pais => " + zona);
         }
 
         if (zona != null) {
             if (lbZona.getStyleClass().contains("noZona")) {
-                System.out.println("Tiene zona" + lbZona.getStyleClass());
+                // System.out.println("Tiene zona" + lbZona.getStyleClass());
                 lbZona.getStyleClass().remove("noZona");
             }
         } else {
-            System.out.println("Tiene zona" + lbZona.getStyleClass());
+            // System.out.println("Tiene zona" + lbZona.getStyleClass());
             marcarSinZona(lbZona, list);
         }
 

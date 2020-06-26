@@ -15,11 +15,12 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import tdt.model.Albaran;
+import tdt.services.AlertService;
 import tdt.services.FileService;
 
 /**
@@ -40,12 +41,6 @@ public class AlbaranFormController implements Initializable {
     private TextField direcDestino;
     @FXML
     private TextField poblacionDestino;
-    @FXML
-    private TextField viaDestino;
-    @FXML
-    private TextField numeroDestino;
-    @FXML
-    private TextField pisoDestino;
     @FXML
     private TextField tfnoDestino;
     @FXML
@@ -74,7 +69,7 @@ public class AlbaranFormController implements Initializable {
     @FXML
     private Button btClose1;
     @FXML
-    private Label lbRef;
+    private TextField lbRef;
 
     private Albaran albaran;
     @FXML
@@ -124,12 +119,6 @@ public class AlbaranFormController implements Initializable {
 
         poblacionDestino.setText(albaran.getPoblaDestino().trim());
 
-        viaDestino.setText(albaran.getViaDestino().trim());
-
-        numeroDestino.setText(albaran.getNumeroDestino().trim());
-
-        pisoDestino.setText(albaran.getPisoDestino().trim());
-
         tfnoDestino.setText(albaran.getTfnoDestino().trim());
 
         ancho.setText(albaran.getAlto().trim());
@@ -153,48 +142,55 @@ public class AlbaranFormController implements Initializable {
     @FXML
     private void guardar(ActionEvent event) {
 
-        albaran.setCliente(cliente.getText().trim());
+        if (!lbRef.getText().isEmpty() && !direcDestino.getText().isEmpty()
+                && !postalDestino.getText().isEmpty() && !email.getText().isEmpty() && !tfnoDestino.getText().isEmpty() && 
+                !nomreDestino.getText().isEmpty() && !poblacionDestino.getText().isEmpty()) {
 
-        String newFe= fecha.getText().replace("-", "");
-        System.out.println("=================================================================================="+newFe);
-//        albaran.setFecha(fecha.getText().trim());
+            if (!albaran.getRef().equals(lbRef.getText().trim())) {
+                albaran.setNewRef(lbRef.getText().trim());
+            }
 
-        albaran.setEmail(email.getText().trim());
+            albaran.setCliente(cliente.getText().trim());
 
-        albaran.setPostalDestino(postalDestino.getText().trim());
+            // TODO DATEPICKER
+            String newFe = fecha.getText().replace("-", "");
+            albaran.setFecha(newFe);
 
-        albaran.setNombreDestino(nomreDestino.getText().trim());
+            albaran.setEmail(email.getText().trim());
 
-        albaran.setDirecDestino(direcDestino.getText().trim());
+            albaran.setPostalDestino(postalDestino.getText().trim());
 
-        albaran.setTfnoDestino(tfnoDestino.getText().trim());
+            albaran.setNombreDestino(nomreDestino.getText().trim());
 
-        albaran.setViaDestino(viaDestino.getText().trim());
+            albaran.setDirecDestino(direcDestino.getText().trim());
 
-        albaran.setPais(txtPais.getText().trim());
+            albaran.setTfnoDestino(tfnoDestino.getText().trim());
 
-        albaran.setNumeroDestino(numeroDestino.getText().trim());
+            albaran.setPais(txtPais.getText().trim());
 
-        albaran.setPoblaDestino(poblacionDestino.getText().trim());
+            albaran.setPoblaDestino(poblacionDestino.getText().trim());
 
-        albaran.setPisoDestino(pisoDestino.getText().trim());
+            albaran.setFormaPago(pago.getText().trim());
 
-        albaran.setFormaPago(pago.getText().trim());
+            albaran.setPeso(peso.getText().trim());
 
-        albaran.setPeso(peso.getText().trim());
+            albaran.setAncho(ancho.getText().trim());
 
-        albaran.setAncho(ancho.getText().trim());
+            albaran.setReembolso(reembolso.getText().trim());
 
-        albaran.setReembolso(reembolso.getText().trim());
+            albaran.setLargo(largo.getText().trim());
 
-        albaran.setLargo(largo.getText().trim());
+            albaran.setAlto(alto.getText().trim());
 
-        albaran.setAlto(alto.getText().trim());
+            albaran.setBultos(bultos.getText().trim());
 
-        albaran.setBultos(bultos.getText().trim());
+            FileService.actualizarAlbaran(albaran);
 
-        FileService.actualizarAlbaran(albaran);
+            anchorPane.getScene().getWindow().hide();
 
-        anchorPane.getScene().getWindow().hide();
+        } else {
+            AlertService alert = new AlertService(Alert.AlertType.ERROR, "Error en formulario", "No se han podido guardar los cambios, revise los errores.", "Los campos marcados con (*) son obligatorios");
+            alert.showAndWait();
+        }
     }
 }

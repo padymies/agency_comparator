@@ -7,6 +7,12 @@
 .noZona {
     -fx-text-fill: red!important;
 }
+
+.invalidRow {
+    -fx-border-color: red ;  
+    -fx-background-color: #EDB9B9;
+
+}
 /*
 
 .list-view .list-cell:selected:odd,

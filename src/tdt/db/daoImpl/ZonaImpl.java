@@ -45,7 +45,7 @@ public class ZonaImpl implements IZonaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO ZONAS ------------>" + sql);
+//                System.out.println("OBTENIENDO ZONAS ------------>" + sql);
 
                 while (result.next()) {
 
@@ -104,7 +104,7 @@ public class ZonaImpl implements IZonaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando Zona----------> " + sql);
+//                System.out.println("Recuperando Zona----------> " + sql);
 
                 result.next();
 
@@ -119,7 +119,7 @@ public class ZonaImpl implements IZonaDao {
                 zona = new Zona(id, nombre_zona, pais_zona, descripcion);
             }
 
-            System.out.println("Zona recuperada !!");
+//            System.out.println("Zona recuperada !!");
 
         } catch (SQLException ex) {
 
@@ -161,7 +161,7 @@ public class ZonaImpl implements IZonaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Insertando zona -----------> " + sql);
+//                System.out.println("Insertando zona -----------> " + sql);
 
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -175,7 +175,7 @@ public class ZonaImpl implements IZonaDao {
                     System.out.println("Error de inserción zona");
                 }
 
-                System.out.println("Zona insertada !!");
+//                System.out.println("Zona insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -221,11 +221,11 @@ public class ZonaImpl implements IZonaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando zona ---------------> " + sql);
+//                System.out.println("Actualizando zona ---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Zona actualizada !!");
+//                System.out.println("Zona actualizada !!");
 
                 result = true;
             }
@@ -272,11 +272,11 @@ public class ZonaImpl implements IZonaDao {
 
                 stat.execute(sql);
 
-                System.out.println("Eliminando zona-----------------> " + sql);
+//                System.out.println("Eliminando zona-----------------> " + sql);
 
                 result = true;
 
-                System.out.println("Zona eliminada !!");
+//                System.out.println("Zona eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -321,7 +321,7 @@ public class ZonaImpl implements IZonaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO NOMBRE DE ZONAS ------------>" + sql);
+//                System.out.println("OBTENIENDO NOMBRE DE ZONAS ------------>" + sql);
 
                 while (result.next()) {
 
@@ -376,7 +376,7 @@ public class ZonaImpl implements IZonaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando Zona por provincia----------> " + sql);
+//                System.out.println("Recuperando Zona por provincia----------> " + sql);
 
                 while (result.next()) {
 
@@ -393,7 +393,7 @@ public class ZonaImpl implements IZonaDao {
 
             }
 
-            System.out.println("Zona recuperada !!");
+//            System.out.println("Zona recuperada !!");
 
         } catch (SQLException ex) {
 
@@ -437,7 +437,7 @@ public class ZonaImpl implements IZonaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("Recuperando Zona por pais----------> " + sql);
+//                System.out.println("Recuperando Zona por pais----------> " + sql);
 
                 while (result.next()) {
 
@@ -454,7 +454,7 @@ public class ZonaImpl implements IZonaDao {
 
             }
 
-            System.out.println("Zona recuperada !!");
+//            System.out.println("Zona recuperada !!");
 
         } catch (SQLException ex) {
 

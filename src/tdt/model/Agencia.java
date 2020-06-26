@@ -5,32 +5,40 @@ public class Agencia {
     private int id_agencia;
 
     private String nombre;
-    private int plazo_entrega;
     private int bultos;
     private double recargo_combustible;
     private double minimo_reembolso;
     private boolean envio_grande;
+    private double comision;
 
-    public Agencia(int id_agencia, String nombre, int plazo_entrega, int bultos, double recargo_combustible, double minimo_reembolso, boolean envio_grande) {
+    public Agencia(int id_agencia, String nombre, int bultos, double recargo_combustible, double minimo_reembolso, boolean envio_grande, double comision) {
         this.id_agencia = id_agencia;
         this.nombre = nombre;
-        this.plazo_entrega = plazo_entrega;
         this.bultos = bultos;
         this.recargo_combustible = recargo_combustible;
         this.minimo_reembolso = minimo_reembolso;
         this.envio_grande = envio_grande;
+        this.comision = comision;
     }
 
     
     
     
-    public Agencia(String nombre, int plazo_entrega, int bultos, double recargo_combustible, double minimo_reembolso, boolean envio_grande) {
+    public Agencia(String nombre, int bultos, double recargo_combustible, double minimo_reembolso, boolean envio_grande, double comision) {
         this.nombre = nombre;
-        this.plazo_entrega = plazo_entrega;
         this.bultos = bultos;
         this.recargo_combustible = recargo_combustible;
         this.minimo_reembolso = minimo_reembolso;
         this.envio_grande = envio_grande;
+         this.comision = comision;
+    }
+
+    public double getComision() {
+        return comision;
+    }
+
+    public void setComision(double comision) {
+        this.comision = comision;
     }
 
     public int getId_agencia() {
@@ -47,14 +55,6 @@ public class Agencia {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public int getPlazo_entrega() {
-        return plazo_entrega;
-    }
-
-    public void setPlazo_entrega(int plazo_entrega) {
-        this.plazo_entrega = plazo_entrega;
     }
 
     public int getBultos() {
@@ -91,7 +91,9 @@ public class Agencia {
 
     @Override
     public String toString() {
-        return "Agencia{" + "id_agencia=" + id_agencia + ", nombre=" + nombre + ", plazo_entrega=" + plazo_entrega + ", bultos=" + bultos + ", recargo_combustible=" + recargo_combustible + ", minimo_reembolso=" + minimo_reembolso + ", envio_grande=" + envio_grande + '}';
+        return "Agencia{" + "id_agencia=" + id_agencia + ", nombre=" + nombre + ", bultos=" + 
+                bultos + ", recargo_combustible=" + recargo_combustible + ", minimo_reembolso=" + minimo_reembolso +
+                ", envio_grande=" + envio_grande + ", comision=" + comision +  '}';
     }
     
     

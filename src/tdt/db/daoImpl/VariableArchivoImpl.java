@@ -34,7 +34,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
+            // System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
@@ -47,11 +47,11 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
                 list.put(clave, new VariableArchivo(clave, inicio, fin));
             }
 
-            System.out.println("VARIABLES_ARCHIVO obtenidas");
+            // System.out.println("VARIABLES_ARCHIVO obtenidas");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
+            // System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -89,7 +89,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
+            // System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
@@ -102,11 +102,11 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
                 list.add(new VariableArchivo(clave, inicio, fin));
             }
 
-            System.out.println("VARIABLES_ARCHIVO obtenida");
+            // System.out.println("VARIABLES_ARCHIVO obtenida");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
+            // System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -143,17 +143,17 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando Variable de archivo ---------------> " + sql);
+                // System.out.println("Actualizando Variable de archivo ---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Actualizacion realizada !! ");
+                // System.out.println("Actualizacion realizada !! ");
 
                 return true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando Variable de archivo");
+            // System.out.println("Error actualizando Variable de archivo");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -180,7 +180,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         String sql = "SELECT inicio, fin FROM " + TABLE_NAME + " WHERE clave='" + clave +"'";
 
-        System.out.println(sql);
+        // System.out.println(sql);
         VariableArchivo var = null;
         
         conn = DBConnection.getConnection();
@@ -191,7 +191,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            System.out.println("Obtenifino VARIABLE ARCHIVO ------------>" + sql);
+            // System.out.println("Obtenifino VARIABLE ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
@@ -202,11 +202,11 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
                 var = new VariableArchivo(clave, inicio, fin);
             }
 
-            System.out.println("VARIABLE_ARCHIVO obtenida");
+            // System.out.println("VARIABLE_ARCHIVO obtenida");
 
         } catch (SQLException ex) {
 
-            System.out.println("Error obtenido VARIABLE_ARCHIVO");
+            // System.out.println("Error obtenido VARIABLE_ARCHIVO");
 
             Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
 

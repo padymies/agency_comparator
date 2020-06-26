@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,6 +22,11 @@
                   <Insets left="5.0" />
                </HBox.margin>
             </TextField>
+            <TextField id="txtIncremento" fx:id="txtPlazoEntrega" editable="false" layoutX="186.0" layoutY="22.0" prefHeight="25.0" prefWidth="89.0" promptText="Plazo entrega">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
            
             <TextField id="txtMaxKilos" fx:id="txtMaxKilos" editable="false" layoutX="245.0" layoutY="22.0" prefHeight="25.0" prefWidth="97.0" promptText="Maximo Kilos">
                <HBox.margin>
@@ -34,7 +38,7 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Button>
-            <Button id="btnEliminar" fx:id="btnEliminar" mnemonicParsing="false"prefHeight="25.0" prefWidth="84.0" text="Eliminar">
+            <Button id="btnEliminar" fx:id="btnEliminar" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Eliminar">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

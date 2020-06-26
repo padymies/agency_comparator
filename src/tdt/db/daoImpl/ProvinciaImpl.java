@@ -45,7 +45,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO Provincias ------------>" + sql);
+                // System.out.println("OBTENIENDO Provincias ------------>" + sql);
 
                 while (result.next()) {
 
@@ -60,7 +60,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Provincias");
+            // System.out.println("Error recuperando Provincias");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -101,7 +101,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO Provincia ------------>" + sql);
+                // System.out.println("OBTENIENDO Provincia ------------>" + sql);
 
                 while (result.next()) {
 
@@ -115,7 +115,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Provincia");
+            // System.out.println("Error recuperando Provincia");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -155,17 +155,17 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando Provincia ---------------> " + sql);
+                // System.out.println("Actualizando Provincia ---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Provincia actualizada !!");
+                // System.out.println("Provincia actualizada !!");
 
                 result = true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando Provincia");
+            // System.out.println("Error actualizando Provincia");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -204,7 +204,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Insertando Provincia -----------> " + sql);
+                // System.out.println("Insertando Provincia -----------> " + sql);
 
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -215,14 +215,14 @@ public class ProvinciaImpl implements IProvinciaDao {
                     id = result.getInt(1);
 
                 } else {
-                    System.out.println("Error de inserción");
+                    // System.out.println("Error de inserción");
                 }
 
-                System.out.println("Provincia insertada !!");
+                // System.out.println("Provincia insertada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error insertando Provincia");
+            // System.out.println("Error insertando Provincia");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -262,15 +262,15 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat.execute(sql);
 
-                System.out.println("Eliminando provincia-----------------> " + sql);
+                // System.out.println("Eliminando provincia-----------------> " + sql);
 
                 result = true;
 
-                System.out.println("Provincia eliminada !!");
+                // System.out.println("Provincia eliminada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error borrando provincia");
+            // System.out.println("Error borrando provincia");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -311,7 +311,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO Provincias de Zona------------>" + sql);
+                // System.out.println("OBTENIENDO Provincias de Zona------------>" + sql);
 
                 while (result.next()) {
 
@@ -327,7 +327,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Provincias de zona");
+            // System.out.println("Error recuperando Provincias de zona");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -369,7 +369,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO Provincias sin Zona------------>" + sql);
+                // System.out.println("OBTENIENDO Provincias sin Zona------------>" + sql);
 
                 while (result.next()) {
 
@@ -385,7 +385,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Provincias sin zona");
+            // System.out.println("Error recuperando Provincias sin zona");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -426,7 +426,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                System.out.println("OBTENIENDO Provincias------------>" + sql);
+                // System.out.println("OBTENIENDO Provincias------------>" + sql);
 
                 while (result.next()) {
                     
@@ -448,7 +448,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Provincias");
+            // System.out.println("Error recuperando Provincias");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -487,17 +487,17 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                System.out.println("Actualizando Zona-Provincia ---------------> " + sql);
+                // System.out.println("Actualizando Zona-Provincia ---------------> " + sql);
 
                 stat.executeUpdate(sql);
 
-                System.out.println("Zona-Provincia actualizada !!");
+                // System.out.println("Zona-Provincia actualizada !!");
 
                 result = true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando Zona-Provincia");
+            // System.out.println("Error actualizando Zona-Provincia");
 
             Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
 

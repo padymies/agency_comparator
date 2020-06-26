@@ -18,20 +18,20 @@
       <URL value="@title_pane.css" />
    </stylesheets>
    <children>
-      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="109.0" prefHeight="48.0" prefWidth="667.0">
+      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="98.0" prefHeight="48.0" prefWidth="667.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER" maxWidth="108.0" minWidth="10.0" prefWidth="101.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="131.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="58.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="126.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="129.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="108.0" minWidth="10.0" prefWidth="76.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="199.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="31.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="78.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="10.0" prefWidth="163.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Cliente:" GridPane.halignment="LEFT" />
-            <Label text="Fecha:" GridPane.columnIndex="3" GridPane.halignment="LEFT" />
+            <Label text="Cliente" GridPane.halignment="LEFT" />
+            <Label text="Fecha" GridPane.columnIndex="3" GridPane.halignment="LEFT" />
             <TextField fx:id="cliente" prefHeight="25.0" prefWidth="156.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
             <TextField fx:id="fecha" GridPane.columnIndex="4" />
          </children>
@@ -39,13 +39,13 @@
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </padding>
       </GridPane>
-      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="180.0" prefHeight="250.0" prefWidth="667.0">
+      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="174.0" prefHeight="250.0" prefWidth="667.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER" maxWidth="107.0" minWidth="10.0" prefWidth="102.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="127.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="53.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="120.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="123.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="107.0" minWidth="10.0" prefWidth="77.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="201.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="26.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="82.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="160.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -55,41 +55,35 @@
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Email:" GridPane.halignment="LEFT" />
+            <Label text="Email *" GridPane.halignment="LEFT" />
             <TextField fx:id="email" GridPane.columnIndex="1" />
-            <Label text="Nombre destino:" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            <Label text="Nombre *" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
             <TextField fx:id="nomreDestino" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Dirección destino:" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-            <TextField fx:id="direcDestino" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Label text="Población destino" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-            <TextField fx:id="poblacionDestino" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label text="Teléfono destino:" GridPane.rowIndex="2" />
-            <TextField fx:id="tfnoDestino" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Vía destino" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
-            <TextField fx:id="viaDestino" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Label text="Número destino" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-            <TextField fx:id="numeroDestino" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label text="Piso destino:" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-            <TextField fx:id="pisoDestino" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <Label text="País destino" GridPane.rowIndex="3" />
-            <TextField id="txtPais" fx:id="txtPais" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label text="Código Postal destino" GridPane.columnIndex="3" />
+            <Label text="Dirección *" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+            <TextField fx:id="direcDestino" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Población *" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+            <TextField fx:id="poblacionDestino" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Teléfono *" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField fx:id="tfnoDestino" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Label text="País *" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField id="txtPais" fx:id="txtPais" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Label text="C.P. *" GridPane.columnIndex="3" />
             <TextField id="postalDestino" fx:id="postalDestino" GridPane.columnIndex="4" />
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </padding>
       </GridPane>
-      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="452.0" prefHeight="165.0" prefWidth="667.0">
+      <GridPane alignment="CENTER" hgap="20.0" layoutX="46.0" layoutY="406.0" prefHeight="165.0" prefWidth="667.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER" maxWidth="121.0" minWidth="10.0" prefWidth="106.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="133.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="6.0" prefWidth="53.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="0.0" prefWidth="44.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="46.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="27.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="4.0" prefWidth="44.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="48.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="121.0" minWidth="10.0" prefWidth="82.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="199.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="6.0" prefWidth="31.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="0.0" prefWidth="41.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="3.0" prefWidth="45.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="3.0" prefWidth="5.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="4.0" prefWidth="45.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="39.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -97,26 +91,26 @@
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Alto:" GridPane.columnIndex="6" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-            <Label text="Ancho:" GridPane.columnIndex="6" GridPane.halignment="LEFT" />
-            <Label text="Reembolso:" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-            <Label text="Peso:" GridPane.columnIndex="3" GridPane.halignment="LEFT" />
-            <Label text="Largo:" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            <Label text="Alto" GridPane.columnIndex="6" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            <Label text="Ancho" GridPane.columnIndex="6" GridPane.halignment="LEFT" />
+            <Label text="Reembolso" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+            <Label text="Peso" GridPane.columnIndex="3" GridPane.halignment="LEFT" />
+            <Label text="Largo" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
             <TextField fx:id="ancho" GridPane.columnIndex="7" />
             <TextField fx:id="alto" GridPane.columnIndex="7" GridPane.rowIndex="1" />
             <TextField fx:id="peso" GridPane.columnIndex="4" />
-            <Label text="Bultos:" GridPane.rowIndex="2" />
+            <Label text="Bultos" GridPane.rowIndex="2" />
             <TextField fx:id="reembolso" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="largo" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <TextField fx:id="bultos" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Forma de pago:" GridPane.halignment="LEFT" />
+            <Label text="Forma de pago" GridPane.halignment="LEFT" />
             <TextField fx:id="pago" GridPane.columnIndex="1" />
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </GridPane>
-      <HBox alignment="CENTER" layoutY="629.0" prefHeight="105.0" prefWidth="759.0">
+      <HBox alignment="CENTER" layoutY="622.0" prefHeight="105.0" prefWidth="759.0">
          <children>
             <Button id="btnGuardar" fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" prefHeight="25.0" prefWidth="100.0" text="Guardar" />
             <Button fx:id="btClose1" layoutX="357.0" layoutY="48.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" text="Cancelar">
@@ -126,19 +120,15 @@
             </Button>
          </children>
       </HBox>
-      <Separator layoutX="46.0" layoutY="441.0" prefHeight="5.0" prefWidth="667.0" />
-      <Separator layoutX="55.0" layoutY="626.0" prefHeight="5.0" prefWidth="667.0" />
-      <Separator layoutX="55.0" layoutY="166.0" prefHeight="5.0" prefWidth="652.0" />
-      <Label layoutX="55.0" layoutY="32.0" text="Editar albarán ref: ">
+      <Separator layoutX="46.0" layoutY="384.0" prefHeight="5.0" prefWidth="667.0" />
+      <Separator layoutX="55.0" layoutY="583.0" prefHeight="5.0" prefWidth="667.0" />
+      <Separator layoutX="55.0" layoutY="149.0" prefHeight="5.0" prefWidth="652.0" />
+      <Label layoutX="64.0" layoutY="32.0" text="Referencia * ">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lbRef" layoutX="185.0" layoutY="32.0" text="ref">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Separator layoutX="54.0" layoutY="76.0" prefHeight="5.0" prefWidth="652.0" />
+      <Separator layoutX="54.0" layoutY="75.0" prefHeight="5.0" prefWidth="652.0" />
+      <TextField fx:id="lbRef" layoutX="164.0" layoutY="30.0" prefHeight="25.0" prefWidth="195.0" />
    </children>
 </AnchorPane>

@@ -1,12 +1,16 @@
 package tdt.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javafx.collections.ObservableList;
 import tdt.db.dao.IAgenciaDao;
+import tdt.db.dao.IAppConfig;
 import tdt.db.dao.IExclusionesDao;
 import tdt.db.dao.ITarifaDao;
 import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.AgenciaImpl;
+import tdt.db.daoImpl.AppConfigImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
 import tdt.db.daoImpl.TarifaImpl;
 import tdt.db.daoImpl.ZonaImpl;
@@ -26,12 +30,16 @@ public class ComparatorService {
 
     private IZonaDao zonaDao;
 
+    private IAppConfig configDao;
+
     public ComparatorService() {
         tarifaDao = new TarifaImpl();
 
         zonaDao = new ZonaImpl();
 
         agenciasDao = new AgenciaImpl();
+
+        configDao = new AppConfigImpl();
     }
 
     public void compararAlbaranes(ArrayList<Albaran> albaranes) {
@@ -42,6 +50,8 @@ public class ComparatorService {
             if (albaran.getMEJOR_AGENCIA() == null) {
 
                 ObservableList<AgenciaZona> listaAgencias = tarifaDao.obtenerAgenciasPorZona(albaran.getZona().getIdZona());
+
+                exclusionesHandler(albaran, listaAgencias);
 
                 ArrayList<ComparadorTarifa> resultadoList = new ArrayList<>();
 
@@ -54,23 +64,21 @@ public class ComparatorService {
                     ComparadorTarifa result = null;
 
                     // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
-                    if (maxKilos >= peso && agenciaZona.getMaxKilos() <= peso) {
+                    if (agenciaZona.getMaxKilos() >= peso) {
+                        if (maxKilos >= peso) {
 
-                        result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
+                            result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
 
-                    } else {
-                        if (agenciaZona.getIncremento() > 0) { // SE APLICA INCREMENTO SI TIENE
+                        } else {
+                            if (agenciaZona.getIncremento() > 0) { // SE APLICA INCREMENTO SI TIENE
 
-                            result = tarifaDao.compararTarifasAlbaran(maxKilos, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
+                                result = tarifaDao.compararTarifasAlbaran(maxKilos, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
 
-                            System.out.println("INCREMENTO => " + (peso - maxKilos * agenciaZona.getIncremento()));
+                                result.setPrecio(result.getPrecio() + (peso - maxKilos * agenciaZona.getIncremento()));
 
-                            result.setPrecio(result.getPrecio() + (peso - maxKilos * agenciaZona.getIncremento()));
-
-                            System.out.println("Precio: " + result.getPrecio());
-
-                        } else { // NO SE AÑADE A LA LISTA DE RESULTADOS PORQUE NO SE PUEDE ENVIAR POR ESA
-
+                            } else { // NO SE AÑADE A LA LISTA DE RESULTADOS PORQUE NO SE PUEDE ENVIAR POR ESA
+                                System.out.println("No tiene incremento");
+                            }
                         }
                     }
 
@@ -83,7 +91,81 @@ public class ComparatorService {
 
                 }
 
-                System.out.println("Albaran " + albaran.getRef() + "resultado: " + resultadoList);
+                if (resultadoList.size() > 0) {
+
+                    resultadoList.forEach(item -> {
+
+                        if (item.getRecargoCombustible() > 0) {
+
+                            double porcentaje = item.getRecargoCombustible() * item.getPrecio() / 100;
+
+                            item.setPrecio(item.getPrecio() + porcentaje);
+                        }
+
+                        if (albaran.getReembolso() != null) {
+
+                            double precioReembolso = 0;
+
+                            double precioComision = 0;
+
+                            if (item.getMinimoReembolso() > 0) {
+                                precioReembolso = item.getPrecio() + item.getMinimoReembolso();
+
+                            }
+
+                            if (item.getComision() > 0) {
+
+                                double porcentaje = item.getPrecio() * item.getComision() / 100;
+
+                                precioComision = item.getPrecio() + porcentaje;
+                            }
+
+                            if (precioComision > 0 && precioComision >= precioReembolso) {
+                                item.setPrecio(precioComision);
+                            }
+
+                            if (precioReembolso > 0 && precioReembolso > precioComision) {
+                                item.setPrecio(precioReembolso);
+
+                            }
+
+                        }
+
+                    });
+
+                    Collections.sort(resultadoList, Comparator.comparing(item -> item.getPrecio()));
+
+                    resultadoList.forEach(data -> {
+                        System.out.println("Agencia: " + data.getNombreAgencia() + " Precio: " + data.getPrecio() + " Entrega: " + data.getPlazoEntrega() + "\n");
+
+                    });
+
+                    ComparadorTarifa first = resultadoList.get(0);
+
+                    double porcentajeUrgencia = configDao.getPorcentajeUrgencia();
+
+                    double precioUrgencia = 0;
+
+                    precioUrgencia = first.getPrecio() + (first.getPrecio() * porcentajeUrgencia / 100);
+
+                    if (precioUrgencia > 0) {
+
+                        if (first.getPlazoEntrega() > 1) {
+                            for (int i = 1; i < resultadoList.size(); i++) {
+                                if (resultadoList.get(i).getPlazoEntrega() < first.getPlazoEntrega()
+                                        && resultadoList.get(i).getPrecio() - first.getPrecio() < precioUrgencia) {
+                                    albaran.setMEJOR_AGENCIA(resultadoList.get(i).getNombreAgencia());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (albaran.getMEJOR_AGENCIA() == null) {
+                        albaran.setMEJOR_AGENCIA(first.getNombreAgencia());
+                    }
+
+                }
 
             }
 
@@ -91,76 +173,39 @@ public class ComparatorService {
 
     }
 
-    private void buscarMejoresAgencias(Albaran albaran, ArrayList<ComparadorTarifa> list) {
-
-        exclusionesHandler(albaran, list);
-
-        list.forEach(item -> {
-
-            double peso = Math.ceil(Double.parseDouble(albaran.getPeso()));
-
-            if (item.getMaxKilos() <= peso) {
-
-            } else {
-
-            }
-
-        });
-    }
-
-    private void exclusionesHandler(Albaran albaran, ArrayList<ComparadorTarifa> list) {
+    private void exclusionesHandler(Albaran albaran, ObservableList<AgenciaZona> list) {
 
         exclusionesDao = new ExclusionesImpl();
 
         Exclusion ex = exclusionesDao.obtenerExclusionPorCP(albaran.getPostalDestino());
 
         if (ex != null) {
-            if (ex.getInclusion_exclusion() == 1) {
-                // Se tiene que mandar por esta agencia
-                agenciasDao = new AgenciaImpl();
+            switch (ex.getInclusion_exclusion()) {
+                case 1:
+                    // Se tiene que mandar por esta agencia
+                    agenciasDao = new AgenciaImpl();
 
-                Agencia agencia = agenciasDao.obtenerAgencia(ex.getId_agencia());
+                    Agencia agencia = agenciasDao.obtenerAgencia(ex.getId_agencia());
 
-                albaran.setMEJOR_AGENCIA(agencia.getNombre());
+                    albaran.setMEJOR_AGENCIA(agencia.getNombre());
 
-            } else if (ex.getInclusion_exclusion() == -1) {
-                // Se excluye esta agencia
-                list.forEach(item -> {
+                    break;
+                case -1:
+                    // Se excluye esta agencia
+                    list.forEach(item -> {
 
-                    if (item.getIdAgencia() == ex.getId_agencia()) {
+                        if (item.getIdAgencia() == ex.getId_agencia()) {
 
-                        list.remove(item);
+                            list.remove(item);
 
-                    }
-                });
-
-            } else {
-                System.out.println("No se puede enviar por ninguna agencia => " + ex.getInclusion_exclusion());
+                        }
+                    });
+                    break;
+                default:
+                    System.out.println("No se puede enviar por ninguna agencia => " + ex.getInclusion_exclusion());
+                    break;
             }
         }
     }
 
-    private boolean checkBultos(AgenciaZona agenciaZona, Albaran al) {
-
-        int bultos = -1;
-
-        try {
-
-            bultos = Integer.parseInt(al.getBultos());
-
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-        }
-        if (bultos != -1 && bultos <= agenciaZona.getBultos()) {
-            return true;
-        }
-        return false;
-    }
-    
-    
-    private boolean checkEnvioGrande(AgenciaZona agenciaZona, Albaran al) {
-        
-        
-        return false;
-    }
 }

@@ -45,7 +45,7 @@ public class TarifasController implements Initializable {
 
         listaZonas = zonaDao.obtenerZonasUI();
 
-        Image icon = new Image("file:resources/add_icon.png");
+        Image icon = new Image("file:resources/icon_add.png");
 
         ImageView imageView = new ImageView(icon);
 

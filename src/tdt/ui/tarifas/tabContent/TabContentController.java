@@ -5,6 +5,7 @@
  */
 package tdt.ui.tarifas.tabContent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -16,8 +17,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -138,6 +141,10 @@ public class TabContentController implements Initializable {
 
     @FXML
     private TextArea txtProvincias;
+    @FXML
+    private TextField newPlazoEntrega;
+    @FXML
+    private Button btnProvincias;
 
     public AnchorPane getTabContent() {
         return tabContent;
@@ -348,11 +355,30 @@ public class TabContentController implements Initializable {
 
         if (zona != null) {
 
-            zonaDao.borrarZona(zona.getIdZona());
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Zona", "Seguro que quiere eliminar la Zona: " + zona.getNombre() +"?",
+                    "");
 
-            AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Borrar Zona", "Se ha borrado la zona: " + zona.getNombre(), null);
+            ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
 
-            alert.showAndWait();
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+            alert.getButtonTypes().setAll(okButton, noButton);
+
+            alert.showAndWait().ifPresent(type -> {
+
+                if (type == okButton) {
+
+                    zonaDao.borrarZona(zona.getIdZona());
+
+                    AlertService alerta = new AlertService((Alert.AlertType.INFORMATION), "Zona eliminada", "Se ha borrado la zona: " + zona.getNombre(), "");
+
+                    alerta.showAndWait();
+
+                } else {
+                    alert.close();
+                }
+            });
+
         }
 
     }
@@ -517,14 +543,17 @@ public class TabContentController implements Initializable {
                 agenciasAgregadas.add(action.getNombreAgencia());
             });
 
+            ObservableList<String> nombreAgencias = FXCollections.observableArrayList();
+
             listAgencias.forEach(predicate -> {
 
                 if (!agenciasAgregadas.contains(predicate.getNombre())) {
-                    comboAgencias.getItems().add(predicate.getNombre());
+                    nombreAgencias.add(predicate.getNombre());
                 }
 
             });
 
+            comboAgencias.setItems(nombreAgencias);
             hboxNewForm.setVisible(true);
 
         }
@@ -551,6 +580,8 @@ public class TabContentController implements Initializable {
 
         double incremento = 0;
 
+        int plazoEntrega = 0;
+
         int maxKilos = 0;
 
         if (!newIncrem.getText().isEmpty()) {
@@ -560,6 +591,17 @@ public class TabContentController implements Initializable {
 
             } catch (NumberFormatException e) {
                 AlertService alert = new AlertService((Alert.AlertType.ERROR), "Actualización de agencia", "No se han podido guardar los cambios: ", "El incremento debe ser un número entero o decimal");
+                alert.showAndWait();
+            }
+
+        }
+        if (!newPlazoEntrega.getText().isEmpty()) {
+
+            try {
+                plazoEntrega = Integer.parseInt(newPlazoEntrega.getText().trim());
+
+            } catch (NumberFormatException e) {
+                AlertService alert = new AlertService((Alert.AlertType.ERROR), "Actualización de agencia", "No se han podido guardar los cambios: ", "El plazo de entrega debe ser un número entero");
                 alert.showAndWait();
             }
 
@@ -575,11 +617,11 @@ public class TabContentController implements Initializable {
 
         }
 
-        boolean result = tarifaDao.añadirAgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, maxKilos);
+        boolean result = tarifaDao.añadirAgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, plazoEntrega, maxKilos);
 
         if (result) {
 
-            listaAgenciaZona.add(new AgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, maxKilos, selected.getNombre()));
+            listaAgenciaZona.add(new AgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, plazoEntrega, maxKilos, selected.getNombre()));
 
             hboxNewForm.setVisible(false);
 
@@ -598,7 +640,7 @@ public class TabContentController implements Initializable {
 
         btnAgenciaZona.setVisible(true);
 
-        comboAgencias.getSelectionModel().clearSelection();
+        comboAgencias.setItems(null);
     }
 
     @FXML
@@ -687,7 +729,25 @@ public class TabContentController implements Initializable {
 
     }
 
-    
+    @FXML
+    private void goToProvincias(ActionEvent event) {
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/provincias/provincias.fxml"));
+
+            Parent root = (Parent) fxmlLoader.load();
+
+            Stage stageMapFIle = new Stage();
+
+            ConfigStage.configStage(stageMapFIle, "Provincias", Modality.APPLICATION_MODAL);
+
+            stageMapFIle.setScene(new Scene(root));
+
+            stageMapFIle.show();
+
+        } catch (IOException e) {
+        }
+    }
 
     // ===========================FIN AGENCIAS ===============================  //
     public class AgenciaZonaCell extends ListCell<AgenciaZona> {
@@ -732,6 +792,7 @@ public class TabContentController implements Initializable {
                         if (btnEditar.getText().equals("Editar")) {
                             btnEditar.setText("Guardar");
                             txtIncremento.setDisable(false);
+                            txtPlazoEntrega.setDisable(false);
                             txtMaxKilos.setDisable(false);
 
                         } else {
@@ -739,9 +800,13 @@ public class TabContentController implements Initializable {
 
                             txtIncremento.setDisable(true);
 
+                            txtPlazoEntrega.setDisable(true);
+
                             txtMaxKilos.setDisable(true);
 
                             double incremento = 0;
+
+                            int plazoEntrega = 0;
 
                             int maxKilos = 0;
 
@@ -754,6 +819,16 @@ public class TabContentController implements Initializable {
                                     alert.showAndWait();
                                 }
                             }
+                            if (!txtPlazoEntrega.getText().trim().isEmpty()) {
+                                try {
+                                    plazoEntrega = Integer.parseInt(txtPlazoEntrega.getText().trim());
+
+                                } catch (NumberFormatException e) {
+                                    AlertService alert = new AlertService((Alert.AlertType.ERROR), "Actualización de agencia", "No se han podido gruardar los cambios: ", "El plazo de entrega debe ser un número entero.");
+                                    alert.showAndWait();
+                                }
+
+                            }
                             if (!txtMaxKilos.getText().trim().isEmpty()) {
                                 try {
                                     maxKilos = Integer.parseInt(txtMaxKilos.getText().trim());
@@ -765,7 +840,7 @@ public class TabContentController implements Initializable {
 
                             }
 
-                            boolean result = tarifaDao.actualizarAgenciaZona(agenciaZona.getIdAgencia(), agenciaZona.getIdZona(), incremento, maxKilos);
+                            boolean result = tarifaDao.actualizarAgenciaZona(agenciaZona.getIdAgencia(), agenciaZona.getIdZona(), incremento, plazoEntrega, maxKilos);
 
                             if (result) {
 
@@ -783,6 +858,11 @@ public class TabContentController implements Initializable {
 
                 if (agenciaZona.getIncremento() > 0) {
                     cell.getTxtIncremento().setText(String.valueOf(agenciaZona.getIncremento()));
+
+                }
+
+                if (agenciaZona.getPlazoEntrega() > 0) {
+                    cell.getTxtPlazoEntrega().setText(String.valueOf(agenciaZona.getPlazoEntrega()));
 
                 }
 

@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -92,7 +94,7 @@ public class ExclusionesController implements Initializable {
         });
 
         MenuItem borrar = new MenuItem("Borrar fila");
-
+        borrar.setStyle("-fx-pref-width: 100");
         borrar.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -101,8 +103,11 @@ public class ExclusionesController implements Initializable {
             }
 
         });
-        tableEx.setContextMenu(
-                new ContextMenu(borrar));
+
+        ContextMenu c = new ContextMenu();
+        c.getItems().add(borrar);
+
+        tableEx.setContextMenu(c);
 
         tableEx.setItems(listaExclusiones);
 
@@ -195,8 +200,8 @@ public class ExclusionesController implements Initializable {
             Exclusion ex = new Exclusion(cp, agencia, accion);
 
             int result = exclusionesDao.añadirExclusion(ex);
-            
-            if(result != -1) {
+
+            if (result != -1) {
                 tableEx.getItems().add(ex);
             }
 
@@ -209,14 +214,32 @@ public class ExclusionesController implements Initializable {
 
     @FXML
     private void deleteExclusion(ActionEvent event) {
-        
+
         Exclusion item = (Exclusion) listaExclusiones.get(tableEx.getSelectionModel().getSelectedIndex());
 
         if (item != null) {
 
-            exclusionesDao.borrarExclusion(item.getId());
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Exclusión", "Seguro que quiere eliminar la exclusión para el código " + item.getCp() + "?",
+                    "");
 
-            tableEx.getItems().remove(item);
+            ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
+
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+            alert.getButtonTypes().setAll(okButton, noButton);
+
+            alert.showAndWait().ifPresent(type -> {
+
+                if (type == okButton) {
+
+                    exclusionesDao.borrarExclusion(item.getId());
+
+                    tableEx.getItems().remove(item);
+
+                } else {
+                    alert.close();
+                }
+            });
         }
     }
 

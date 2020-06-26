@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="tabContent" prefHeight="913.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="tabContent" prefHeight="913.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <AnchorPane layoutX="109.0" layoutY="249.0" prefHeight="753.0" prefWidth="664.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="506.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,37 +28,42 @@
             <Label layoutX="340.0" layoutY="61.0" text="Descripcion" textOverrun="CLIP" />
             <TextField id="txtPais" fx:id="txtPais" layoutX="104.0" layoutY="104.0" prefHeight="20.0" prefWidth="150.0" />
             <TextArea id="txtDescripcion" fx:id="txtDescripcion" layoutX="417.0" layoutY="61.0" prefHeight="73.0" prefWidth="235.0" />
-            <Label layoutX="30.0" layoutY="259.0" text="Agencias">
+            <Label layoutX="30.0" layoutY="233.0" text="Agencias">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Separator layoutX="28.0" layoutY="282.0" prefHeight="3.0" prefWidth="496.0" />
-            <Button id="btnAgenciaZona" fx:id="btnAgenciaZona" layoutX="545.0" layoutY="257.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Añadir Agencia" />
+            <Separator layoutX="28.0" layoutY="256.0" prefHeight="3.0" prefWidth="496.0" />
+            <Button id="btnAgenciaZona" fx:id="btnAgenciaZona" layoutX="545.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Añadir Agencia" />
             <Label layoutX="83.0" layoutY="310.0" text="Nombre" />
-            <Label layoutX="347.0" layoutY="310.0" text="Máximo Kilos" />
-            <Label layoutX="248.0" layoutY="310.0" text="Incremento" />
+            <Label layoutX="386.0" layoutY="310.0" text="Máximo Kilos" />
+            <Label layoutX="303.0" layoutY="310.0" text="Incremento" />
             
-            <HBox fx:id="hboxNewForm" alignment="CENTER_LEFT" layoutX="26.0" layoutY="250.0" prefHeight="37.0" prefWidth="627.0" visible="false">
+            <HBox fx:id="hboxNewForm" alignment="CENTER_LEFT" layoutX="26.0" layoutY="268.0" prefHeight="37.0" prefWidth="627.0" visible="false">
                <children>
-                  <ComboBox fx:id="comboAgencias" prefHeight="25.0" prefWidth="184.0" promptText="Seleccione una Agencia">
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </ComboBox>
-                  <TextField fx:id="newIncrem" prefHeight="25.0" prefWidth="76.0" promptText="Incremento">
+                  <ComboBox fx:id="comboAgencias" prefHeight="25.0" prefWidth="167.0" promptText="Seleccione una Agencia">
                      <HBox.margin>
                         <Insets left="20.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <TextField fx:id="newPlazoEntrega" layoutX="244.0" layoutY="16.0" prefHeight="25.0" prefWidth="90.0" promptText="Plazo entrega">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="newIncrem" prefHeight="25.0" prefWidth="76.0" promptText="Incremento">
+                     <HBox.margin>
+                        <Insets left="15.0" />
                      </HBox.margin>
                   </TextField>
                   <TextField fx:id="newMaxKilos" prefHeight="25.0" prefWidth="69.0" promptText="Max kilos">
                      <HBox.margin>
-                        <Insets left="20.0" />
+                        <Insets left="15.0" />
                      </HBox.margin>
                   </TextField>
                   <Button fx:id="btnNewAgencia" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Añadir">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
                   <Button fx:id="btnCancelNew" layoutX="439.0" layoutY="17.0" mnemonicParsing="false" text="Cancelar">
@@ -69,7 +74,8 @@
                </children>
             </HBox>
             <TextArea id="txtDescripcion" fx:id="txtProvincias" layoutX="105.0" layoutY="163.0" prefHeight="38.0" prefWidth="549.0" />
-            <Label layoutX="27.0" layoutY="163.0" text="Provincias" textOverrun="CLIP" />
+            <Label layoutX="211.0" layoutY="310.0" text="Plazo entrega" />
+            <Button fx:id="btnProvincias" layoutX="23.0" layoutY="163.0" mnemonicParsing="false" onAction="#goToProvincias" text="Provincias" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="851.0" layoutY="310.0" prefHeight="480.0" prefWidth="218.0">
@@ -89,7 +95,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Separator layoutX="743.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="869.0" prefWidth="38.0" />
+      <Separator layoutX="743.0" layoutY="-3.0" orientation="VERTICAL" prefHeight="869.0" prefWidth="38.0" visible="false" />
       <Separator layoutX="849.0" layoutY="65.0" prefHeight="1.0" prefWidth="218.0" />
       <Label layoutX="892.0" layoutY="264.0" text="Kg" />
       <Label layoutX="970.0" layoutY="264.0" text="€" />

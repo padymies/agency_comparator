@@ -21,13 +21,16 @@ public class ComparadorTarifa {
     private double minimoReembolso;
 
     private boolean envioGrande;
+    
+    private double comision;
 
     private double incremento;
 
     private int maxKilos;
     
 
-    public ComparadorTarifa(int idAgencia, int idZona, double precio, int plazoEntrega, int bultos, double recargoCombustible, double minimoReembolso, boolean envioGrande, double incremento, int maxKilos) {
+    public ComparadorTarifa(int idAgencia, int idZona, double precio, int plazoEntrega, int bultos, double recargoCombustible, 
+            double minimoReembolso, boolean envioGrande, double comision, double incremento, int maxKilos) {
         this.idAgencia = idAgencia;
         this.idZona = idZona;
         this.precio = precio;
@@ -38,9 +41,11 @@ public class ComparadorTarifa {
         this.envioGrande = envioGrande;
         this.incremento = incremento;
         this.maxKilos = maxKilos;
+        this.comision = comision;
     }
 
-    public ComparadorTarifa(int kg, String nombreAgencia, int idAgencia, int idZona, double precio, int plazoEntrega, int bultos, double recargoCombustible, double minimoReembolso, boolean envioGrande, double incremento, int maxKilos) {
+    public ComparadorTarifa(int kg, String nombreAgencia, int idAgencia, int idZona, double precio, int plazoEntrega,
+            int bultos, double recargoCombustible, double minimoReembolso, boolean envioGrande, double comision, double incremento, int maxKilos) {
         this.kg = kg;
         this.nombreAgencia = nombreAgencia;
         this.idAgencia = idAgencia;
@@ -53,6 +58,15 @@ public class ComparadorTarifa {
         this.envioGrande = envioGrande;
         this.incremento = incremento;
         this.maxKilos = maxKilos;
+        this.comision = comision;
+    }
+
+    public double getComision() {
+        return comision;
+    }
+
+    public void setComision(double comision) {
+        this.comision = comision;
     }
 
     public int getKg() {
