@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import tdt.db.dao.IAppConfig;
 import tdt.db.daoImpl.AppConfigImpl;
 import tdt.services.AlertService;
+import tdt.services.ConfigStage;
 
 /**
  * FXML Controller class
@@ -40,6 +41,7 @@ public class UrgenciaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ConfigStage.setIcon(btnUrgencia, "check.png", 12);
         configDao = new AppConfigImpl();
 
         urgencia = configDao.getPorcentajeUrgencia();

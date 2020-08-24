@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="BrickBreaker.jnlp">
+  <information>
+    <title>tdt</title>
+    <vendor>Unknown</vendor>
+    <description>App</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" java-vm-args="-Xmx128m -Xms128m "  href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="tdt.jar" size="172537" download="null" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="tdt.ui.App"  name="App" />
+  <update check="background"/>
+</jnlp>

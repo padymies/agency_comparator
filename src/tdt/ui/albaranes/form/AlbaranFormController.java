@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tdt.ui.albaranes.form;
 
 import java.net.URL;
@@ -10,8 +5,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,21 +13,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import tdt.model.Albaran;
+import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
+import tdt.services.ConfigStage;
 import tdt.services.FileService;
 
-/**
- * FXML Controller class
- *
- * @author Usuario
- */
 public class AlbaranFormController implements Initializable {
 
     @FXML
     private TextField email;
     @FXML
     private TextField pago;
-
     @FXML
     private TextField nomreDestino;
     @FXML
@@ -81,6 +70,8 @@ public class AlbaranFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ConfigStage.setIcon(btnGuardar, "check.png", 18);
+        ConfigStage.setIcon(btClose1, "cancel.png", 18);
     }
 
     public void transferAlbaran(Albaran albaran) {
@@ -93,16 +84,18 @@ public class AlbaranFormController implements Initializable {
 
         String date = albaran.getFecha().trim();
 
-        // TODO: Poner / entre fecha
         DateFormat input = new SimpleDateFormat("ddMMyyyy");
+
         DateFormat output = new SimpleDateFormat("dd-MM-yyyy");
+
         try {
             String result = output.format(input.parse(date));
-            System.out.println(result);
             fecha.setText(result);
         } catch (ParseException ex) {
             fecha.setText(date);
-            Logger.getLogger(AlbaranFormController.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Parseo de fecha", "No se ha podido formatear la fecha", ex);
+
+            alert.showAndWait();
         }
 
         email.setText(albaran.getEmail().trim());
@@ -143,8 +136,8 @@ public class AlbaranFormController implements Initializable {
     private void guardar(ActionEvent event) {
 
         if (!lbRef.getText().isEmpty() && !direcDestino.getText().isEmpty()
-                && !postalDestino.getText().isEmpty() && !email.getText().isEmpty() && !tfnoDestino.getText().isEmpty() && 
-                !nomreDestino.getText().isEmpty() && !poblacionDestino.getText().isEmpty()) {
+                && !postalDestino.getText().isEmpty() && !email.getText().isEmpty() && !tfnoDestino.getText().isEmpty()
+                && !nomreDestino.getText().isEmpty() && !poblacionDestino.getText().isEmpty()) {
 
             if (!albaran.getRef().equals(lbRef.getText().trim())) {
                 albaran.setNewRef(lbRef.getText().trim());
@@ -152,8 +145,8 @@ public class AlbaranFormController implements Initializable {
 
             albaran.setCliente(cliente.getText().trim());
 
-            // TODO DATEPICKER
             String newFe = fecha.getText().replace("-", "");
+
             albaran.setFecha(newFe);
 
             albaran.setEmail(email.getText().trim());
@@ -189,7 +182,9 @@ public class AlbaranFormController implements Initializable {
             anchorPane.getScene().getWindow().hide();
 
         } else {
+
             AlertService alert = new AlertService(Alert.AlertType.ERROR, "Error en formulario", "No se han podido guardar los cambios, revise los errores.", "Los campos marcados con (*) son obligatorios");
+
             alert.showAndWait();
         }
     }

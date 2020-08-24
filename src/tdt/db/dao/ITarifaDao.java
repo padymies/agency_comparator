@@ -41,4 +41,6 @@ public interface ITarifaDao {
     public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Tarifa> values);
     
     public boolean borrarTarifasDeAgencia(int idZona, int idAgencia);
+    
+    public boolean borrarTarifa(Tarifa tar);
 }

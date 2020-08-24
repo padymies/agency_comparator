@@ -17,4 +17,8 @@ public interface IAppConfig {
     public boolean actualizarPorcentajeUrgencia(double porcentaje);
     
     public boolean borrarPorcentajeUrgencia();
+    
+    public String getPassAdmin();
+    
+    public boolean actualizarPassAdmin(String pass);
 }

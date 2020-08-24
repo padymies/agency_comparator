@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,9 +28,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -56,6 +59,7 @@ import tdt.model.AgenciaZona;
 import tdt.model.Provincia;
 import tdt.model.Tarifa;
 import tdt.model.Zona;
+import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
 import tdt.ui.tarifas.tabContent.importForm.importForm;
@@ -222,7 +226,7 @@ public class TabContentController implements Initializable {
      * Initializes the controller class.
      */
     public TabContentController(int idZona) {
-
+     
         zonaDao = new ZonaImpl();
 
         tarifaDao = new TarifaImpl();
@@ -257,6 +261,13 @@ public class TabContentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ConfigStage.setIcon(btnAddTarifa, "add.png", 12);
+        ConfigStage.setIcon(btnGuardar, "check.png", 14);
+        ConfigStage.setIcon(btnBorrar, "delete.png", 14);
+        ConfigStage.setIcon(btnImportar, "import.png", 14);
+        ConfigStage.setIcon(btnAgenciaZona, "add.png", 12);
+        ConfigStage.setIcon(btnNewAgencia, "check.png", 12);
+        ConfigStage.setIcon(btnCancelNew, "cancel.png", 12);
 
         listaAgenciaZona.forEach(agenciaZona -> {
             listZonas.setCellFactory(new Callback<ListView<AgenciaZona>, ListCell<AgenciaZona>>() {
@@ -287,7 +298,7 @@ public class TabContentController implements Initializable {
 
                     tarifas = tarifaDao.obtenerTarifasPorZonaAgencia(newValue.getIdZona(), newValue.getIdAgencia());
 
-                    ObservableList<Tarifa> tarifasSinDuplicados = quitarPreciosDuplicados(tarifas);
+//                    ObservableList<Tarifa> tarifasSinDuplicados = quitarPreciosDuplicados(tarifas);
 
                     columnKg.setCellValueFactory(new PropertyValueFactory<Tarifa, Integer>("kg"));
 
@@ -296,7 +307,8 @@ public class TabContentController implements Initializable {
                     btnImportar.setDisable(false);
 
                     // TODO: QUITAR ESTO: era una prueba para no repetir tarifas con mismo precio y distinto kg
-                    tableTarifas.setItems(tarifasSinDuplicados);
+//                    tableTarifas.setItems(tarifasSinDuplicados);
+                    tableTarifas.setItems(tarifas);
 
                 } else {
                     btnImportar.setDisable(true);
@@ -305,6 +317,31 @@ public class TabContentController implements Initializable {
             }
 
         });
+
+        MenuItem borrar = new MenuItem("Borrar fila");
+
+        borrar.setStyle("-fx-pref-width: 100");
+
+        borrar.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+           
+                Tarifa tar = tableTarifas.getSelectionModel().getSelectedItem();
+                tar.setIdZona(zona.getIdZona());
+                boolean result = tarifaDao.borrarTarifa(tar);
+                if(result) {
+                    tableTarifas.getItems().remove(tar);
+                }
+            }
+
+        });
+
+        ContextMenu c = new ContextMenu();
+
+        c.getItems().add(borrar);
+
+        tableTarifas.setContextMenu(c);
 
         btnGuardar.setOnAction(event -> {
             guardarZona(event);
@@ -355,7 +392,7 @@ public class TabContentController implements Initializable {
 
         if (zona != null) {
 
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Zona", "Seguro que quiere eliminar la Zona: " + zona.getNombre() +"?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Zona", "Seguro que quiere eliminar la Zona: " + zona.getNombre() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
@@ -458,7 +495,7 @@ public class TabContentController implements Initializable {
                     "Los kilos deben ser un número entero");
 
             alert.showAndWait();
-        }
+        } 
 
         double precio = -1;
 
@@ -508,9 +545,12 @@ public class TabContentController implements Initializable {
                     tableTarifas.getItems().add(index, newTarifa);
 
                     tableTarifas.refresh();
+                    
+                 
 
                 }
             }
+      
         }
 
     }
@@ -746,6 +786,9 @@ public class TabContentController implements Initializable {
             stageMapFIle.show();
 
         } catch (IOException e) {
+            AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar la ventana provincias", e);
+
+            alert.showAndWait();
         }
     }
 

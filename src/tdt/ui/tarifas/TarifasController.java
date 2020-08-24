@@ -12,11 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Zona;
+import tdt.services.AlertExceptionService;
+import tdt.services.ConfigStage;
 import tdt.ui.tarifas.tabContent.TabContentController;
 
 /**
@@ -45,15 +45,7 @@ public class TarifasController implements Initializable {
 
         listaZonas = zonaDao.obtenerZonasUI();
 
-        Image icon = new Image("file:resources/icon_add.png");
-
-        ImageView imageView = new ImageView(icon);
-
-        imageView.setFitHeight(24);
-
-        imageView.setFitWidth(24);
-
-        btnAddZona.setGraphic(imageView);
+        ConfigStage.setIcon(btnAddZona, "add.png", 16);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 
@@ -83,7 +75,9 @@ public class TarifasController implements Initializable {
                 controllerArrayList.get(i).getTxtDescripcion().setText(listaZonas.get(i).getDescripcion());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar el contenido de la zona " + listaZonas.get(i).getNombre(), e);
+
+                alert.showAndWait();
             }
         }
 
@@ -106,7 +100,9 @@ public class TarifasController implements Initializable {
             tabPane.getSelectionModel().select(tab);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertExceptionService alert = new AlertExceptionService("Nueva zona", "No se ha podido cargar una nueva zona", e);
+
+            alert.showAndWait();
         }
     }
 

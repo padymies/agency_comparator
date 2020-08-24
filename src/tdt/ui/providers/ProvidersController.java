@@ -31,6 +31,7 @@ import tdt.db.dao.IAgenciaDao;
 import tdt.db.daoImpl.AgenciaImpl;
 import tdt.model.Agencia;
 import tdt.services.AlertService;
+import tdt.services.ConfigStage;
 
 public class ProvidersController implements Initializable {
 
@@ -80,6 +81,10 @@ public class ProvidersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ConfigStage.setIcon(addButton, "add.png", 12);
+        ConfigStage.setIcon(deleteButton, "delete.png", 12);
+      
+        
         ObservableList<String> cmbList = FXCollections.observableArrayList();
 
         cmbList.add("Sí");

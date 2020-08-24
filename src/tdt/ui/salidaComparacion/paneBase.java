@@ -16,6 +16,7 @@ public class paneBase extends TitledPane {
 
     public paneBase(String text, ObservableList<Albaran> data) {
 
+        setStyle("-fx-font-size: 14");
         anchorPane = new AnchorPane();
         list = new ListView();
         list.setCellFactory((ListView<Albaran> param) -> new ItemCell());

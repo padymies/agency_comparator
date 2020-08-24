@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.services;
 
 import javafx.scene.control.Label;
@@ -12,19 +8,21 @@ import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Albaran;
 import tdt.model.Zona;
 
-/**
- *
- * @author Usuario
- */
 public class AlbaranService {
 
     private static IZonaDao zonaDao;
 
     public static Zona setAlbaranZona(Albaran albaran, Label lbZona, ListView list) {
 
+        // TODO: Añadir ciudades aquí 
+        // 1- Comprobamos pais
+        // 2- Comprobamos si hay ciudad (xxxx)
+        // 3- Comprobamos el codigo postal (xx)
+        
         String pais = albaran.getPais();
 
         String cp = null;
+        
         if (albaran.getPostalDestino() != null && albaran.getPostalDestino().length() >= 2) {
             cp = albaran.getPostalDestino().substring(0, 2);
 
@@ -38,19 +36,15 @@ public class AlbaranService {
 
             zona = zonaDao.obtenerZonaPorProvincia(cp);
 
-            // System.out.println("Zona por provincia => " + zona);
         } else {
             zona = zonaDao.obtenerZonaPorPais(albaran.getPais());
-            // System.out.println("Zona por Pais => " + zona);
         }
 
         if (zona != null) {
             if (lbZona.getStyleClass().contains("noZona")) {
-                // System.out.println("Tiene zona" + lbZona.getStyleClass());
                 lbZona.getStyleClass().remove("noZona");
             }
         } else {
-            // System.out.println("Tiene zona" + lbZona.getStyleClass());
             marcarSinZona(lbZona, list);
         }
 
@@ -66,7 +60,4 @@ public class AlbaranService {
 
     }
 
-    private boolean isExclusion() {
-        return true;
-    }
 }

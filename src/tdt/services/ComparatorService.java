@@ -51,7 +51,7 @@ public class ComparatorService {
 
                 ObservableList<AgenciaZona> listaAgencias = tarifaDao.obtenerAgenciasPorZona(albaran.getZona().getIdZona());
 
-                exclusionesHandler(albaran, listaAgencias);
+                checkExclusiones(albaran, listaAgencias);
 
                 ArrayList<ComparadorTarifa> resultadoList = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class ComparatorService {
                     ComparadorTarifa result = null;
 
                     // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
-                    if (agenciaZona.getMaxKilos() >= peso) {
+                    if (agenciaZona.getMaxKilos() == 0 || agenciaZona.getMaxKilos() >= peso) {
                         if (maxKilos >= peso) {
 
                             result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
@@ -76,13 +76,10 @@ public class ComparatorService {
 
                                 result.setPrecio(result.getPrecio() + (peso - maxKilos * agenciaZona.getIncremento()));
 
-                            } else { // NO SE AÑADE A LA LISTA DE RESULTADOS PORQUE NO SE PUEDE ENVIAR POR ESA
-                                System.out.println("No tiene incremento");
                             }
                         }
                     }
 
-                    // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
                     if (result != null) {
 
                         resultadoList.add(result);
@@ -90,6 +87,7 @@ public class ComparatorService {
                     }
 
                 }
+                // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
                 if (resultadoList.size() > 0) {
 
@@ -173,7 +171,7 @@ public class ComparatorService {
 
     }
 
-    private void exclusionesHandler(Albaran albaran, ObservableList<AgenciaZona> list) {
+    private void checkExclusiones(Albaran albaran, ObservableList<AgenciaZona> list) {
 
         exclusionesDao = new ExclusionesImpl();
 

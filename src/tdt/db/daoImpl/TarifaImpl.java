@@ -41,7 +41,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO TARIFAS ------------>" + sql);
-
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
@@ -57,7 +56,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando Tarifas");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -106,7 +104,6 @@ public class TarifaImpl implements ITarifaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Insertando Tarifa-----------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 result = true;
@@ -116,7 +113,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error insertando Tarifa");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -155,17 +151,14 @@ public class TarifaImpl implements ITarifaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando Tarifa ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Tarifa actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
             // System.out.println("Error actualizando Tarifa");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -202,17 +195,14 @@ public class TarifaImpl implements ITarifaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Borrando Tarifa ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Tarifa borrada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
             // System.out.println("Error borrando Tarifa");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -258,7 +248,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO TARIFAS ------------>" + sql);
-
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
@@ -276,8 +265,8 @@ public class TarifaImpl implements ITarifaDao {
                     double minimoReembolso = result.getDouble("minimo_reembolso");
 
                     boolean envioGrande = result.getBoolean("envio_grande");
-                    
-                     double comision = result.getDouble("comision");
+
+                    double comision = result.getDouble("comision");
 
                     double incremento = result.getDouble("incremento");
 
@@ -290,7 +279,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando tarifas comparadas");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -333,7 +321,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO AGENCIAS POR ZONA ------------>" + sql);
-
                 while (result.next()) {
 
 //                    int idAgenciaZona = result.getInt("id_agencia_zona");
@@ -342,7 +329,7 @@ public class TarifaImpl implements ITarifaDao {
                     double incremento = result.getDouble("incremento");
 
                     int plazoEntrega = result.getInt("plazo_entrega");
-                    
+
                     int maxKilos = result.getInt("max_kilos");
 
                     String nombre = result.getString("nombre");
@@ -350,8 +337,8 @@ public class TarifaImpl implements ITarifaDao {
                     int bultos = result.getInt("bultos");
 
                     boolean envioGrande = result.getBoolean("envio_grande");
-                    
-                     double comision = result.getDouble("comision");
+
+                    double comision = result.getDouble("comision");
 
                     list.add(new AgenciaZona(idAgencia, idZona, incremento, plazoEntrega, maxKilos, nombre, bultos, envioGrande, comision));
                 }
@@ -360,7 +347,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando Agencias por Zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -401,7 +387,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO TARIFA POR ZONA Y AGENCIA ------------>" + sql);
-
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
@@ -415,7 +400,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando  TARIFA POR ZONA Y AGENCIA ");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -454,7 +438,6 @@ public class TarifaImpl implements ITarifaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Insertando Agencia-Zona -----------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 result = true;
@@ -464,7 +447,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error insertando Agencia-Zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -491,7 +473,7 @@ public class TarifaImpl implements ITarifaDao {
 
         boolean result = false;
 
-        String sql = "UPDATE agencias_zonas SET incremento = " + incremento + ", plazo_entrega=" + plazoEntrega +  ", max_kilos= " + maxKilos
+        String sql = "UPDATE agencias_zonas SET incremento = " + incremento + ", plazo_entrega=" + plazoEntrega + ", max_kilos= " + maxKilos
                 + " WHERE  id_agencia = " + idAgencia + " and id_zona = " + idZona;
 
         try {
@@ -503,7 +485,6 @@ public class TarifaImpl implements ITarifaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando Agencia-Zona -----------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 result = true;
@@ -513,7 +494,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error actualizando Agencia-Zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -554,7 +534,6 @@ public class TarifaImpl implements ITarifaDao {
                 stat.execute(sql);
 
                 // System.out.println("Eliminando agencia de zona-----------------> " + sql);
-
                 result = true;
 
                 // System.out.println("Agencia eliminada de la zona !!");
@@ -562,7 +541,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error borrando agencia de la zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -604,7 +582,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Maximo kilo ------------>" + sql);
-
                 while (result.next()) {
 
                     kg = result.getInt("max");
@@ -615,7 +592,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando maxKilo");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -658,7 +634,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO NOMBRE AGENCIAS POR ZONA ------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -670,7 +645,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando NOMBRE Agencias por Zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -714,7 +688,6 @@ public class TarifaImpl implements ITarifaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO  tarifas para Importar ------------>" + sql);
-
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
@@ -727,7 +700,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando tarifas para Importar");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -766,7 +738,6 @@ public class TarifaImpl implements ITarifaDao {
                 ps = conn.prepareStatement(sql);
 
                 // System.out.println("Insertando Agencia-Zona -----------> " + sql);
-
                 for (Tarifa tar : values) {
 
                     ps.setInt(1, tar.getKg());
@@ -785,7 +756,6 @@ public class TarifaImpl implements ITarifaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error insertando Agencia-Zona");
-
             Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -799,6 +769,53 @@ public class TarifaImpl implements ITarifaDao {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean borrarTarifa(Tarifa tar) {
+        Connection conn = null;
+
+        Statement stat = null;
+
+        boolean result = false;
+
+        String sql = "DELETE FROM tarifas WHERE kg="+ tar.getKg() + " AND id_agencia=" + tar.getIdAgencia() + " AND id_zona=" + tar.getIdZona();
+        System.out.println(sql);
+        try {
+
+            conn = DBConnection.getConnection();
+
+            if (conn != null) {
+
+                stat = conn.createStatement();
+
+                stat.execute(sql);
+
+                // System.out.println("Eliminando agencia de zona-----------------> " + sql);
+                result = true;
+
+                // System.out.println("Agencia eliminada de la zona !!");
+            }
+        } catch (SQLException ex) {
+
+            // System.out.println("Error borrando agencia de la zona");
+            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TarifaImpl.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;

@@ -28,6 +28,7 @@ import tdt.db.daoImpl.AgenciaImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
 import tdt.model.Exclusion;
 import tdt.services.AlertService;
+import tdt.services.ConfigStage;
 
 public class ExclusionesController implements Initializable {
 
@@ -63,6 +64,10 @@ public class ExclusionesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        ConfigStage.setIcon(btnAdd, "add.png", 12);
+        
+        ConfigStage.setIcon(btnDelete, "delete.png", 12);
+
         agenciaDao = new AgenciaImpl();
 
         exclusionesDao = new ExclusionesImpl();
@@ -78,23 +83,21 @@ public class ExclusionesController implements Initializable {
         accion.setCellValueFactory(new PropertyValueFactory("inclusion_exclusion"));
 
         ObservableList<Integer> options = FXCollections.observableArrayList();
+
         options.add(1);
+
         options.add(-1);
+
         options.add(0);
 
         agencia.setCellFactory(ComboBoxTableCell.forTableColumn(agenciaConverter(), nombreAgencias));
 
         accion.setCellFactory(ComboBoxTableCell.forTableColumn(accionConverter(), options));
 
-        agencia.setOnEditCommit((value) -> {
-
-        });
-        accion.setOnEditCommit((value) -> {
-
-        });
-
         MenuItem borrar = new MenuItem("Borrar fila");
+
         borrar.setStyle("-fx-pref-width: 100");
+
         borrar.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -105,14 +108,14 @@ public class ExclusionesController implements Initializable {
         });
 
         ContextMenu c = new ContextMenu();
+
         c.getItems().add(borrar);
 
         tableEx.setContextMenu(c);
 
         tableEx.setItems(listaExclusiones);
 
-        tableEx.setEditable(
-                true);
+        tableEx.setEditable(true);
 
         exclusionesDao = new ExclusionesImpl();
 

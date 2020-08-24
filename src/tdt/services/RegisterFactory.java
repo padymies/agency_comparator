@@ -1,7 +1,6 @@
 package tdt.services;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
@@ -74,7 +73,9 @@ public class RegisterFactory {
 
         } catch (Exception e) {
 
-            System.out.println("ERROR AL GENERAR ALBARÁN: " + Arrays.toString(e.getStackTrace()));
+            AlertExceptionService alert = new AlertExceptionService("Generar Albarán", "No se ha podido generar el albarán", e);
+
+            alert.showAndWait();
         }
         return albaran;
     }
@@ -83,7 +84,7 @@ public class RegisterFactory {
 
         String cliente = al.getCliente();
         String departamento = al.getDepartamento();
-        if( al.getNewRef() != null ) {
+        if (al.getNewRef() != null) {
             al.setRef(al.getNewRef());
             al.setNewRef(null);
         }

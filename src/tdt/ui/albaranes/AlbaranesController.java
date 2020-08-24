@@ -29,6 +29,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -42,6 +44,7 @@ import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Albaran;
 import tdt.model.Zona;
 import tdt.services.AlbaranService;
+import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ComparatorService;
 import tdt.services.ConfigStage;
@@ -70,9 +73,25 @@ public class AlbaranesController implements Initializable {
     private ObservableList<String> nombreZonas;
 
     private FilteredList<Albaran> filteredList;
+    @FXML
+    private Label lbFiltro;
+    @FXML
+    private CheckBox chkSelectAll;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        Image icon = new Image("file:resources/img/" + "filter.png");
+
+        ImageView imgV = new ImageView(icon);
+
+        imgV.setFitHeight(16);
+
+        imgV.setFitWidth(16);
+
+        lbFiltro.setGraphic(imgV);
+
+        ConfigStage.setIcon(btnComparar, "analisis.png", 26);
 
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -89,6 +108,17 @@ public class AlbaranesController implements Initializable {
             if (event.getCode() == KeyCode.ENTER) {
 
                 buscarAlbaran();
+            }
+        });
+
+        chkSelectAll.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    listView.getSelectionModel().selectAll();
+                } else {
+                    listView.getSelectionModel().clearSelection();
+                }
             }
         });
 
@@ -111,6 +141,7 @@ public class AlbaranesController implements Initializable {
             String poblacion = data.getPoblaDestino().toLowerCase();
 
             String zona = "";
+
             if (data.getZona() != null) {
                 zona = data.getZona().getNombre().toLowerCase();
             } else {
@@ -140,7 +171,7 @@ public class AlbaranesController implements Initializable {
     }
 
     @FXML
-    private void iniciarComparacion(ActionEvent event) {
+    private void iniciarComparacion(ActionEvent event) throws Exception {
 
         ObservableList<Albaran> filas = listView.getItems();
 
@@ -165,57 +196,55 @@ public class AlbaranesController implements Initializable {
                     albaranes.add(action);
 
                 }
-
-                //TODO: BORRAR ALBARANES QUE SE COMPARAN DEL LISTVIEW PARA DEJAR SOLO LOS QUE NO SE HAN
-                //      COMPARADO POR TENER ERRORES?????
             });
 
             ComparatorService service = new ComparatorService();
 
             service.compararAlbaranes(albaranes);
-            
+
             int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null).count();
             int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() == null).count();
-            
-            Map<String, List<Albaran>> result  = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
+
+            Map<String, List<Albaran>> result = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
                     .collect(Collectors.groupingBy(Albaran::getMEJOR_AGENCIA));
-            
+
             boolean resultado = FileService.writeOutFiles(result);
-            
-            if(resultado) {
-                    //TODO: VENTANA DE SALIDA AGRUPADAS POR AGENCIA
-                    
-        try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/salidaComparacion/salida.fxml"));
+            if (resultado) {
 
-            Parent root1 = (Parent) fxmlLoader.load();
+                try {
 
-            SalidaController salidaController = fxmlLoader.getController();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/salidaComparacion/salida.fxml"));
 
-            salidaController.loadData(result);
+                    Parent root1 = (Parent) fxmlLoader.load();
 
-            Stage stageAlbaranes = new Stage();
+                    SalidaController salidaController = fxmlLoader.getController();
 
-            ConfigStage.configStage(stageAlbaranes, "Albaranes comparados", Modality.APPLICATION_MODAL);
+                    salidaController.loadData(result);
 
-            stageAlbaranes.setScene(new Scene(root1));
+                    Stage stageAlbaranes = new Stage();
 
-            stageAlbaranes.show();
-            
-             ((Node) event.getSource()).getScene().getWindow().hide();
+                    ConfigStage.configStage(stageAlbaranes, "Albaranes comparados", Modality.APPLICATION_MODAL);
 
-        } catch (IOException e) {
-        }
-                    
+                    stageAlbaranes.setScene(new Scene(root1));
+
+                    stageAlbaranes.show();
+
+                    ((Node) event.getSource()).getScene().getWindow().hide();
+
+                } catch (IOException e) {
+                    AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
+
+                    alert.showAndWait();
+                }
+
             }
-            
+
         }
     }
 
     public class AlbaranCell extends ListCell<Albaran> {
 
-        
         @Override
         public void updateItem(Albaran albaran, boolean empty) {
 
@@ -276,7 +305,7 @@ public class AlbaranesController implements Initializable {
 
                 });
 
-                cell.btnVer.setOnAction((ActionEvent event) -> {
+                cell.btnEditar.setOnAction((ActionEvent event) -> {
 
                     showAlbaranForm(albaran);
                 });
@@ -332,13 +361,19 @@ public class AlbaranesController implements Initializable {
                 });
                 setGraphic(cell);
 
-                if (!cell.isValidCP() || !cell.isValidPais() || !cell.isValidPoblacion() || !cell.isValidRef()) {
+                if (!ValidatorService.albaranValidator(albaran)) {
                     cell.getStyleClass().add("invalidRow");
                 } else {
                     cell.getStyleClass().clear();
 
                 }
+            /*    if (!cell.isValidCP() || !cell.isValidPais() || !cell.isValidPoblacion() || !cell.isValidRef()) {
+                    cell.getStyleClass().add("invalidRow");
+                } else {
+                    cell.getStyleClass().clear();
 
+                }
+*/
             } else {
                 setGraphic(null); // ESTO ES IMPORTANTE PARA ACTUALIZAR LA LISTA. SINO, NUNCA SE ELIMINAN LAS FILAS QUE TENGAN QUE BORRARSE
             }
@@ -374,7 +409,9 @@ public class AlbaranesController implements Initializable {
             });
 
         } catch (IOException e) {
+            AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Formulario de albaran", e);
 
+            alert.showAndWait();
         }
     }
 
@@ -389,14 +426,14 @@ public class AlbaranesController implements Initializable {
         protected final CheckBox chkAgencia;
         protected final ComboBox comboAgencia;
         protected final TextField txtBultos;
-        protected final Button btnVer;
+        protected final Button btnEditar;
 
         private boolean validRef;
         private boolean validCP;
         private boolean validPais;
         private boolean validPoblacion;
         private boolean validNombre;
-        
+
         public boolean isValidRef() {
             return validRef;
         }
@@ -426,7 +463,7 @@ public class AlbaranesController implements Initializable {
             chkAgencia = new CheckBox();
             comboAgencia = new ComboBox();
             txtBultos = new TextField();
-            btnVer = new Button();
+            btnEditar = new Button();
 
             validRef = true;
             validCP = true;
@@ -449,9 +486,9 @@ public class AlbaranesController implements Initializable {
 
             });
             txtPais.textProperty().addListener(listener -> {
-                
+
                 validPais = !txtPais.getText().isEmpty();
-                
+
                 if (!validPais || !validPoblacion || !validCP || !validRef || !validNombre) {
                     this.getStyleClass().add("invalidRow");
                 } else {
@@ -519,21 +556,23 @@ public class AlbaranesController implements Initializable {
             HBox.setMargin(comboAgencia, new Insets(0.0, 0.0, 0.0, 2.0));
 
             txtBultos.setPrefHeight(25.0);
-            txtBultos.setPrefWidth(59.0);
+            txtBultos.setPrefWidth(39.0);
             txtBultos.setText("Bultos");
             HBox.setMargin(txtBultos, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            btnVer.setAlignment(javafx.geometry.Pos.CENTER);
-            btnVer.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
-            btnVer.setMnemonicParsing(false);
-            btnVer.setPrefHeight(26.0);
-            btnVer.setPrefWidth(63.0);
-            btnVer.setText("Editar");
-            btnVer.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-            btnVer.setFont(new Font(13.0));
-            HBox.setMargin(btnVer, new Insets(0.0, 0.0, 0.0, 10.0));
+//            btnEditar.setAlignment(javafx.geometry.Pos.CENTER);
+//            btnEditar.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+            btnEditar.setMnemonicParsing(false);
+            btnEditar.setPrefHeight(26.0);
+            btnEditar.setPrefWidth(83.0);
+            btnEditar.setText("Editar");
+//            btnEditar.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+            btnEditar.setFont(new Font(13.0));
+            HBox.setMargin(btnEditar, new Insets(0.0, 0.0, 0.0, 10.0));
             setOpaqueInsets(new Insets(0.0));
             setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
+
+            ConfigStage.setIcon(btnEditar, "edit.png", 14);
 
             getChildren().add(ref);
             getChildren().add(txtNombreDestino);
@@ -544,7 +583,7 @@ public class AlbaranesController implements Initializable {
             getChildren().add(chkAgencia);
             getChildren().add(comboAgencia);
             getChildren().add(txtBultos);
-            getChildren().add(btnVer);
+            getChildren().add(btnEditar);
 
         }
     }

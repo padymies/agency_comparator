@@ -66,8 +66,14 @@ public class ValidatorService {
     
     
     public static boolean albaranValidator( Albaran al) {
-        return al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
+      boolean result = al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
                 && !al.getRef().isEmpty() && !al.getDirecDestino().isEmpty() && !al.getEmail().isEmpty() && !al.getPostalDestino().isEmpty()
                 && !al.getTfnoDestino().isEmpty() && !al.getPeso().isEmpty();
+      
+      if(!result) {
+          
+          System.out.println(al.toString());
+      }
+      return result;
     }
 }

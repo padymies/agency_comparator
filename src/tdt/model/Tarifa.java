@@ -76,4 +76,9 @@ public class Tarifa {
         this.precio = precio;
     }
 
+    @Override
+    public String toString() {
+        return "Tarifa{" + "kg=" + kg + ", idAgencia=" + idAgencia + ", idZona=" + idZona + ", idAgenciaZona=" + idAgenciaZona + ", precio=" + precio + '}';
+    }
+
 }

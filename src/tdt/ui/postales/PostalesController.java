@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.ui.postales;
 
 import java.net.URL;
@@ -17,11 +13,7 @@ import tdt.db.dao.IProvinciaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.model.Provincia;
 
-/**
- * FXML Controller class
- *
- * @author Usuario
- */
+
 public class PostalesController implements Initializable {
 
     @FXML

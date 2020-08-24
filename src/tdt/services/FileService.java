@@ -55,9 +55,9 @@ public class FileService {
 
             }
         } catch (IOException e) {
+            AlertExceptionService alert = new AlertExceptionService("Lectura de archivo", "No se ha podido leer el archivo " + file.getName(), e);
 
-            System.out.println("ERROR LEYENDO ARCHIVO: " + e.getMessage());
-
+            alert.showAndWait();
             e.printStackTrace();
 
         } finally {
@@ -71,7 +71,9 @@ public class FileService {
                 }
             } catch (IOException ex) {
 
-                System.out.println("ERROR CERRANDO ARCHIVO: " + ex.getMessage());
+                AlertExceptionService alert = new AlertExceptionService("Lectura de archivo", "No se ha podido cerrar el archivo " + file.getName(), ex);
+
+                alert.showAndWait();
 
                 ex.printStackTrace();
             }
@@ -125,7 +127,9 @@ public class FileService {
             }
         } catch (IOException e) {
 
-            System.out.println("ERROR SOBREESCRIBIENDO ARCHIVO: " + e.getMessage());
+            AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido sobreescribir el archivo " + file.getName(), e);
+
+            alert.showAndWait();
 
             e.printStackTrace();
 
@@ -152,7 +156,9 @@ public class FileService {
 
             } catch (IOException ex) {
 
-                System.out.println("ERROR SOBREESCRIBIENDO ARCHIVO: " + ex.getMessage());
+                AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido cerrar el archivo " + file.getName(), ex);
+
+                alert.showAndWait();
 
                 ex.printStackTrace();
             }
@@ -172,12 +178,11 @@ public class FileService {
             FileReader fr = null;
 
             String desktopPath = System.getProperty("user.home") + "\\Desktop";
-            
-            new File(desktopPath, key.toUpperCase()).mkdir();
-            
-            File newFile = new File(desktopPath + "\\" + key.toUpperCase(),  "Listado de facturas.txt");
 
-           
+            new File(desktopPath, key.toUpperCase()).mkdir();
+
+            File newFile = new File(desktopPath + "\\" + key.toUpperCase(), "Listado de facturas.txt");
+
             BufferedWriter out = null;
 
             try {
@@ -199,7 +204,9 @@ public class FileService {
 
             } catch (IOException e) {
 
-                System.out.println("ERROR ESCRIBIENDO ARCHIVO DE SALIDA: " + e.getMessage());
+                AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + newFile.getName(), e);
+
+                alert.showAndWait();
 
                 resultado = false;
 
@@ -219,7 +226,9 @@ public class FileService {
 
                 } catch (IOException ex) {
 
-                    System.out.println("ERROR ESCRIBIENDO ARCHIVO DE SALIDA: " + ex.getMessage());
+                    AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + newFile.getName(), ex);
+
+                    alert.showAndWait();
 
                     ex.printStackTrace();
                 }

@@ -24,7 +24,8 @@ public class AppConfigImpl implements IAppConfig {
     
     @Override
     public double getPorcentajeUrgencia() {
-           Connection conn = null;
+        
+        Connection conn = null;
 
         Statement stat = null;
 
@@ -125,6 +126,98 @@ public class AppConfigImpl implements IAppConfig {
     @Override
     public boolean borrarPorcentajeUrgencia() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getPassAdmin() {
+         Connection conn = null;
+
+        Statement stat = null;
+
+        String sql = " SELECT pass_admin FROM " + TABLE_NAME;
+
+        String pass = null;
+        
+        try {
+
+            conn = DBConnection.getConnection();
+            
+            if (conn != null) {
+
+                stat = conn.createStatement();
+
+                ResultSet result = stat.executeQuery(sql);
+
+                while (result.next()) {
+
+                   pass = result.getString("pass_admin");
+
+                }
+            }
+
+        } catch (SQLException ex) {
+
+
+            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pass;
+    }
+
+    @Override
+    public boolean actualizarPassAdmin(String pass) {
+        Connection conn = null;
+
+        Statement stat = null;
+
+        boolean result = false;
+
+        String sql = "UPDATE " + TABLE_NAME + "  SET "
+                + "pass_admin=" + pass;
+        try {
+
+            conn = DBConnection.getConnection();
+
+            if (conn != null) {
+
+                stat = conn.createStatement();
+
+                stat.executeUpdate(sql);
+
+                result = true;
+            }
+        } catch (SQLException ex) {
+
+            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AppConfigImpl.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
     }
     
 }

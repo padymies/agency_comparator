@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import tdt.services.ConfigStage;
 
 public class CellListViewBase extends HBox {
 
@@ -20,7 +21,7 @@ public class CellListViewBase extends HBox {
     protected final CheckBox chkAgencia;
     protected final ComboBox comboAgencia;
     protected final TextField txtBultos;
-    protected final Button btnVer;
+    protected final Button btnEditar;
 
     public CellListViewBase() {
 
@@ -33,8 +34,7 @@ public class CellListViewBase extends HBox {
         chkAgencia = new CheckBox();
         comboAgencia = new ComboBox();
         txtBultos = new TextField();
-        btnVer = new Button();
-
+        btnEditar = new Button();
         setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         setPrefHeight(35.0);
         setPrefWidth(1000.0);
@@ -93,15 +93,18 @@ public class CellListViewBase extends HBox {
         txtBultos.setText("Bultos");
         HBox.setMargin(txtBultos, new Insets(0.0, 0.0, 0.0, 10.0));
 
-        btnVer.setAlignment(javafx.geometry.Pos.CENTER);
-        btnVer.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
-        btnVer.setMnemonicParsing(false);
-        btnVer.setPrefHeight(26.0);
-        btnVer.setPrefWidth(63.0);
-        btnVer.setText("Editar");
-        btnVer.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        btnVer.setFont(new Font(13.0));
-        HBox.setMargin(btnVer, new Insets(0.0, 0.0, 0.0, 10.0));
+        btnEditar.setAlignment(javafx.geometry.Pos.CENTER);
+        btnEditar.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+        btnEditar.setMnemonicParsing(false);
+        btnEditar.setPrefHeight(26.0);
+        btnEditar.setPrefWidth(63.0);
+        btnEditar.setText("Editar");
+        btnEditar.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        btnEditar.setFont(new Font(13.0));
+
+        ConfigStage.setIcon(btnEditar, "edit.png", 14);
+
+        HBox.setMargin(btnEditar, new Insets(0.0, 0.0, 0.0, 10.0));
         setOpaqueInsets(new Insets(0.0));
         setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
 
@@ -114,7 +117,7 @@ public class CellListViewBase extends HBox {
         getChildren().add(chkAgencia);
         getChildren().add(comboAgencia);
         getChildren().add(txtBultos);
-        getChildren().add(btnVer);
+        getChildren().add(btnEditar);
 
     }
 }

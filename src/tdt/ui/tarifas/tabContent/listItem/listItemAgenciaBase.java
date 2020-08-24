@@ -103,14 +103,12 @@ public abstract class listItemAgenciaBase extends AnchorPane {
         textAgencia.setText("Agencia");
         HBox.setMargin(textAgencia, new Insets(0.0, 0.0, 0.0, 25.0));
 
-        txtIncremento.setEditable(false);
         txtIncremento.setId("txtIncremento");
         txtIncremento.setPrefHeight(25.0);
         txtIncremento.setPrefWidth(78.0);
         txtIncremento.setPromptText("Incremento");
         HBox.setMargin(txtIncremento, new Insets(0.0, 0.0, 0.0, 5.0));
 
-        txtPlazoEntrega.setEditable(false);
         txtPlazoEntrega.setId("txtIncremento");
         txtPlazoEntrega.setLayoutX(186.0);
         txtPlazoEntrega.setLayoutY(22.0);
@@ -119,7 +117,6 @@ public abstract class listItemAgenciaBase extends AnchorPane {
         txtPlazoEntrega.setPromptText("Plazo entrega");
         HBox.setMargin(txtPlazoEntrega, new Insets(0.0, 0.0, 0.0, 5.0));
 
-        txtMaxKilos.setEditable(false);
         txtMaxKilos.setId("txtMaxKilos");
         txtMaxKilos.setLayoutX(245.0);
         txtMaxKilos.setLayoutY(22.0);
