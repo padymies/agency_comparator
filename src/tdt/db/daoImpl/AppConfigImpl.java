@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import tdt.db.DBConnection;
 import tdt.db.dao.IAppConfig;
+import tdt.services.AlertExceptionService;
 
 /**
  *
@@ -21,10 +22,10 @@ import tdt.db.dao.IAppConfig;
 public class AppConfigImpl implements IAppConfig {
 
     private String TABLE_NAME = "configuracion_app";
-    
+
     @Override
     public double getPorcentajeUrgencia() {
-        
+
         Connection conn = null;
 
         Statement stat = null;
@@ -43,19 +44,18 @@ public class AppConfigImpl implements IAppConfig {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
-
                 while (result.next()) {
 
-                   porcentaje = result.getDouble("porcentaje_urgencia");
+                    porcentaje = result.getDouble("porcentaje_urgencia");
 
                 }
             }
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Agencias");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener el % de urgencia", ex);
 
-            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -93,18 +93,16 @@ public class AppConfigImpl implements IAppConfig {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando agencia ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Agencia actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando agencia");
+             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar el % de urgencia", ex);
 
-            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -130,18 +128,18 @@ public class AppConfigImpl implements IAppConfig {
 
     @Override
     public String getPassAdmin() {
-         Connection conn = null;
+        Connection conn = null;
 
         Statement stat = null;
 
         String sql = " SELECT pass_admin FROM " + TABLE_NAME;
 
         String pass = null;
-        
+
         try {
 
             conn = DBConnection.getConnection();
-            
+
             if (conn != null) {
 
                 stat = conn.createStatement();
@@ -150,15 +148,16 @@ public class AppConfigImpl implements IAppConfig {
 
                 while (result.next()) {
 
-                   pass = result.getString("pass_admin");
+                    pass = result.getString("pass_admin");
 
                 }
             }
 
         } catch (SQLException ex) {
 
+             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener el password", ex);
 
-            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -201,7 +200,9 @@ public class AppConfigImpl implements IAppConfig {
             }
         } catch (SQLException ex) {
 
-            Logger.getLogger(AppConfigImpl.class.getName()).log(Level.SEVERE, null, ex);
+             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar el password", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -219,5 +220,5 @@ public class AppConfigImpl implements IAppConfig {
         }
         return result;
     }
-    
+
 }

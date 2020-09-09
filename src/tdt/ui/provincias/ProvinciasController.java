@@ -1,4 +1,3 @@
-
 package tdt.ui.provincias;
 
 import java.net.URL;
@@ -10,12 +9,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
 import tdt.db.dao.IProvinciaDao;
 import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Provincia;
-
 
 public class ProvinciasController implements Initializable {
 
@@ -36,7 +35,6 @@ public class ProvinciasController implements Initializable {
 
     private ObservableList<String> nombresZonas;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -45,6 +43,8 @@ public class ProvinciasController implements Initializable {
         provinciaDao = new ProvinciaImpl();
 
         nombresZonas = zonaDao.obtenerNombresZonas();
+        
+        nombresZonas.add(0, "Sin zona");
 
         listaProvincias = provinciaDao.obtenerProvinciasZona();
 
@@ -53,15 +53,29 @@ public class ProvinciasController implements Initializable {
         codigo.setCellValueFactory(new PropertyValueFactory("codigo"));
 
         zona.setCellValueFactory(new PropertyValueFactory("nombreZona"));
+        
+        StringConverter<String> converter = new StringConverter<String>() {
+            @Override
+            public String toString(String object) {
+               
+               return object == null ? "Sin zona" : object;
+            }
 
-        zona.setCellFactory(ComboBoxTableCell.forTableColumn(nombresZonas));
+            @Override
+            public String fromString(String string) {
+                return string;
+            }
+        };
 
+        zona.setCellFactory(ComboBoxTableCell.forTableColumn(converter, nombresZonas));
+        
+        
         zona.setOnEditCommit((value) -> {
 
             Provincia prov = (Provincia) value.getRowValue();
-            
+
             provinciaDao.actualizarProvinciaZona(prov.getId(), value.getNewValue());
-            
+
         });
 
         table.setItems(listaProvincias);

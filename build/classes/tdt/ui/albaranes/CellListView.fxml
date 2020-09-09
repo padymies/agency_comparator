@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.albaranes.CellListViewController">
+<HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="1070.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.albaranes.CellListViewController">
    <children>
       <Label fx:id="ref" prefHeight="25.0" prefWidth="91.0" text="numero ref" textAlignment="CENTER" textOverrun="CLIP">
          <HBox.margin>
@@ -51,7 +51,8 @@
             <Insets left="2.0" />
          </HBox.margin>
       </ComboBox>
-      <TextField fx:id="txtBultos" prefHeight="25.0" prefWidth="59.0" text="Bultos">
+      <TextField fx:id="txtPeso" layoutX="885.0" layoutY="15.0" prefHeight="25.0" prefWidth="59.0" text="Peso" />
+      <TextField fx:id="txtBultos" prefHeight="25.0" prefWidth="51.0" text="Bultos">
          <HBox.margin>
             <Insets left="10.0" />
          </HBox.margin>

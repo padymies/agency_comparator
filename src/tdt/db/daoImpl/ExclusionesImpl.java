@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IExclusionesDao;
 import tdt.model.Exclusion;
+import tdt.services.AlertExceptionService;
 
 /**
  *
@@ -46,7 +47,6 @@ public class ExclusionesImpl implements IExclusionesDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO EXCLUSIONES ------------>" + sql);
-
                 while (result.next()) {
 
                     int id = result.getInt("id_exclusion");
@@ -63,9 +63,9 @@ public class ExclusionesImpl implements IExclusionesDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Exclusiones");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las exclusiones", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -105,7 +105,6 @@ public class ExclusionesImpl implements IExclusionesDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("Recuperando exclusion----------> " + sql);
-
                 if (result.next()) {
 
                     String cp = result.getString("cp");
@@ -120,12 +119,11 @@ public class ExclusionesImpl implements IExclusionesDao {
             }
 
             // System.out.println("Exclusion recuperada !!");
-
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando exclusion");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la exclusion", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -152,9 +150,9 @@ public class ExclusionesImpl implements IExclusionesDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (cp, id_agencia, inclusion_exclusion) "
-                + "VALUES('" + exclusion.getCp() + "', (SELECT id_agencia FROM agencias a WHERE a.nombre='" +
-                exclusion.getNombreAgencia() + "'), " + exclusion.getInclusion_exclusion() + ")";
-                
+                + "VALUES('" + exclusion.getCp() + "', (SELECT id_agencia FROM agencias a WHERE a.nombre='"
+                + exclusion.getNombreAgencia() + "'), " + exclusion.getInclusion_exclusion() + ")";
+
         try {
 
             conn = DBConnection.getConnection();
@@ -164,7 +162,6 @@ public class ExclusionesImpl implements IExclusionesDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Insertando exclusion -----------> " + sql);
-
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -181,9 +178,9 @@ public class ExclusionesImpl implements IExclusionesDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando exclusion");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido añadir la exclusion", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -222,18 +219,16 @@ public class ExclusionesImpl implements IExclusionesDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando exclusion---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Exclusion actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando exclusion");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la exclusion", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -273,16 +268,15 @@ public class ExclusionesImpl implements IExclusionesDao {
                 stat.execute(sql);
 
                 // System.out.println("Eliminando exclusion-----------------> " + sql);
-
                 result = true;
 
                 // System.out.println("Exclusion eliminada !!");
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando exclusion");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido borrar la exclusion", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -323,11 +317,10 @@ public class ExclusionesImpl implements IExclusionesDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("Recuperando exclusion----------> " + sql);
-
                 if (result.next()) {
 
-                    int id= result.getInt("id_exclusion");
-                    
+                    int id = result.getInt("id_exclusion");
+
                     int idAgencia = result.getInt("id_agencia");
 
                     int inclusion_exclusion = result.getInt("inclusion_exclusion");
@@ -338,12 +331,11 @@ public class ExclusionesImpl implements IExclusionesDao {
             }
 
             // System.out.println("Exclusion recuperada !!");
-
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando exclusion");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la exclusion", ex);
 
-            Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {

@@ -45,6 +45,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import tdt.db.dao.IAgenciaDao;
 import tdt.db.dao.IProvinciaDao;
@@ -143,6 +144,8 @@ public class TabContentController implements Initializable {
 
     private ObservableList<Provincia> provinciasSinZona;
 
+    private int idZona;
+
     @FXML
     private TextArea txtProvincias;
     @FXML
@@ -226,7 +229,7 @@ public class TabContentController implements Initializable {
      * Initializes the controller class.
      */
     public TabContentController(int idZona) {
-     
+
         zonaDao = new ZonaImpl();
 
         tarifaDao = new TarifaImpl();
@@ -237,20 +240,13 @@ public class TabContentController implements Initializable {
 
         if (idZona != -1) { // ES EDICION deZONA
 
+            this.idZona = idZona;
+
             zona = zonaDao.obtenerZona(idZona);
 
             listaAgenciaZona = tarifaDao.obtenerAgenciasPorZona(idZona);
 
-            provinciasDeZona = provinciaDao.obtenerProvinciasDeZona(idZona);
-
-            provinciasSinZona = provinciaDao.obtenerProvinciasSinZonaAsociada();
-
-            provinciasDeZona.forEach(provincia -> {
-                Platform.runLater(() -> {
-                    txtProvincias.appendText(" " + provincia.getNombre() + ";  ");
-                });
-
-            });
+            updateTxAreaProvincias();
         } else { // ES ZONA NUEVA
 
             listaAgenciaZona = FXCollections.observableArrayList();
@@ -259,8 +255,22 @@ public class TabContentController implements Initializable {
 
     }
 
+    private void updateTxAreaProvincias() {
+        provinciasDeZona = provinciaDao.obtenerProvinciasDeZona(this.idZona);
+        provinciasSinZona = provinciaDao.obtenerProvinciasSinZonaAsociada();
+        Platform.runLater(() -> {
+            txtProvincias.clear();
+
+            provinciasDeZona.forEach(provincia -> {
+                txtProvincias.appendText(" " + provincia.getNombre() + ";  ");
+            });
+
+        });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         ConfigStage.setIcon(btnAddTarifa, "add.png", 12);
         ConfigStage.setIcon(btnGuardar, "check.png", 14);
         ConfigStage.setIcon(btnBorrar, "delete.png", 14);
@@ -299,7 +309,6 @@ public class TabContentController implements Initializable {
                     tarifas = tarifaDao.obtenerTarifasPorZonaAgencia(newValue.getIdZona(), newValue.getIdAgencia());
 
 //                    ObservableList<Tarifa> tarifasSinDuplicados = quitarPreciosDuplicados(tarifas);
-
                     columnKg.setCellValueFactory(new PropertyValueFactory<Tarifa, Integer>("kg"));
 
                     columnPrecio.setCellValueFactory(new PropertyValueFactory<Tarifa, Double>("precio"));
@@ -326,11 +335,11 @@ public class TabContentController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-           
+
                 Tarifa tar = tableTarifas.getSelectionModel().getSelectedItem();
                 tar.setIdZona(zona.getIdZona());
                 boolean result = tarifaDao.borrarTarifa(tar);
-                if(result) {
+                if (result) {
                     tableTarifas.getItems().remove(tar);
                 }
             }
@@ -450,7 +459,10 @@ public class TabContentController implements Initializable {
 
                     zona.setIdZona(id);
 
+                    this.idZona = id;
+
                     alert.showAndWait();
+
                 }
 
             } else { // ACTUALIZAMOS LA ZONA
@@ -495,7 +507,7 @@ public class TabContentController implements Initializable {
                     "Los kilos deben ser un número entero");
 
             alert.showAndWait();
-        } 
+        }
 
         double precio = -1;
 
@@ -545,12 +557,10 @@ public class TabContentController implements Initializable {
                     tableTarifas.getItems().add(index, newTarifa);
 
                     tableTarifas.refresh();
-                    
-                 
 
                 }
             }
-      
+
         }
 
     }
@@ -781,9 +791,19 @@ public class TabContentController implements Initializable {
 
             ConfigStage.configStage(stageMapFIle, "Provincias", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            Scene escena = new Scene(root);
+
+            stageMapFIle.setScene(escena);
 
             stageMapFIle.show();
+
+            stageMapFIle.setOnHiding(new EventHandler<WindowEvent>() { // Actualiza las provincias de las zonas en el textArea
+
+                @Override
+                public void handle(WindowEvent event) {
+                    updateTxAreaProvincias();
+                }
+            });
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar la ventana provincias", e);

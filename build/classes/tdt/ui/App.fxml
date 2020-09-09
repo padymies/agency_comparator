@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="pane" fx:id="pane" focusTraversable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="306.0" prefWidth="468.0" style="-fx-font-size: 14;" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.AppController">
+<AnchorPane id="pane" fx:id="pane" focusTraversable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="306.0" prefWidth="468.0" style="-fx-font-size: 14;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.AppController">
      <stylesheets>
               <URL value="@main.css" />
           </stylesheets>
@@ -30,7 +30,7 @@
                   <MenuItem id="import" fx:id="menuAgencias" mnemonicParsing="false" onAction="#showProviders" text="Agencias" visible="false" />
                   <MenuItem id="import" fx:id="menuTarifas" mnemonicParsing="false" onAction="#showTarifas" text="Tarifas" visible="false" />
                   <MenuItem id="import" fx:id="menuPostales" mnemonicParsing="false" onAction="#showPostales" text="Códigos Postales" visible="false" />
-                  <MenuItem id="import" fx:id="menuProvincias" mnemonicParsing="false" onAction="#showProvincias" text="Provincias" visible="false" />
+                  <MenuItem id="import" fx:id="menuProvincias" mnemonicParsing="false" onAction="#showProvincias" text="Provincias-Zonas" visible="false" />
                   <MenuItem id="import" fx:id="menuExclusiones" mnemonicParsing="false" onAction="#showExclusiones" text="Exclusiones" visible="false" />
                   <MenuItem id="urgencia" fx:id="menuUrgencia" mnemonicParsing="false" onAction="#showUrgencia" text="\% urgencia" visible="false" />
                   <MenuItem fx:id="log" mnemonicParsing="false" onAction="#logIn" text="Abrir como administrador" />

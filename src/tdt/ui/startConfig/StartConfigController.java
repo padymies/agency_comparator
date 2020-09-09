@@ -58,8 +58,6 @@ public class StartConfigController implements Initializable {
 
             props.setProp("tdt.ip", ip);
 
-            System.out.println(ip);
-
             App p = new App();
             try {
                 p.start(new Stage());

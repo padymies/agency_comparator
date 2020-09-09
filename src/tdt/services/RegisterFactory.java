@@ -81,7 +81,7 @@ public class RegisterFactory {
     }
 
     public static String generarRegistroAlbaran(Albaran al) {
-
+        
         String cliente = al.getCliente();
         String departamento = al.getDepartamento();
         if (al.getNewRef() != null) {

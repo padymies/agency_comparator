@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IAgenciaDao;
 import tdt.model.Agencia;
+import tdt.services.AlertExceptionService;
 
 public class AgenciaImpl implements IAgenciaDao {
 
@@ -38,7 +39,6 @@ public class AgenciaImpl implements IAgenciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
-
                 while (result.next()) {
 
                     int id = result.getInt("id_agencia");
@@ -50,7 +50,7 @@ public class AgenciaImpl implements IAgenciaDao {
                     double recargo_combustible = result.getDouble("recargo_combustible");
 
                     double minimo_reembolso = result.getDouble("minimo_reembolso");
-                    
+
                     double comision = result.getDouble("comision");
 
                     boolean envio_grande = result.getBoolean("envio_grande");
@@ -62,8 +62,9 @@ public class AgenciaImpl implements IAgenciaDao {
         } catch (SQLException ex) {
 
             // System.out.println("Error recuperando Agencias");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las agencias", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -104,7 +105,6 @@ public class AgenciaImpl implements IAgenciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("Recuperando agencia----------> " + sql);
-
                 result.next();
 
                 int id = result.getInt("id_agencia");
@@ -116,7 +116,7 @@ public class AgenciaImpl implements IAgenciaDao {
                 double recargo_combustible = result.getDouble("recargo_combustible");
 
                 double minimo_reembolso = result.getDouble("minimo_reembolso");
-                
+
                 double comision = result.getDouble("comision");
 
                 boolean envio_grande = result.getBoolean("envio_grande");
@@ -125,12 +125,11 @@ public class AgenciaImpl implements IAgenciaDao {
             }
 
             // System.out.println("Agencia recuperada !!");
-
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando agencia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la agencia", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -169,7 +168,6 @@ public class AgenciaImpl implements IAgenciaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Insertando agencia -----------> " + sql);
-
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -186,9 +184,9 @@ public class AgenciaImpl implements IAgenciaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando agencia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido añadir la agencia", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -216,7 +214,7 @@ public class AgenciaImpl implements IAgenciaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`name`='" + agencia.getNombre() + "', `bultos`=" + agencia.getBultos() 
+                + "`name`='" + agencia.getNombre() + "', `bultos`=" + agencia.getBultos()
                 + ", `recargo_combustible`=" + agencia.getRecargo_combustible()
                 + ", `minimo_reembolso`=" + agencia.getMinimo_reembolso()
                 + ", `envio_grande`=" + agencia.isEnvio_grande()
@@ -231,18 +229,16 @@ public class AgenciaImpl implements IAgenciaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando agencia ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Agencia actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando agencia");
+               AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la agencia", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -283,16 +279,15 @@ public class AgenciaImpl implements IAgenciaDao {
                 stat.execute(sql);
 
                 // System.out.println("Eliminando agencia-----------------> " + sql);
-
                 result = true;
 
                 // System.out.println("Agencia eliminada !!");
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando agencia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido borrar la agencia", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -332,7 +327,6 @@ public class AgenciaImpl implements IAgenciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -343,9 +337,9 @@ public class AgenciaImpl implements IAgenciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Nombre de Agencias");
+                AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener los nombres de agencias", ex);
 
-            Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 

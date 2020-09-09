@@ -24,7 +24,8 @@ public class AlbaranService {
         String cp = null;
         
         if (albaran.getPostalDestino() != null && albaran.getPostalDestino().length() >= 2) {
-            cp = albaran.getPostalDestino().substring(0, 2);
+           // cp = albaran.getPostalDestino().substring(0, 2);
+            cp = albaran.getPostalDestino();
 
         }
 
@@ -35,7 +36,12 @@ public class AlbaranService {
         if (pais.toLowerCase().equals("españa")) {
 
             zona = zonaDao.obtenerZonaPorProvincia(cp);
-
+            
+            if(zona == null) {
+                cp = albaran.getPostalDestino().substring(0, 2);
+                zona = zonaDao.obtenerZonaPorProvincia(cp);
+            }
+            
         } else {
             zona = zonaDao.obtenerZonaPorPais(albaran.getPais());
         }

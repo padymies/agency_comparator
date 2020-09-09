@@ -12,8 +12,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
@@ -58,7 +56,6 @@ public class FileService {
             AlertExceptionService alert = new AlertExceptionService("Lectura de archivo", "No se ha podido leer el archivo " + file.getName(), e);
 
             alert.showAndWait();
-            e.printStackTrace();
 
         } finally {
             try {
@@ -75,14 +72,12 @@ public class FileService {
 
                 alert.showAndWait();
 
-                ex.printStackTrace();
             }
         }
         return registerList;
     }
 
     public static void actualizarAlbaran(Albaran albaran) {
-
         variableDao = new VariableArchivoImpl();
 
         VariableArchivo var = null;
@@ -131,8 +126,6 @@ public class FileService {
 
             alert.showAndWait();
 
-            e.printStackTrace();
-
         } finally {
             try {
                 if (br != null) {
@@ -145,7 +138,6 @@ public class FileService {
                     out.close();
                 }
                 if (tempFile.exists() && tempFile.canRead()) {
-
                     file.delete();
 
                     tempFile.renameTo(file);
@@ -160,7 +152,6 @@ public class FileService {
 
                 alert.showAndWait();
 
-                ex.printStackTrace();
             }
         }
 
@@ -173,15 +164,33 @@ public class FileService {
 
             List<Albaran> albaranes = result.get(key);
 
+            String desktopPath = null;
+
             BufferedReader br = null;
 
             FileReader fr = null;
 
-            String desktopPath = System.getProperty("user.home") + "\\Desktop";
+            try {
 
-            new File(desktopPath, key.toUpperCase()).mkdir();
+                desktopPath = System.getProperty("user.home") + "\\Desktop";
 
-            File newFile = new File(desktopPath + "\\" + key.toUpperCase(), "Listado de facturas.txt");
+            } catch (Exception e) {
+                AlertExceptionService a = new AlertExceptionService("DEBUG", "Error obteniendo path de archivos", e);
+                a.showAndWait();
+            }
+
+            File newFile = null;
+
+            if (desktopPath != null) {
+
+                new File(desktopPath, key.toUpperCase()).mkdir();
+
+                newFile = new File(desktopPath + "\\" + key.toUpperCase(), "Listado de facturas.txt");
+            } else {
+                AlertExceptionService alertPath = new AlertExceptionService("Escritura de archivo", "No se ha podido obtener la ruta de archivos: " + desktopPath.toString(), null);
+
+                alertPath.showAndWait();
+            }
 
             BufferedWriter out = null;
 
@@ -193,12 +202,16 @@ public class FileService {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(newFile), "ISO-8859-1"));
 
                 for (Albaran line : albaranes) {
-                    String newLine = RegisterFactory.generarRegistroAlbaran(line);
-
                     try {
+                        
+                        String newLine = RegisterFactory.generarRegistroAlbaran(line);
+
                         out.write(newLine + "\n");
+                        
                     } catch (IOException ex) {
-                        Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+                        AlertExceptionService alertWrite = new AlertExceptionService("Escritura de archivo", "No se ha podido escribir el archivo de salida", ex);
+
+                        alertWrite.showAndWait();
                     }
                 }
 
@@ -209,8 +222,6 @@ public class FileService {
                 alert.showAndWait();
 
                 resultado = false;
-
-                e.printStackTrace();
 
             } finally {
                 try {
@@ -230,7 +241,6 @@ public class FileService {
 
                     alert.showAndWait();
 
-                    ex.printStackTrace();
                 }
             }
         }

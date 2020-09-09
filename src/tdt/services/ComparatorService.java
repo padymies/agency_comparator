@@ -55,37 +55,49 @@ public class ComparatorService {
 
                 ArrayList<ComparadorTarifa> resultadoList = new ArrayList<>();
 
-                for (AgenciaZona agenciaZona : listaAgencias) {
+                if (listaAgencias.size() > 0) { // Prueba 
+                    for (AgenciaZona agenciaZona : listaAgencias) {
 
-                    int maxKilos = tarifaDao.obtenerMaxKilo(agenciaZona.getIdAgencia(), agenciaZona.getIdZona());
+                        // Kilo mayor de la tarifa de la agencia_zona
+                        int maxKilos = tarifaDao.obtenerMaxKilo(agenciaZona.getIdAgencia(), agenciaZona.getIdZona());
 
-                    double peso = Math.ceil(Double.parseDouble(albaran.getPeso()));
+                        double peso = -1;
+                        try {
 
-                    ComparadorTarifa result = null;
+                            peso = Math.ceil(Double.parseDouble(albaran.getPeso()));
+                        } catch (NumberFormatException e) {
+                            AlertExceptionService pesoAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
+                            pesoAlert.showAndWait();
+                        }
 
-                    // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
-                    if (agenciaZona.getMaxKilos() == 0 || agenciaZona.getMaxKilos() >= peso) {
-                        if (maxKilos >= peso) {
+                        ComparadorTarifa result = null;
 
-                            result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
+                        if (maxKilos > 0) {
+                            // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
+                            if (peso != -1 && (agenciaZona.getMaxKilos() == 0 || agenciaZona.getMaxKilos() >= peso)) {
+                                if (maxKilos >= peso) {
 
-                        } else {
-                            if (agenciaZona.getIncremento() > 0) { // SE APLICA INCREMENTO SI TIENE
+                                    result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
 
-                                result = tarifaDao.compararTarifasAlbaran(maxKilos, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
+                                } else {
+                                    if (agenciaZona.getIncremento() > 0) { // SE APLICA INCREMENTO SI TIENE
 
-                                result.setPrecio(result.getPrecio() + (peso - maxKilos * agenciaZona.getIncremento()));
+                                        result = tarifaDao.compararTarifasAlbaran(maxKilos, albaran.getZona().getIdZona(), agenciaZona.getIdAgencia());
 
+                                        result.setPrecio(result.getPrecio() + (peso - maxKilos * agenciaZona.getIncremento()));
+
+                                    }
+                                }
                             }
                         }
+
+                        if (result != null) {
+
+                            resultadoList.add(result);
+
+                        }
+
                     }
-
-                    if (result != null) {
-
-                        resultadoList.add(result);
-
-                    }
-
                 }
                 // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
@@ -133,11 +145,10 @@ public class ComparatorService {
 
                     Collections.sort(resultadoList, Comparator.comparing(item -> item.getPrecio()));
 
-                    resultadoList.forEach(data -> {
+                    /*        resultadoList.forEach(data -> {
                         System.out.println("Agencia: " + data.getNombreAgencia() + " Precio: " + data.getPrecio() + " Entrega: " + data.getPlazoEntrega() + "\n");
 
-                    });
-
+                    });*/
                     ComparadorTarifa first = resultadoList.get(0);
 
                     double porcentajeUrgencia = configDao.getPorcentajeUrgencia();

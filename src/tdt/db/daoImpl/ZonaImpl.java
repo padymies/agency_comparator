@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IZonaDao;
 import tdt.model.Zona;
+import tdt.services.AlertExceptionService;
 
 /**
  *
@@ -46,7 +47,6 @@ public class ZonaImpl implements IZonaDao {
                 ResultSet result = stat.executeQuery(sql);
 
 //                System.out.println("OBTENIENDO ZONAS ------------>" + sql);
-
                 while (result.next()) {
 
                     int idZona = result.getInt("id_zona");
@@ -63,9 +63,9 @@ public class ZonaImpl implements IZonaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Zonas");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las zonas", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -105,7 +105,6 @@ public class ZonaImpl implements IZonaDao {
                 ResultSet result = stat.executeQuery(sql);
 
 //                System.out.println("Recuperando Zona----------> " + sql);
-
                 result.next();
 
                 int id = result.getInt("id_zona");
@@ -120,12 +119,11 @@ public class ZonaImpl implements IZonaDao {
             }
 
 //            System.out.println("Zona recuperada !!");
-
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Zona");
+              AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la zona", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -162,7 +160,6 @@ public class ZonaImpl implements IZonaDao {
                 stat = conn.createStatement();
 
 //                System.out.println("Insertando zona -----------> " + sql);
-
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -179,9 +176,9 @@ public class ZonaImpl implements IZonaDao {
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error insertando zona");
+              AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido añadir la zona", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -222,18 +219,16 @@ public class ZonaImpl implements IZonaDao {
                 stat = conn.createStatement();
 
 //                System.out.println("Actualizando zona ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
 //                System.out.println("Zona actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error actualizando zona");
+              AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la zona", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -273,16 +268,15 @@ public class ZonaImpl implements IZonaDao {
                 stat.execute(sql);
 
 //                System.out.println("Eliminando zona-----------------> " + sql);
-
                 result = true;
 
 //                System.out.println("Zona eliminada !!");
             }
         } catch (SQLException ex) {
 
-            System.out.println("Error borrando zona");
+           AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido borrar la zona", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -322,7 +316,6 @@ public class ZonaImpl implements IZonaDao {
                 ResultSet result = stat.executeQuery(sql);
 
 //                System.out.println("OBTENIENDO NOMBRE DE ZONAS ------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre_zona");
@@ -333,9 +326,9 @@ public class ZonaImpl implements IZonaDao {
 
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Nombre de Zonas");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener los nombres de zona", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -377,7 +370,6 @@ public class ZonaImpl implements IZonaDao {
                 ResultSet result = stat.executeQuery(sql);
 
 //                System.out.println("Recuperando Zona por provincia----------> " + sql);
-
                 while (result.next()) {
 
                     int id = result.getInt("id_zona");
@@ -394,12 +386,11 @@ public class ZonaImpl implements IZonaDao {
             }
 
 //            System.out.println("Zona recuperada !!");
-
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Zona");
+              AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener las zonas por provincia", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -419,7 +410,7 @@ public class ZonaImpl implements IZonaDao {
 
     @Override
     public Zona obtenerZonaPorPais(String nombrePais) {
-         Connection conn = null;
+        Connection conn = null;
 
         Statement stat = null;
 
@@ -438,7 +429,6 @@ public class ZonaImpl implements IZonaDao {
                 ResultSet result = stat.executeQuery(sql);
 
 //                System.out.println("Recuperando Zona por pais----------> " + sql);
-
                 while (result.next()) {
 
                     int id = result.getInt("id_zona");
@@ -455,12 +445,11 @@ public class ZonaImpl implements IZonaDao {
             }
 
 //            System.out.println("Zona recuperada !!");
-
         } catch (SQLException ex) {
 
-            System.out.println("Error recuperando Zona");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la zona por pais", ex);
 
-            Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {

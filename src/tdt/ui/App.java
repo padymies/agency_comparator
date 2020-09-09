@@ -14,7 +14,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
+    
         PropertyService props = new PropertyService();
 
         Object ip = props.getProps("tdt.ip");

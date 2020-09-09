@@ -16,64 +16,59 @@ import tdt.model.Albaran;
 public class ValidatorService {
 
     public static boolean doubleValidate(TextField control) {
-        
+
         boolean result = true;
-        
+
         if (!control.getText().matches("[+-]?\\d*\\.?\\d+")) {
-            
+
             control.getStyleClass().add("invalid");
-            
+
             result = false;
-        
+
         } else {
-        
+
             control.getStyleClass().remove("invalid");
-            
+
         }
         return result;
     }
-    
+
     public static boolean integerValidate(TextField control) {
-        
+
         boolean result = true;
-        
+
         if (!control.getText().matches("^\\d+$")) {
-            
+
             control.getStyleClass().add("invalid");
-            
+
             result = false;
-        
+
         } else {
-        
+
             control.getStyleClass().remove("invalid");
-            
+
         }
         return result;
     }
-    
+
     public static boolean comboBoxValidate(ComboBox control) {
-        
+
         boolean result = true;
-        
+
         if (control.getSelectionModel().isEmpty()) {
             result = false;
             control.getStyleClass().add("invalid");
         } else {
-             control.getStyleClass().remove("invalid");
+            control.getStyleClass().remove("invalid");
         }
         return result;
     }
-    
-    
-    public static boolean albaranValidator( Albaran al) {
-      boolean result = al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
+
+    public static boolean albaranValidator(Albaran al) {
+        boolean result = al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
                 && !al.getRef().isEmpty() && !al.getDirecDestino().isEmpty() && !al.getEmail().isEmpty() && !al.getPostalDestino().isEmpty()
                 && !al.getTfnoDestino().isEmpty() && !al.getPeso().isEmpty();
-      
-      if(!result) {
-          
-          System.out.println(al.toString());
-      }
-      return result;
+
+        return result;
     }
 }

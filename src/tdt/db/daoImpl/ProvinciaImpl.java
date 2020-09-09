@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IProvinciaDao;
 import tdt.model.Provincia;
+import tdt.services.AlertExceptionService;
 
 /**
  *
@@ -46,7 +47,6 @@ public class ProvinciaImpl implements IProvinciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Provincias ------------>" + sql);
-
                 while (result.next()) {
 
                     int id = result.getInt("id_provincia");
@@ -60,9 +60,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Provincias");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las provincias", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -102,7 +102,6 @@ public class ProvinciaImpl implements IProvinciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Provincia ------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -115,9 +114,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Provincia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la provincia", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -156,18 +155,16 @@ public class ProvinciaImpl implements IProvinciaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando Provincia ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Provincia actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando Provincia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la provincia", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -195,7 +192,8 @@ public class ProvinciaImpl implements IProvinciaDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (nombre, codigo) VALUES('"
-                + provincia.getNombre() + "', " + provincia.getCodigo() + ")";
+                + provincia.getNombre() + "', '" + provincia.getCodigo() + "')";
+
         try {
 
             conn = DBConnection.getConnection();
@@ -205,7 +203,6 @@ public class ProvinciaImpl implements IProvinciaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Insertando Provincia -----------> " + sql);
-
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -214,6 +211,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                     id = result.getInt(1);
 
+                    String sqlProvincias_zonas = "INSERT INTO zonas_provincias (id_zona, id_provincia) VALUES(" + null + ", '" + id + "')";
+
+                    stat.executeUpdate(sqlProvincias_zonas);
                 } else {
                     // System.out.println("Error de inserción");
                 }
@@ -222,9 +222,9 @@ public class ProvinciaImpl implements IProvinciaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando Provincia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido añadir la provincia", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -263,16 +263,15 @@ public class ProvinciaImpl implements IProvinciaDao {
                 stat.execute(sql);
 
                 // System.out.println("Eliminando provincia-----------------> " + sql);
-
                 result = true;
 
                 // System.out.println("Provincia eliminada !!");
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando provincia");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido borrar la provincia", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -312,7 +311,6 @@ public class ProvinciaImpl implements IProvinciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Provincias de Zona------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -327,9 +325,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Provincias de zona");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las provincias de zona", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -350,12 +348,12 @@ public class ProvinciaImpl implements IProvinciaDao {
 
     @Override
     public ObservableList<Provincia> obtenerProvinciasSinZonaAsociada() {
-        
+
         Connection conn = null;
 
         Statement stat = null;
 
-        String sql = " SELECT nombre, codigo FROM " + TABLE_NAME + " WHERE id_provincia NOT IN (SELECT id_provincia FROM zonas_provincias)";   
+        String sql = " SELECT nombre, codigo FROM " + TABLE_NAME + " WHERE id_provincia NOT IN (SELECT id_provincia FROM zonas_provincias)";
 
         ObservableList<Provincia> lista = FXCollections.observableArrayList();
 
@@ -370,7 +368,6 @@ public class ProvinciaImpl implements IProvinciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Provincias sin Zona------------>" + sql);
-
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -385,9 +382,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Provincias sin zona");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las provincias sin zona", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -408,11 +405,11 @@ public class ProvinciaImpl implements IProvinciaDao {
 
     @Override
     public ObservableList<Provincia> obtenerProvinciasZona() {
-         Connection conn = null;
+        Connection conn = null;
 
         Statement stat = null;
 
-        String sql = "SELECT p.id_provincia, p.nombre, p.codigo, z.id_zona, zo.nombre_zona FROM " + TABLE_NAME + " p JOIN zonas_provincias z USING (id_provincia) JOIN zonas zo USING (id_zona)";
+        String sql = "SELECT p.id_provincia, p.nombre, p.codigo, z.id_zona, zo.nombre_zona FROM " + TABLE_NAME + " p LEFT JOIN zonas_provincias z USING (id_provincia) LEFT JOIN zonas zo USING (id_zona)";
 
         ObservableList<Provincia> lista = FXCollections.observableArrayList();
 
@@ -427,17 +424,16 @@ public class ProvinciaImpl implements IProvinciaDao {
                 ResultSet result = stat.executeQuery(sql);
 
                 // System.out.println("OBTENIENDO Provincias------------>" + sql);
-
                 while (result.next()) {
-                    
+
                     int idProvincia = result.getInt("id_provincia");
 
                     String nombre = result.getString("nombre");
 
                     String codigo = result.getString("codigo");
-                    
+
                     int idZona = result.getInt("id_zona");
-                    
+
                     String nombreZona = result.getString("nombre_zona");
 
                     Provincia p = new Provincia(idProvincia, nombre, codigo, idZona, nombreZona);
@@ -448,9 +444,9 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Provincias");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las provincias con zona", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
 
@@ -471,13 +467,13 @@ public class ProvinciaImpl implements IProvinciaDao {
 
     @Override
     public boolean actualizarProvinciaZona(int id_provincia, String nombre_zona) {
-           Connection conn = null;
+        Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "UPDATE zonas_provincias zp SET zp.id_zona= (SELECT id_zona FROM zonas z WHERE z.nombre_zona='" + nombre_zona 
+        String sql = "UPDATE zonas_provincias zp SET zp.id_zona= (SELECT id_zona FROM zonas z WHERE z.nombre_zona='" + nombre_zona
                 + "') WHERE zp.id_provincia=" + id_provincia;
         try {
 
@@ -488,18 +484,17 @@ public class ProvinciaImpl implements IProvinciaDao {
                 stat = conn.createStatement();
 
                 // System.out.println("Actualizando Zona-Provincia ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
                 // System.out.println("Zona-Provincia actualizada !!");
-
                 result = true;
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando Zona-Provincia");
+            
+        AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido actualizar la provincias-zona", ex);
 
-            Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {

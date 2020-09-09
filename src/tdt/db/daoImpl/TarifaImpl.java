@@ -15,6 +15,7 @@ import tdt.db.dao.ITarifaDao;
 import tdt.model.AgenciaZona;
 import tdt.model.ComparadorTarifa;
 import tdt.model.Tarifa;
+import tdt.services.AlertExceptionService;
 
 public class TarifaImpl implements ITarifaDao {
 
@@ -26,7 +27,7 @@ public class TarifaImpl implements ITarifaDao {
 
         Statement stat = null;
 
-        String sql = " SELECT kg, id_agencia_zona, precio FROM " + TABLE_NAME;
+        String sql = " SELECT kg, id_agencia, id_zona, precio FROM " + TABLE_NAME;
 
         ObservableList<Tarifa> list = FXCollections.observableArrayList();
 
@@ -55,8 +56,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Tarifas");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se han podido obtener las tarifas", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -112,8 +114,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando Tarifa");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido añadir la tarifa", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -158,8 +161,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando Tarifa");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido actualizar la tarifa", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -202,8 +206,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando Tarifa");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se han podido borrar las tarifas", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -278,8 +283,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando tarifas comparadas");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido comparar las tarifas-albaran", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -346,8 +352,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Agencias por Zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se han podido obtener las tarifas por zona", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -393,14 +400,15 @@ public class TarifaImpl implements ITarifaDao {
 
                     double precio = result.getDouble("precio");
 
-                    list.add(new Tarifa(kg, idZona, idAgencia, precio));
+                    list.add(new Tarifa(kg, idAgencia, idZona, precio));
                 }
             }
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando  TARIFA POR ZONA Y AGENCIA ");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido obtener las tarifaspor zona-agencia", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -446,8 +454,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando Agencia-Zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido añadir la agencia-zona", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -493,8 +502,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando Agencia-Zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido actualizar la agencia-zona", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -540,8 +550,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando agencia de la zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido borrar la agencia-zona", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -591,8 +602,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando maxKilo");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido obtener el max kilo", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -644,8 +656,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando NOMBRE Agencias por Zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se han podido obtener los nombres de agencias por zona", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -699,8 +712,9 @@ public class TarifaImpl implements ITarifaDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando tarifas para Importar");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido copiar la tarifa", ex);
+
+            alert.showAndWait();
 
         } finally {
 
@@ -755,8 +769,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error insertando Agencia-Zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido pegar la tarifa", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {
@@ -782,8 +797,7 @@ public class TarifaImpl implements ITarifaDao {
 
         boolean result = false;
 
-        String sql = "DELETE FROM tarifas WHERE kg="+ tar.getKg() + " AND id_agencia=" + tar.getIdAgencia() + " AND id_zona=" + tar.getIdZona();
-        System.out.println(sql);
+        String sql = "DELETE FROM tarifas WHERE kg=" + tar.getKg() + " AND id_agencia=" + tar.getIdAgencia() + " AND id_zona=" + tar.getIdZona();
         try {
 
             conn = DBConnection.getConnection();
@@ -801,8 +815,9 @@ public class TarifaImpl implements ITarifaDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error borrando agencia de la zona");
-            Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+            AlertExceptionService alert = new AlertExceptionService("Base de datos", "No se ha podido borrar la tarifa", ex);
+
+            alert.showAndWait();
 
         } finally {
             try {

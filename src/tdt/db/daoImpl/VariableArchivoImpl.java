@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.model.VariableArchivo;
+import tdt.services.AlertExceptionService;
 
 public class VariableArchivoImpl implements IVariableArchivoDao {
 
@@ -51,9 +52,9 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener las variables de archivo", ex);
 
-            Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -106,9 +107,9 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error obtenifino listado de VARIABLES_ARCHIVO");
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener las variables de archivo", ex);
 
-            Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -153,9 +154,9 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
             }
         } catch (SQLException ex) {
 
-            // System.out.println("Error actualizando Variable de archivo");
+          AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la variable de archivo", ex);
 
-            Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
@@ -206,9 +207,9 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error obtenido VARIABLE_ARCHIVO");
+             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la variable de archivo", ex);
 
-            Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            alert.showAndWait();
 
         } finally {
             try {
