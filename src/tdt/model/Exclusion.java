@@ -1,41 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.model;
 
-/**
- *
- * @author Usuario
- */
+
 public class Exclusion {
 
     private int id;
-    private String cp;
-    private int id_agencia; // null: no hay agencia
+    private String postalCode;
+    private int agencyId; // null: no hay agencia
     private int inclusion_exclusion; // 1: inclusion; -1: exclusion; 0: no se puede enviar por ninguna
 
-    private String nombreAgencia;
+    private String agencyName;
 
-    public Exclusion(String cp, String nombreAgencia, int inclusion_exclusion) {
-        this.cp = cp;
-        this.nombreAgencia = nombreAgencia;
+    public Exclusion(String postalCode, String agencyName, int inclusion_exclusion) {
+        this.postalCode = postalCode;
+        this.agencyName = agencyName;
         this.inclusion_exclusion = inclusion_exclusion;
     }
 
-    public Exclusion(int id, String cp, int id_agencia, int inclusion_exclusion) {
+    public Exclusion(int id, String postalCode, int agencyId, int inclusion_exclusion) {
         this.id = id;
-        this.cp = cp;
-        this.id_agencia = id_agencia;
+        this.postalCode = postalCode;
+        this.agencyId = agencyId;
         this.inclusion_exclusion = inclusion_exclusion;
     }
 
-    public Exclusion(int id, String cp, String nombreAgencia, int inclusion_exclusion) {
+    public Exclusion(int id, String postalCode, String agencyName, int inclusion_exclusion) {
         this.id = id;
-        this.cp = cp;
+        this.postalCode = postalCode;
         this.inclusion_exclusion = inclusion_exclusion;
-        this.nombreAgencia = nombreAgencia;
+        this.agencyName = agencyName;
     }
 
     public int getId() {
@@ -46,20 +39,20 @@ public class Exclusion {
         this.id = id;
     }
 
-    public String getCp() {
-        return cp;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setCp(String cp) {
-        this.cp = cp;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public int getId_agencia() {
-        return id_agencia;
+    public int getAgencyId() {
+        return agencyId;
     }
 
-    public void setId_agencia(int id_agencia) {
-        this.id_agencia = id_agencia;
+    public void setAgencyId(int agencyId) {
+        this.agencyId = agencyId;
     }
 
     public int getInclusion_exclusion() {
@@ -70,12 +63,12 @@ public class Exclusion {
         this.inclusion_exclusion = inclusion_exclusion;
     }
 
-    public String getNombreAgencia() {
-        return nombreAgencia;
+    public String getAgencyName() {
+        return agencyName;
     }
 
-    public void setNombreAgencia(String nombreAgencia) {
-        this.nombreAgencia = nombreAgencia;
+    public void setAgencyName(String agencyName) {
+        this.agencyName = agencyName;
     }
 
 }

@@ -15,7 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IProvinciaDao;
-import tdt.model.Provincia;
+import tdt.model.City;
 import tdt.services.AlertExceptionService;
 
 /**
@@ -27,14 +27,14 @@ public class ProvinciaImpl implements IProvinciaDao {
     private final String TABLE_NAME = "provincias";
 
     @Override
-    public ObservableList<Provincia> obtenerProvincias() {
+    public ObservableList<City> obtenerProvincias() {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = " SELECT * FROM " + TABLE_NAME;
 
-        ObservableList<Provincia> list = FXCollections.observableArrayList();
+        ObservableList<City> list = FXCollections.observableArrayList();
 
         try {
 
@@ -54,7 +54,7 @@ public class ProvinciaImpl implements IProvinciaDao {
                     String nombre = result.getString("nombre");
                     String codigo = result.getString("codigo");
 
-                    list.add(new Provincia(id, nombre, codigo));
+                    list.add(new City(id, nombre, codigo));
                 }
             }
 
@@ -82,14 +82,14 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public Provincia obtenerProvincia(int provinciaId) {
+    public City obtenerProvincia(int provinciaId) {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = " SELECT nombre, codigo FROM " + TABLE_NAME + " WHERE id_provincia =" + provinciaId;
 
-        Provincia p = null;
+        City p = null;
 
         try {
 
@@ -101,14 +101,14 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Provincia ------------>" + sql);
+                // System.out.println("OBTENIENDO City ------------>" + sql);
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
 
                     String codigo = result.getString("codigo");
 
-                    p = new Provincia(provinciaId, nombre, codigo);
+                    p = new City(provinciaId, nombre, codigo);
                 }
             }
 
@@ -136,7 +136,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public boolean actualizarProvincia(Provincia provincia) {
+    public boolean actualizarProvincia(City provincia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -144,7 +144,7 @@ public class ProvinciaImpl implements IProvinciaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`nombre`='" + provincia.getNombre() + "', `codigo`='" + provincia.getCodigo()
+                + "`nombre`='" + provincia.getName() + "', `codigo`='" + provincia.getCode()
                 + "', WHERE `id_provincia`=" + provincia.getId();
         try {
 
@@ -154,10 +154,10 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Provincia ---------------> " + sql);
+                // System.out.println("Actualizando City ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Provincia actualizada !!");
+                // System.out.println("City actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -184,7 +184,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public int añadirProvincia(Provincia provincia) {
+    public int añadirProvincia(City provincia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -192,7 +192,7 @@ public class ProvinciaImpl implements IProvinciaDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (nombre, codigo) VALUES('"
-                + provincia.getNombre() + "', '" + provincia.getCodigo() + "')";
+                + provincia.getName() + "', '" + provincia.getCode() + "')";
 
         try {
 
@@ -202,7 +202,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando Provincia -----------> " + sql);
+                // System.out.println("Insertando City -----------> " + sql);
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -218,7 +218,7 @@ public class ProvinciaImpl implements IProvinciaDao {
                     // System.out.println("Error de inserción");
                 }
 
-                // System.out.println("Provincia insertada !!");
+                // System.out.println("City insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -265,7 +265,7 @@ public class ProvinciaImpl implements IProvinciaDao {
                 // System.out.println("Eliminando provincia-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Provincia eliminada !!");
+                // System.out.println("City eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -291,14 +291,14 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<Provincia> obtenerProvinciasDeZona(int idZona) {
+    public ObservableList<City> obtenerProvinciasDeZona(int idZona) {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = " SELECT p.nombre, p.codigo FROM " + TABLE_NAME + " p JOIN zonas_provincias z USING (id_provincia) WHERE z.id_zona=" + idZona;
 
-        ObservableList<Provincia> lista = FXCollections.observableArrayList();
+        ObservableList<City> lista = FXCollections.observableArrayList();
 
         try {
 
@@ -317,7 +317,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                     String codigo = result.getString("codigo");
 
-                    Provincia p = new Provincia(nombre, codigo);
+                    City p = new City(nombre, codigo);
 
                     lista.add(p);
                 }
@@ -347,7 +347,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<Provincia> obtenerProvinciasSinZonaAsociada() {
+    public ObservableList<City> obtenerProvinciasSinZonaAsociada() {
 
         Connection conn = null;
 
@@ -355,7 +355,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
         String sql = " SELECT nombre, codigo FROM " + TABLE_NAME + " WHERE id_provincia NOT IN (SELECT id_provincia FROM zonas_provincias)";
 
-        ObservableList<Provincia> lista = FXCollections.observableArrayList();
+        ObservableList<City> lista = FXCollections.observableArrayList();
 
         try {
 
@@ -374,7 +374,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                     String codigo = result.getString("codigo");
 
-                    Provincia p = new Provincia(nombre, codigo);
+                    City p = new City(nombre, codigo);
 
                     lista.add(p);
                 }
@@ -404,14 +404,14 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<Provincia> obtenerProvinciasZona() {
+    public ObservableList<City> obtenerProvinciasZona() {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = "SELECT p.id_provincia, p.nombre, p.codigo, z.id_zona, zo.nombre_zona FROM " + TABLE_NAME + " p LEFT JOIN zonas_provincias z USING (id_provincia) LEFT JOIN zonas zo USING (id_zona)";
 
-        ObservableList<Provincia> lista = FXCollections.observableArrayList();
+        ObservableList<City> lista = FXCollections.observableArrayList();
 
         try {
 
@@ -436,7 +436,7 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                     String nombreZona = result.getString("nombre_zona");
 
-                    Provincia p = new Provincia(idProvincia, nombre, codigo, idZona, nombreZona);
+                    City p = new City(idProvincia, nombre, codigo, idZona, nombreZona);
 
                     lista.add(p);
                 }
@@ -483,10 +483,10 @@ public class ProvinciaImpl implements IProvinciaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Zona-Provincia ---------------> " + sql);
+                // System.out.println("Actualizando Zona-City ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Zona-Provincia actualizada !!");
+                // System.out.println("Zona-City actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {

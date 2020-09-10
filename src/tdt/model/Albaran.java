@@ -42,7 +42,7 @@ public class Albaran {
     private String GLS; // 594-635
     
     
-    private Zona zona;
+    private Zone zona;
     
     private String MEJOR_AGENCIA;
     
@@ -412,11 +412,11 @@ public class Albaran {
         this.GLS = gls;
     }
 
-    public Zona getZona() {
+    public Zone getZona() {
         return zona;
     }
 
-    public void setZona(Zona zona) {
+    public void setZona(Zone zona) {
         this.zona = zona;
     }
 

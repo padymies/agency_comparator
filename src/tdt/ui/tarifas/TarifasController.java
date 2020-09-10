@@ -14,7 +14,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ZonaImpl;
-import tdt.model.Zona;
+import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
 import tdt.services.ConfigStage;
 import tdt.ui.tarifas.tabContent.TabContentController;
@@ -34,7 +34,7 @@ public class TarifasController implements Initializable {
 
     private IZonaDao zonaDao;
 
-    private ObservableList<Zona> listaZonas;
+    private ObservableList<Zone> listaZonas;
 
     private ArrayList<TabContentController> controllerArrayList;
 
@@ -56,11 +56,11 @@ public class TarifasController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("tabContent/tabContent.fxml"));
             try {
 
-                TabContentController controller = new TabContentController(listaZonas.get(i).getIdZona());
+                TabContentController controller = new TabContentController(listaZonas.get(i).getZoneId());
 
                 loader.setController(controller);
 
-                Tab tab = new Tab(listaZonas.get(i).getNombre(), loader.load());
+                Tab tab = new Tab(listaZonas.get(i).getName(), loader.load());
 
                 tab.setClosable(false);
 
@@ -68,14 +68,14 @@ public class TarifasController implements Initializable {
 
                 tabPane.getTabs().add(tab);
 
-                controllerArrayList.get(i).getTxtNombreZona().setText(listaZonas.get(i).getNombre());
+                controllerArrayList.get(i).getTxtNombreZona().setText(listaZonas.get(i).getName());
 
-                controllerArrayList.get(i).getTxtPais().setText(listaZonas.get(i).getPais());
+                controllerArrayList.get(i).getTxtPais().setText(listaZonas.get(i).getCountry());
 
-                controllerArrayList.get(i).getTxtDescripcion().setText(listaZonas.get(i).getDescripcion());
+                controllerArrayList.get(i).getTxtDescripcion().setText(listaZonas.get(i).getDescription());
 
             } catch (IOException e) {
-                AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar el contenido de la zona " + listaZonas.get(i).getNombre(), e);
+                AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar el contenido de la zona " + listaZonas.get(i).getName(), e);
 
                 alert.showAndWait();
             }

@@ -2,14 +2,14 @@
 package tdt.model;
 
 
-public class VariableArchivo {
+public class FileVariable {
     
     private int id;
     private String key;
     private int start;
     private int end;
 
-    public VariableArchivo(String key, int start, int end) {
+    public FileVariable(String key, int start, int end) {
         this.key = key;
         this.start = start;
         this.end = end;

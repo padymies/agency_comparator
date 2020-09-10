@@ -150,8 +150,8 @@ public class ExclusionesImpl implements IExclusionesDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (cp, id_agencia, inclusion_exclusion) "
-                + "VALUES('" + exclusion.getCp() + "', (SELECT id_agencia FROM agencias a WHERE a.nombre='"
-                + exclusion.getNombreAgencia() + "'), " + exclusion.getInclusion_exclusion() + ")";
+                + "VALUES('" + exclusion.getPostalCode() + "', (SELECT id_agencia FROM agencias a WHERE a.nombre='"
+                + exclusion.getAgencyName() + "'), " + exclusion.getInclusion_exclusion() + ")";
 
         try {
 
@@ -207,7 +207,7 @@ public class ExclusionesImpl implements IExclusionesDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "cp='" + exclusion.getCp() + "', id_agencia= " + exclusion.getId_agencia()
+                + "cp='" + exclusion.getPostalCode() + "', id_agencia= " + exclusion.getAgencyId()
                 + ", inclusion_exclusion=" + exclusion.getInclusion_exclusion()
                 + " WHERE id_exclusion=" + exclusion.getId();
         try {

@@ -18,17 +18,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import tdt.db.dao.IProvinciaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
-import tdt.model.Provincia;
+import tdt.model.City;
 import tdt.services.AlertService;
 
 public class PostalesController implements Initializable {
 
     @FXML
-    private TableView<Provincia> tablaProvincias;
+    private TableView<City> tablaProvincias;
     @FXML
-    private TableColumn<Provincia, String> provincia;
+    private TableColumn<City, String> provincia;
     @FXML
-    private TableColumn<Provincia, String> codigo;
+    private TableColumn<City, String> codigo;
 
     private IProvinciaDao provinciaDao;
     @FXML
@@ -47,7 +47,7 @@ public class PostalesController implements Initializable {
 
         provinciaDao = new ProvinciaImpl();
 
-        ObservableList<Provincia> listaProvincias = provinciaDao.obtenerProvincias();
+        ObservableList<City> listaProvincias = provinciaDao.obtenerProvincias();
 
         provincia.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
@@ -62,7 +62,7 @@ public class PostalesController implements Initializable {
     private void addProvincia(ActionEvent event) {
         
         if (!inputCp.getText().isEmpty() && !inputProv.getText().isEmpty()) {
-            Provincia p = new Provincia(inputProv.getText().trim(), inputCp.getText().trim());
+            City p = new City(inputProv.getText().trim(), inputCp.getText().trim());
             System.out.println(p.toString());
             int result = provinciaDao.añadirProvincia(p);
             if(result != -1) {
@@ -78,10 +78,10 @@ public class PostalesController implements Initializable {
     @FXML
     private void deleteProv(ActionEvent event) {
 
-        Provincia seleccionado = tablaProvincias.getSelectionModel().getSelectedItem();
+        City seleccionado = tablaProvincias.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
             // Eliminar
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "Seguro que quiere eliminar el codigo postal " + seleccionado.getCodigo() + "?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "Seguro que quiere eliminar el codigo postal " + seleccionado.getCode() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);

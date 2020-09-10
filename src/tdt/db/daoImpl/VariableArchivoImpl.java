@@ -11,7 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.IVariableArchivoDao;
-import tdt.model.VariableArchivo;
+import tdt.model.FileVariable;
 import tdt.services.AlertExceptionService;
 
 public class VariableArchivoImpl implements IVariableArchivoDao {
@@ -19,7 +19,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     private final String TABLE_NAME = "VARIABLES_ARCHIVO";
 
     @Override
-    public HashMap<String, VariableArchivo> HashMapVariableArchivo() {
+    public HashMap<String, FileVariable> HashMapVariableArchivo() {
 
         Connection conn = null;
 
@@ -27,7 +27,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         String sql = " SELECT * FROM " + TABLE_NAME;
 
-        HashMap<String, VariableArchivo> list = new HashMap();
+        HashMap<String, FileVariable> list = new HashMap();
         conn = DBConnection.getConnection();
         try {
 
@@ -45,7 +45,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
                 int fin = result.getInt("fin");
 
-                list.put(clave, new VariableArchivo(clave, inicio, fin));
+                list.put(clave, new FileVariable(clave, inicio, fin));
             }
 
             // System.out.println("VARIABLES_ARCHIVO obtenidas");
@@ -72,7 +72,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     }
 
     @Override
-    public ObservableList<VariableArchivo> ObservableVariableArchivo() {
+    public ObservableList<FileVariable> ObservableVariableArchivo() {
 
         Connection conn = null;
 
@@ -80,7 +80,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
         String sql = " SELECT * FROM " + TABLE_NAME;
 
-        ObservableList<VariableArchivo> list = FXCollections.observableArrayList();;
+        ObservableList<FileVariable> list = FXCollections.observableArrayList();;
 
         try {
 
@@ -100,7 +100,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
                 int fin = result.getInt("fin");
 
-                list.add(new VariableArchivo(clave, inicio, fin));
+                list.add(new FileVariable(clave, inicio, fin));
             }
 
             // System.out.println("VARIABLES_ARCHIVO obtenida");
@@ -127,7 +127,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     }
 
     @Override
-    public boolean actualizarVariableArchivo(VariableArchivo variableArchivo) {
+    public boolean actualizarVariableArchivo(FileVariable variableArchivo) {
 
         Connection conn = null;
 
@@ -174,7 +174,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     }
 
     @Override
-    public VariableArchivo getVariable(String clave) {
+    public FileVariable getVariable(String clave) {
         Connection conn = null;
 
         Statement stat = null;
@@ -182,7 +182,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
         String sql = "SELECT inicio, fin FROM " + TABLE_NAME + " WHERE clave='" + clave +"'";
 
         // System.out.println(sql);
-        VariableArchivo var = null;
+        FileVariable var = null;
         
         conn = DBConnection.getConnection();
         
@@ -200,7 +200,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
 
                 int fin = result.getInt("fin");
 
-                var = new VariableArchivo(clave, inicio, fin);
+                var = new FileVariable(clave, inicio, fin);
             }
 
             // System.out.println("VARIABLE_ARCHIVO obtenida");

@@ -27,20 +27,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import tdt.db.dao.IAgenciaDao;
-import tdt.db.daoImpl.AgenciaImpl;
-import tdt.model.Agencia;
+import tdt.db.daoImpl.AgencyImpl;
+import tdt.model.Agency;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
+import tdt.db.dao.IAgencyDao;
 
 public class ProvidersController implements Initializable {
 
-    private ObservableList<Agencia> list;
+    private ObservableList<Agency> list;
 
     @FXML
-    private TableView<Agencia> table;
+    private TableView<Agency> table;
     @FXML
-    private TableColumn<Agencia, String> nombre;
+    private TableColumn<Agency, String> nombre;
     @FXML
     private TableColumn<?, ?> bultos;
     @FXML
@@ -50,7 +50,7 @@ public class ProvidersController implements Initializable {
     @FXML
     private TableColumn<?, ?> comision;
     @FXML
-    private TableColumn<Agencia, String> envio_grande;
+    private TableColumn<Agency, String> envio_grande;
     @FXML
     private TextField inputNombre;
     @FXML
@@ -74,9 +74,9 @@ public class ProvidersController implements Initializable {
 
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
 
-    private ArrayList<Agencia> selections;
+    private ArrayList<Agency> selections;
 
-    private IAgenciaDao agenciaDao;
+    private IAgencyDao agenciaDao;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,9 +98,9 @@ public class ProvidersController implements Initializable {
 
         selections = new ArrayList<>();
 
-        agenciaDao = new AgenciaImpl();
+        agenciaDao = new AgencyImpl();
 
-        list = agenciaDao.obtenerAgencias();
+        list = agenciaDao.getAgencies();
 
         addButton.setOnAction(e -> addProvider());
 
@@ -118,9 +118,9 @@ public class ProvidersController implements Initializable {
 
         envio_grande.setCellValueFactory(param -> {
 
-            Agencia ag = (Agencia) param.getValue();
+            Agency ag = (Agency) param.getValue();
 
-            if (ag.isEnvio_grande()) {
+            if (ag.isBigShipment()) {
 
                 return new SimpleStringProperty("Sí");
             }
@@ -134,7 +134,7 @@ public class ProvidersController implements Initializable {
         hBox.setSpacing(10);
 
         // Populate tabview
-        TableViewSelectionModel<Agencia> selectionModel = table.getSelectionModel();
+        TableViewSelectionModel<Agency> selectionModel = table.getSelectionModel();
 
         selectionModel.setSelectionMode(SelectionMode.SINGLE);
 
@@ -159,7 +159,7 @@ public class ProvidersController implements Initializable {
 
         String nom = inputNombre.getText().trim();
 
-        ObservableList<String> nombreAgencias = agenciaDao.obtenerNombresAgencias();
+        ObservableList<String> nombreAgencias = agenciaDao.getAgencyNames();
 
         if (!nombreAgencias.contains(nom)) {
 
@@ -197,13 +197,13 @@ public class ProvidersController implements Initializable {
                     envioGrande = true;
                 }
 
-                Agencia agencia = new Agencia(nom, bult, recargo, minimoReem, envioGrande, comision);
+                Agency agencia = new Agency(nom, bult, recargo, minimoReem, envioGrande, comision);
 
-                int idAgencia = agenciaDao.añadirAgencia(agencia);
+                int idAgencia = agenciaDao.addAgency(agencia);
 
                 if (idAgencia != -1) {
 
-                    agencia.setId_agencia(idAgencia);
+                    agencia.setAgencyId(idAgencia);
 
                     list.add(agencia);
 
@@ -238,9 +238,9 @@ public class ProvidersController implements Initializable {
 
     private void deleteProviders() {
 
-        Agencia selectedAgencia = table.getSelectionModel().getSelectedItem();
+        Agency selectedAgencia = table.getSelectionModel().getSelectedItem();
 
-        AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de agencia", "Seguro que quiere eliminar la Agencia " + selectedAgencia.getNombre() +"?",
+        AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de agencia", "Seguro que quiere eliminar la Agencia " + selectedAgencia.getName() +"?",
                 "");
 
         ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
@@ -253,9 +253,9 @@ public class ProvidersController implements Initializable {
 
             if (type == okButton) {
 
-                ObservableList<Agencia> allProviders = table.getItems();
+                ObservableList<Agency> allProviders = table.getItems();
 
-                agenciaDao.borrarAgencia(selectedAgencia.getId_agencia());
+                agenciaDao.deleteAgency(selectedAgencia.getAgencyId());
 
                 allProviders.remove(selectedAgencia);
 

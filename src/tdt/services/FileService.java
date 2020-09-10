@@ -15,7 +15,7 @@ import java.util.Map;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
-import tdt.model.VariableArchivo;
+import tdt.model.FileVariable;
 
 public class FileService {
 
@@ -80,7 +80,7 @@ public class FileService {
     public static void actualizarAlbaran(Albaran albaran) {
         variableDao = new VariableArchivoImpl();
 
-        VariableArchivo var = null;
+        FileVariable var = null;
 
         var = variableDao.getVariable("REF");
 

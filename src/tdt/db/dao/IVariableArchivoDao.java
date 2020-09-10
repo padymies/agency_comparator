@@ -3,17 +3,17 @@ package tdt.db.dao;
 
 import java.util.HashMap;
 import javafx.collections.ObservableList;
-import tdt.model.VariableArchivo;
+import tdt.model.FileVariable;
 
 
 public interface IVariableArchivoDao {
 
-    public HashMap<String, VariableArchivo> HashMapVariableArchivo();
+    public HashMap<String, FileVariable> HashMapVariableArchivo();
    
-    public ObservableList<VariableArchivo> ObservableVariableArchivo();
+    public ObservableList<FileVariable> ObservableVariableArchivo();
 
-    public boolean actualizarVariableArchivo(VariableArchivo albaran);
+    public boolean actualizarVariableArchivo(FileVariable albaran);
     
-    public VariableArchivo getVariable(String key);
+    public FileVariable getVariable(String key);
 
 }

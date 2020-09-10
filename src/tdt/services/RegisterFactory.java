@@ -5,7 +5,7 @@ import java.util.HashMap;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
-import tdt.model.VariableArchivo;
+import tdt.model.FileVariable;
 
 public class RegisterFactory {
 
@@ -13,7 +13,7 @@ public class RegisterFactory {
 
     private static IVariableArchivoDao variableDao;
 
-    private static HashMap<String, VariableArchivo> list;
+    private static HashMap<String, FileVariable> list;
 
     public static Albaran generarAlbaran(String data) {
 

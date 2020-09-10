@@ -1,21 +1,21 @@
 package tdt.db.dao;
 
 import javafx.collections.ObservableList;
-import tdt.model.Zona;
+import tdt.model.Zone;
 
 public interface IZonaDao {
 
-    public ObservableList<Zona> obtenerZonasUI();
+    public ObservableList<Zone> obtenerZonasUI();
 
-    public Zona obtenerZona(int idZona);
+    public Zone obtenerZona(int idZona);
     
-    public Zona obtenerZonaPorProvincia(String cp);
+    public Zone obtenerZonaPorProvincia(String cp);
     
-    public Zona obtenerZonaPorPais(String nombrePais);
+    public Zone obtenerZonaPorPais(String nombrePais);
 
-    public int añadirZona(Zona zona);
+    public int añadirZona(Zone zona);
 
-    public boolean actualizarZona(Zona zona);
+    public boolean actualizarZona(Zone zona);
 
     public boolean borrarZona(int idZona);
 

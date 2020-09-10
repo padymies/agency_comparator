@@ -22,13 +22,13 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
-import tdt.db.dao.IAgenciaDao;
 import tdt.db.dao.IExclusionesDao;
-import tdt.db.daoImpl.AgenciaImpl;
+import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
 import tdt.model.Exclusion;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
+import tdt.db.dao.IAgencyDao;
 
 public class ExclusionesController implements Initializable {
 
@@ -43,7 +43,7 @@ public class ExclusionesController implements Initializable {
 
     private IExclusionesDao exclusionesDao;
 
-    private IAgenciaDao agenciaDao;
+    private IAgencyDao agenciaDao;
 
     private ObservableList listaExclusiones;
 
@@ -68,13 +68,13 @@ public class ExclusionesController implements Initializable {
         
         ConfigStage.setIcon(btnDelete, "delete.png", 12);
 
-        agenciaDao = new AgenciaImpl();
+        agenciaDao = new AgencyImpl();
 
         exclusionesDao = new ExclusionesImpl();
 
         listaExclusiones = exclusionesDao.obtenerExclusiones();
 
-        nombreAgencias = agenciaDao.obtenerNombresAgencias();
+        nombreAgencias = agenciaDao.getAgencyNames();
 
         cp.setCellValueFactory(new PropertyValueFactory("cp"));
 
@@ -222,7 +222,7 @@ public class ExclusionesController implements Initializable {
 
         if (item != null) {
 
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Exclusión", "Seguro que quiere eliminar la exclusión para el código " + item.getCp() + "?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Exclusión", "Seguro que quiere eliminar la exclusión para el código " + item.getPostalCode() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);

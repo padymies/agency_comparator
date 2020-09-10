@@ -47,24 +47,24 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import tdt.db.dao.IAgenciaDao;
 import tdt.db.dao.IProvinciaDao;
 import tdt.db.dao.ITarifaDao;
 import tdt.db.dao.IZonaDao;
-import tdt.db.daoImpl.AgenciaImpl;
+import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.db.daoImpl.TarifaImpl;
 import tdt.db.daoImpl.ZonaImpl;
-import tdt.model.Agencia;
-import tdt.model.AgenciaZona;
-import tdt.model.Provincia;
-import tdt.model.Tarifa;
-import tdt.model.Zona;
+import tdt.model.Agency;
+import tdt.model.AgencyZone;
+import tdt.model.City;
+import tdt.model.Rate;
+import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
 import tdt.ui.tarifas.tabContent.importForm.importForm;
 import tdt.ui.tarifas.tabContent.listItem.listItemAgenciaBase;
+import tdt.db.dao.IAgencyDao;
 
 /**
  * FXML Controller class
@@ -76,7 +76,7 @@ public class TabContentController implements Initializable {
     @FXML
     private AnchorPane tabContent;
     @FXML
-    private ListView<AgenciaZona> listZonas;
+    private ListView<AgencyZone> listZonas;
     @FXML
     private TextField txtNombreZona;
     @FXML
@@ -84,7 +84,7 @@ public class TabContentController implements Initializable {
     @FXML
     private TextArea txtDescripcion;
     @FXML
-    private TableView<Tarifa> tableTarifas;
+    private TableView<Rate> tableTarifas;
     @FXML
     private TextField txtKilos;
     @FXML
@@ -102,9 +102,9 @@ public class TabContentController implements Initializable {
     @FXML
     private Label lbTarifaAgencia;
     @FXML
-    private TableColumn<Tarifa, Integer> columnKg;
+    private TableColumn<Rate, Integer> columnKg;
     @FXML
-    private TableColumn<Tarifa, Double> columnPrecio;
+    private TableColumn<Rate, Double> columnPrecio;
     @FXML
     private ComboBox<String> comboAgencias;
     @FXML
@@ -122,9 +122,9 @@ public class TabContentController implements Initializable {
 
     private Button btnActualizarTarifa;
 
-    private Zona zona;
+    private Zone zona;
 
-    private AgenciaZona agenciaZona;
+    private AgencyZone agenciaZona;
 
     private Tab tab;
 
@@ -132,17 +132,17 @@ public class TabContentController implements Initializable {
 
     private ITarifaDao tarifaDao;
 
-    private IAgenciaDao agenciaDao;
+    private IAgencyDao agenciaDao;
 
     private IProvinciaDao provinciaDao;
 
-    private ObservableList<AgenciaZona> listaAgenciaZona;
+    private ObservableList<AgencyZone> listaAgenciaZona;
 
-    private ObservableList<Tarifa> tarifas;
+    private ObservableList<Rate> tarifas;
 
-    private ObservableList<Provincia> provinciasDeZona;
+    private ObservableList<City> provinciasDeZona;
 
-    private ObservableList<Provincia> provinciasSinZona;
+    private ObservableList<City> provinciasSinZona;
 
     private int idZona;
 
@@ -165,7 +165,7 @@ public class TabContentController implements Initializable {
         return listZonas;
     }
 
-    public void setListZonas(ListView<AgenciaZona> listZonas) {
+    public void setListZonas(ListView<AgencyZone> listZonas) {
         this.listZonas = listZonas;
     }
 
@@ -193,11 +193,11 @@ public class TabContentController implements Initializable {
         this.txtDescripcion = txtDescripcion;
     }
 
-    public TableView<Tarifa> getTableTarifas() {
+    public TableView<Rate> getTableTarifas() {
         return tableTarifas;
     }
 
-    public void setTableTarifas(TableView<Tarifa> tableTarifas) {
+    public void setTableTarifas(TableView<Rate> tableTarifas) {
         this.tableTarifas = tableTarifas;
     }
 
@@ -234,7 +234,7 @@ public class TabContentController implements Initializable {
 
         tarifaDao = new TarifaImpl();
 
-        agenciaDao = new AgenciaImpl();
+        agenciaDao = new AgencyImpl();
 
         provinciaDao = new ProvinciaImpl();
 
@@ -262,7 +262,7 @@ public class TabContentController implements Initializable {
             txtProvincias.clear();
 
             provinciasDeZona.forEach(provincia -> {
-                txtProvincias.appendText(" " + provincia.getNombre() + ";  ");
+                txtProvincias.appendText(" " + provincia.getName() + ";  ");
             });
 
         });
@@ -280,10 +280,10 @@ public class TabContentController implements Initializable {
         ConfigStage.setIcon(btnCancelNew, "cancel.png", 12);
 
         listaAgenciaZona.forEach(agenciaZona -> {
-            listZonas.setCellFactory(new Callback<ListView<AgenciaZona>, ListCell<AgenciaZona>>() {
+            listZonas.setCellFactory(new Callback<ListView<AgencyZone>, ListCell<AgencyZone>>() {
 
                 @Override
-                public ListCell<AgenciaZona> call(ListView<AgenciaZona> param) {
+                public ListCell<AgencyZone> call(ListView<AgencyZone> param) {
                     return new TabContentController.AgenciaZonaCell();
                 }
             });
@@ -294,24 +294,24 @@ public class TabContentController implements Initializable {
 
         listZonas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        listZonas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AgenciaZona>() { // MOSTRAR TARIFAS AL PULSAR UNA AGENCIA
+        listZonas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AgencyZone>() { // MOSTRAR TARIFAS AL PULSAR UNA AGENCIA
             @Override
-            public void changed(ObservableValue<? extends AgenciaZona> observable, AgenciaZona oldValue, AgenciaZona newValue) {
+            public void changed(ObservableValue<? extends AgencyZone> observable, AgencyZone oldValue, AgencyZone newValue) {
 
                 if (newValue != null && newValue != oldValue) {
 
                     agenciaZona = newValue;
 
-                    lbTarifaZona.setText(zona.getNombre());
+                    lbTarifaZona.setText(zona.getName());
 
-                    lbTarifaAgencia.setText(newValue.getNombreAgencia());
+                    lbTarifaAgencia.setText(newValue.getAgencyName());
 
-                    tarifas = tarifaDao.obtenerTarifasPorZonaAgencia(newValue.getIdZona(), newValue.getIdAgencia());
+                    tarifas = tarifaDao.obtenerTarifasPorZonaAgencia(newValue.getZoneId(), newValue.getAgencyId());
 
 //                    ObservableList<Tarifa> tarifasSinDuplicados = quitarPreciosDuplicados(tarifas);
-                    columnKg.setCellValueFactory(new PropertyValueFactory<Tarifa, Integer>("kg"));
+                    columnKg.setCellValueFactory(new PropertyValueFactory<Rate, Integer>("kg"));
 
-                    columnPrecio.setCellValueFactory(new PropertyValueFactory<Tarifa, Double>("precio"));
+                    columnPrecio.setCellValueFactory(new PropertyValueFactory<Rate, Double>("precio"));
 
                     btnImportar.setDisable(false);
 
@@ -336,8 +336,8 @@ public class TabContentController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
 
-                Tarifa tar = tableTarifas.getSelectionModel().getSelectedItem();
-                tar.setIdZona(zona.getIdZona());
+                Rate tar = tableTarifas.getSelectionModel().getSelectedItem();
+                tar.setZoneId(zona.getZoneId());
                 boolean result = tarifaDao.borrarTarifa(tar);
                 if (result) {
                     tableTarifas.getItems().remove(tar);
@@ -401,7 +401,7 @@ public class TabContentController implements Initializable {
 
         if (zona != null) {
 
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Zona", "Seguro que quiere eliminar la Zona: " + zona.getNombre() + "?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de Zona", "Seguro que quiere eliminar la Zona: " + zona.getName() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
@@ -414,9 +414,9 @@ public class TabContentController implements Initializable {
 
                 if (type == okButton) {
 
-                    zonaDao.borrarZona(zona.getIdZona());
+                    zonaDao.borrarZona(zona.getZoneId());
 
-                    AlertService alerta = new AlertService((Alert.AlertType.INFORMATION), "Zona eliminada", "Se ha borrado la zona: " + zona.getNombre(), "");
+                    AlertService alerta = new AlertService((Alert.AlertType.INFORMATION), "Zona eliminada", "Se ha borrado la zona: " + zona.getName(), "");
 
                     alerta.showAndWait();
 
@@ -441,7 +441,7 @@ public class TabContentController implements Initializable {
 
             if (zona == null) { // CREAMOS UNA NUEVA
 
-                zona = new Zona(txtNombreZona.getText().trim(), txtPais.getText().trim(), txtDescripcion.getText().trim());
+                zona = new Zone(txtNombreZona.getText().trim(), txtPais.getText().trim(), txtDescripcion.getText().trim());
 
                 int id = zonaDao.añadirZona(zona);
 
@@ -451,13 +451,13 @@ public class TabContentController implements Initializable {
 
                     Tab tab = tabPane.getSelectionModel().getSelectedItem();
 
-                    tab.setText(zona.getNombre());
+                    tab.setText(zona.getName());
 
                     tab.setClosable(false);
 
-                    AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Nueva Zona", "Se ha creado una nueva zona: " + zona.getNombre(), "");
+                    AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Nueva Zona", "Se ha creado una nueva zona: " + zona.getName(), "");
 
-                    zona.setIdZona(id);
+                    zona.setZoneId(id);
 
                     this.idZona = id;
 
@@ -482,9 +482,9 @@ public class TabContentController implements Initializable {
 
             Tab tab = tabPane.getSelectionModel().getSelectedItem();
 
-            tab.setText(zona.getNombre());
+            tab.setText(zona.getName());
 
-            AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Actualización de Zona", "Se ha actualizado la zona: " + zona.getNombre(), "");
+            AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Actualización de Zona", "Se ha actualizado la zona: " + zona.getName(), "");
 
             alert.showAndWait();
         }
@@ -526,13 +526,13 @@ public class TabContentController implements Initializable {
 
         if (kg != -1 && precio != -1) {
 
-            AgenciaZona selected = listZonas.getSelectionModel().getSelectedItem();
+            AgencyZone selected = listZonas.getSelectionModel().getSelectedItem();
 
             final int KgComparator = kg;
 
             int size = tableTarifas.getItems().filtered(tarifa -> tarifa.getKg() == KgComparator).size();
 
-            Tarifa newTarifa = new Tarifa(kg, selected.getIdAgencia(), selected.getIdZona(), precio);
+            Rate newTarifa = new Rate(kg, selected.getAgencyId(), selected.getZoneId(), precio);
 
             if (size == 0) { // INSERCION
 
@@ -548,7 +548,7 @@ public class TabContentController implements Initializable {
 
                 if (result) {
 
-                    Tarifa tar = tableTarifas.getItems().filtered(tarifa -> tarifa.getKg() == KgComparator).get(0);
+                    Rate tar = tableTarifas.getItems().filtered(tarifa -> tarifa.getKg() == KgComparator).get(0);
 
                     int index = tableTarifas.getItems().indexOf(tar);
 
@@ -585,20 +585,20 @@ public class TabContentController implements Initializable {
 
             btnAgenciaZona.setVisible(false);
 
-            ObservableList<Agencia> listAgencias = agenciaDao.obtenerAgencias();
+            ObservableList<Agency> listAgencias = agenciaDao.getAgencies();
 
             ArrayList<String> agenciasAgregadas = new ArrayList<>();
 
             listaAgenciaZona.forEach(action -> {
-                agenciasAgregadas.add(action.getNombreAgencia());
+                agenciasAgregadas.add(action.getAgencyName());
             });
 
             ObservableList<String> nombreAgencias = FXCollections.observableArrayList();
 
             listAgencias.forEach(predicate -> {
 
-                if (!agenciasAgregadas.contains(predicate.getNombre())) {
-                    nombreAgencias.add(predicate.getNombre());
+                if (!agenciasAgregadas.contains(predicate.getName())) {
+                    nombreAgencias.add(predicate.getName());
                 }
 
             });
@@ -614,19 +614,19 @@ public class TabContentController implements Initializable {
 
         if (listaAgenciaZona.isEmpty()) {
 
-            listZonas.setCellFactory(new Callback<ListView<AgenciaZona>, ListCell<AgenciaZona>>() {
+            listZonas.setCellFactory(new Callback<ListView<AgencyZone>, ListCell<AgencyZone>>() {
 
                 @Override
-                public ListCell<AgenciaZona> call(ListView<AgenciaZona> param) {
+                public ListCell<AgencyZone> call(ListView<AgencyZone> param) {
                     return new TabContentController.AgenciaZonaCell();
                 }
             });
             listZonas.setItems(listaAgenciaZona);
         }
 
-        ObservableList<Agencia> listAgencias = agenciaDao.obtenerAgencias();
+        ObservableList<Agency> listAgencias = agenciaDao.getAgencies();
 
-        Agencia selected = listAgencias.filtered(item -> item.getNombre().equals(comboAgencias.getSelectionModel().getSelectedItem())).get(0);
+        Agency selected = listAgencias.filtered(item -> item.getName().equals(comboAgencias.getSelectionModel().getSelectedItem())).get(0);
 
         double incremento = 0;
 
@@ -667,11 +667,11 @@ public class TabContentController implements Initializable {
 
         }
 
-        boolean result = tarifaDao.añadirAgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, plazoEntrega, maxKilos);
+        boolean result = tarifaDao.añadirAgenciaZona(selected.getAgencyId(), zona.getZoneId(), incremento, plazoEntrega, maxKilos);
 
         if (result) {
 
-            listaAgenciaZona.add(new AgenciaZona(selected.getId_agencia(), zona.getIdZona(), incremento, plazoEntrega, maxKilos, selected.getNombre()));
+            listaAgenciaZona.add(new AgencyZone(selected.getAgencyId(), zona.getZoneId(), incremento, plazoEntrega, maxKilos, selected.getName()));
 
             hboxNewForm.setVisible(false);
 
@@ -700,12 +700,12 @@ public class TabContentController implements Initializable {
             @Override
             protected void importar(ActionEvent actionEvent) {
 
-                ObservableList<Tarifa> listaTarifas = tarifaDao.copiarTarifa(
+                ObservableList<Rate> listaTarifas = tarifaDao.copiarTarifa(
                         importComboAgencia.getSelectionModel().getSelectedItem().toString(), importComboZona.getSelectionModel().getSelectedItem().toString());
 
                 if (!tableTarifas.getItems().isEmpty()) {
 
-                    AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Importación de Tarifa", "La agencia  " + agenciaZona.getNombreAgencia()
+                    AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Importación de Tarifa", "La agencia  " + agenciaZona.getAgencyName()
                             + " tiene tarifas guardadas para esta zona. ¿Quiere sobreescribir los datos?",
                             "");
 
@@ -714,13 +714,13 @@ public class TabContentController implements Initializable {
                     if (!result.isPresent()) {
 
                     } else if (result.get() == ButtonType.OK) {
-                        boolean deleteResult = tarifaDao.borrarTarifasDeAgencia(agenciaZona.getIdZona(), agenciaZona.getIdAgencia());
+                        boolean deleteResult = tarifaDao.borrarTarifasDeAgencia(agenciaZona.getZoneId(), agenciaZona.getAgencyId());
 
                         boolean insertResult = false;
 
                         if (deleteResult) {
 
-                            insertResult = tarifaDao.pegarTarifa(agenciaZona.getIdZona(), agenciaZona.getIdAgencia(), listaTarifas);
+                            insertResult = tarifaDao.pegarTarifa(agenciaZona.getZoneId(), agenciaZona.getAgencyId(), listaTarifas);
 
                         }
 
@@ -732,7 +732,7 @@ public class TabContentController implements Initializable {
 
                     }
                 } else {
-                    boolean insertResult = tarifaDao.pegarTarifa(agenciaZona.getIdZona(), agenciaZona.getIdAgencia(), listaTarifas);
+                    boolean insertResult = tarifaDao.pegarTarifa(agenciaZona.getZoneId(), agenciaZona.getAgencyId(), listaTarifas);
 
                     if (insertResult) {
 
@@ -813,18 +813,18 @@ public class TabContentController implements Initializable {
     }
 
     // ===========================FIN AGENCIAS ===============================  //
-    public class AgenciaZonaCell extends ListCell<AgenciaZona> {
+    public class AgenciaZonaCell extends ListCell<AgencyZone> {
 
         @Override
-        public void updateItem(AgenciaZona agenciaZona, boolean empty) {
+        public void updateItem(AgencyZone agenciaZona, boolean empty) {
             super.updateItem(agenciaZona, empty);
 
             if (agenciaZona != null && !empty) {
 
-                listItemAgenciaBase cell = new listItemAgenciaBase(agenciaZona.getIdAgencia(), agenciaZona.getIdZona()) {
+                listItemAgenciaBase cell = new listItemAgenciaBase(agenciaZona.getAgencyId(), agenciaZona.getZoneId()) {
                     @Override
                     protected void borrarItemAgencia(ActionEvent actionEvent) {
-                        AlertService alert = new AlertService(Alert.AlertType.CONFIRMATION, "Borrado de Agencia-Zona", "Seguro que quiere eliminar la Agencia " + agenciaZona.getNombreAgencia() + " para esta zona?", "");
+                        AlertService alert = new AlertService(Alert.AlertType.CONFIRMATION, "Borrado de Agencia-Zona", "Seguro que quiere eliminar la Agencia " + agenciaZona.getAgencyName() + " para esta zona?", "");
 
                         ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
 
@@ -836,7 +836,7 @@ public class TabContentController implements Initializable {
 
                             if (type == okButton) {
 
-                                boolean result = tarifaDao.borrarAgenciaZona(agenciaZona.getIdAgencia(), agenciaZona.getIdZona());
+                                boolean result = tarifaDao.borrarAgenciaZona(agenciaZona.getAgencyId(), agenciaZona.getZoneId());
 
                                 if (result) {
                                     listZonas.getItems().remove(agenciaZona);
@@ -903,7 +903,7 @@ public class TabContentController implements Initializable {
 
                             }
 
-                            boolean result = tarifaDao.actualizarAgenciaZona(agenciaZona.getIdAgencia(), agenciaZona.getIdZona(), incremento, plazoEntrega, maxKilos);
+                            boolean result = tarifaDao.actualizarAgenciaZona(agenciaZona.getAgencyId(), agenciaZona.getZoneId(), incremento, plazoEntrega, maxKilos);
 
                             if (result) {
 
@@ -917,15 +917,15 @@ public class TabContentController implements Initializable {
 
                 };
 
-                cell.getTextAgencia().setText(agenciaZona.getNombreAgencia());
+                cell.getTextAgencia().setText(agenciaZona.getAgencyName());
 
-                if (agenciaZona.getIncremento() > 0) {
-                    cell.getTxtIncremento().setText(String.valueOf(agenciaZona.getIncremento()));
+                if (agenciaZona.getIncrease() > 0) {
+                    cell.getTxtIncremento().setText(String.valueOf(agenciaZona.getIncrease()));
 
                 }
 
-                if (agenciaZona.getPlazoEntrega() > 0) {
-                    cell.getTxtPlazoEntrega().setText(String.valueOf(agenciaZona.getPlazoEntrega()));
+                if (agenciaZona.getDeliveryTime() > 0) {
+                    cell.getTxtPlazoEntrega().setText(String.valueOf(agenciaZona.getDeliveryTime()));
 
                 }
 
@@ -942,15 +942,15 @@ public class TabContentController implements Initializable {
 
     }
 
-    private ObservableList<Tarifa> quitarPreciosDuplicados(ObservableList<Tarifa> tarifas) {
-        ObservableList<Tarifa> tarifasSinDuplicados = FXCollections.observableArrayList();
+    private ObservableList<Rate> quitarPreciosDuplicados(ObservableList<Rate> tarifas) {
+        ObservableList<Rate> tarifasSinDuplicados = FXCollections.observableArrayList();
 
         if (tarifas.size() > 0) {
 
             for (int i = 1; i < tarifas.size(); i++) {
-                Tarifa current = tarifas.get(i - 1);
-                Tarifa next = tarifas.get(i);
-                if (current.getPrecio() != next.getPrecio()) {
+                Rate current = tarifas.get(i - 1);
+                Rate next = tarifas.get(i);
+                if (current.getPrice() != next.getPrice()) {
                     tarifasSinDuplicados.add(current);
                 }
             }

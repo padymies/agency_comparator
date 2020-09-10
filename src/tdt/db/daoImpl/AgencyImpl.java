@@ -9,16 +9,16 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.IAgenciaDao;
-import tdt.model.Agencia;
+import tdt.db.dao.IAgencyDao;
+import tdt.model.Agency;
 import tdt.services.AlertExceptionService;
 
-public class AgenciaImpl implements IAgenciaDao {
+public class AgencyImpl implements IAgencyDao {
 
     private final String TABLE_NAME = "AGENCIAS";
 
     @Override
-    public ObservableList<Agencia> obtenerAgencias() {
+    public ObservableList<Agency> getAgencies() {
 
         Connection conn = null;
 
@@ -26,7 +26,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
         String sql = " SELECT * FROM " + TABLE_NAME;
 
-        ObservableList<Agencia> list = FXCollections.observableArrayList();
+        ObservableList<Agency> list = FXCollections.observableArrayList();
 
         try {
 
@@ -43,19 +43,19 @@ public class AgenciaImpl implements IAgenciaDao {
 
                     int id = result.getInt("id_agencia");
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    int bultos = result.getInt("bultos");
+                    int packages = result.getInt("bultos");
 
-                    double recargo_combustible = result.getDouble("recargo_combustible");
+                    double surchargeFuel = result.getDouble("recargo_combustible");
 
-                    double minimo_reembolso = result.getDouble("minimo_reembolso");
+                    double minimumRefund = result.getDouble("minimo_reembolso");
 
                     double comision = result.getDouble("comision");
 
-                    boolean envio_grande = result.getBoolean("envio_grande");
+                    boolean bigShipment = result.getBoolean("envio_grande");
 
-                    list.add(new Agencia(id, nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision));
+                    list.add(new Agency(id, name, packages, surchargeFuel, minimumRefund, bigShipment, comision));
                 }
             }
 
@@ -77,22 +77,22 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgencyImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
     }
 
     @Override
-    public Agencia obtenerAgencia(int agenciaId) {
+    public Agency getAgency(int agencyId) {
 
         Connection conn = null;
 
         Statement stat = null;
 
-        Agencia agencia = null;
+        Agency agency = null;
 
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE `id_agencia`=" + agenciaId;
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE `id_agencia`=" + agencyId;
 
         try {
 
@@ -109,22 +109,22 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 int id = result.getInt("id_agencia");
 
-                String nombre = result.getString("nombre");
+                String name = result.getString("nombre");
 
-                int bultos = result.getInt("bultos");
+                int packages = result.getInt("bultos");
 
-                double recargo_combustible = result.getDouble("recargo_combustible");
+                double surchargeFuel = result.getDouble("recargo_combustible");
 
-                double minimo_reembolso = result.getDouble("minimo_reembolso");
+                double minimumRefund = result.getDouble("minimo_reembolso");
 
                 double comision = result.getDouble("comision");
 
-                boolean envio_grande = result.getBoolean("envio_grande");
+                boolean bigShipment = result.getBoolean("envio_grande");
 
-                agencia = new Agencia(id, nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision);
+                agency = new Agency(id, name, packages, surchargeFuel, minimumRefund, bigShipment, comision);
             }
 
-            // System.out.println("Agencia recuperada !!");
+            // System.out.println("Agency recuperada !!");
         } catch (SQLException ex) {
 
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la agencia", ex);
@@ -141,14 +141,14 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgencyImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return agencia;
+        return agency;
     }
 
     @Override
-    public int añadirAgencia(Agencia agencia) {
+    public int addAgency(Agency agency) {
 
         Connection conn = null;
 
@@ -157,8 +157,8 @@ public class AgenciaImpl implements IAgenciaDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision) VALUES('"
-                + agencia.getNombre() + "', " + agencia.getBultos() + ", " + agencia.getRecargo_combustible()
-                + ", " + agencia.getMinimo_reembolso() + ", " + agencia.isEnvio_grande() + ", " + agencia.getComision() + ")";
+                + agency.getName() + "', " + agency.getPackages() + ", " + agency.getSurchargeFuel()
+                + ", " + agency.getMinimumRefund() + ", " + agency.isBigShipment() + ", " + agency.getComision() + ")";
         try {
 
             conn = DBConnection.getConnection();
@@ -180,7 +180,7 @@ public class AgenciaImpl implements IAgenciaDao {
                     // System.out.println("Error de inserción");
                 }
 
-                // System.out.println("Agencia insertada !!");
+                // System.out.println("Agency insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -198,14 +198,14 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgencyImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return id;
     }
 
     @Override
-    public boolean actualizarAgencia(Agencia agencia) {
+    public boolean updateAgency(Agency agencia) {
 
         Connection conn = null;
 
@@ -214,12 +214,12 @@ public class AgenciaImpl implements IAgenciaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`name`='" + agencia.getNombre() + "', `bultos`=" + agencia.getBultos()
-                + ", `recargo_combustible`=" + agencia.getRecargo_combustible()
-                + ", `minimo_reembolso`=" + agencia.getMinimo_reembolso()
-                + ", `envio_grande`=" + agencia.isEnvio_grande()
+                + "`name`='" + agencia.getName() + "', `bultos`=" + agencia.getPackages()
+                + ", `recargo_combustible`=" + agencia.getSurchargeFuel()
+                + ", `minimo_reembolso`=" + agencia.getMinimumRefund()
+                + ", `envio_grande`=" + agencia.isBigShipment()
                 + ", `comision`=" + agencia.getComision()
-                + "', WHERE `id_agencia`=" + agencia.getId_agencia();
+                + "', WHERE `id_agencia`=" + agencia.getAgencyId();
         try {
 
             conn = DBConnection.getConnection();
@@ -231,12 +231,12 @@ public class AgenciaImpl implements IAgenciaDao {
                 // System.out.println("Actualizando agencia ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Agencia actualizada !!");
+                // System.out.println("Agency actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
 
-               AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la agencia", ex);
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido actualizar la agencia", ex);
 
             alert.showAndWait();
 
@@ -250,7 +250,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class
+                Logger.getLogger(AgencyImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -258,7 +258,7 @@ public class AgenciaImpl implements IAgenciaDao {
     }
 
     @Override
-    public boolean borrarAgencia(int agenciaId) {
+    public boolean deleteAgency(int agenciaId) {
 
         Connection conn = null;
 
@@ -281,7 +281,7 @@ public class AgenciaImpl implements IAgenciaDao {
                 // System.out.println("Eliminando agencia-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Agencia eliminada !!");
+                // System.out.println("Agency eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -299,7 +299,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class
+                Logger.getLogger(AgencyImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -307,7 +307,7 @@ public class AgenciaImpl implements IAgenciaDao {
     }
 
     @Override
-    public ObservableList<String> obtenerNombresAgencias() {
+    public ObservableList<String> getAgencyNames() {
         Connection conn = null;
 
         Statement stat = null;
@@ -329,15 +329,15 @@ public class AgenciaImpl implements IAgenciaDao {
                 // System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
                 while (result.next()) {
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    list.add(nombre);
+                    list.add(name);
                 }
             }
 
         } catch (SQLException ex) {
 
-                AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener los nombres de agencias", ex);
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener los nombres de agencias", ex);
 
             alert.showAndWait();
 
@@ -352,7 +352,7 @@ public class AgenciaImpl implements IAgenciaDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(AgenciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AgencyImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;

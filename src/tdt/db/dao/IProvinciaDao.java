@@ -2,26 +2,26 @@
 package tdt.db.dao;
 
 import javafx.collections.ObservableList;
-import tdt.model.Provincia;
+import tdt.model.City;
 
 
 public interface IProvinciaDao {
     
-    public ObservableList<Provincia> obtenerProvincias();
+    public ObservableList<City> obtenerProvincias();
     
-    public Provincia obtenerProvincia(int provinciaId);
+    public City obtenerProvincia(int provinciaId);
     
-    public boolean actualizarProvincia(Provincia provincia);
+    public boolean actualizarProvincia(City provincia);
     
-    public int añadirProvincia(Provincia provincia);
+    public int añadirProvincia(City provincia);
     
     public boolean borrarProvincia(int provinciaId);
     
-    public ObservableList<Provincia> obtenerProvinciasDeZona(int idZona);
+    public ObservableList<City> obtenerProvinciasDeZona(int idZona);
     
-    public ObservableList<Provincia> obtenerProvinciasSinZonaAsociada();
+    public ObservableList<City> obtenerProvinciasSinZonaAsociada();
     
-    public ObservableList<Provincia> obtenerProvinciasZona();
+    public ObservableList<City> obtenerProvinciasZona();
     
     public boolean actualizarProvinciaZona(int id_provincia, String nombre_zona);
     

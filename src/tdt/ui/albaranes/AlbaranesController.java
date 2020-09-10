@@ -38,12 +38,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import tdt.db.dao.IAgenciaDao;
 import tdt.db.dao.IZonaDao;
-import tdt.db.daoImpl.AgenciaImpl;
+import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Albaran;
-import tdt.model.Zona;
+import tdt.model.Zone;
 import tdt.services.AlbaranService;
 import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
@@ -53,6 +52,7 @@ import tdt.services.FileService;
 import tdt.services.ValidatorService;
 import tdt.ui.albaranes.form.AlbaranFormController;
 import tdt.ui.salidaComparacion.SalidaController;
+import tdt.db.dao.IAgencyDao;
 
 public class AlbaranesController implements Initializable {
 
@@ -65,7 +65,7 @@ public class AlbaranesController implements Initializable {
     @FXML
     private TextField txtBuscar;
 
-    private IAgenciaDao agenciaDao;
+    private IAgencyDao agenciaDao;
 
     private IZonaDao zonaDao;
 
@@ -108,9 +108,9 @@ public class AlbaranesController implements Initializable {
 
         });
 
-        agenciaDao = new AgenciaImpl();
+        agenciaDao = new AgencyImpl();
 
-        nombreAgencias = agenciaDao.obtenerNombresAgencias();
+        nombreAgencias = agenciaDao.getAgencyNames();
 
         zonaDao = new ZonaImpl();
 
@@ -158,7 +158,7 @@ public class AlbaranesController implements Initializable {
             String zona = "";
 
             if (data.getZona() != null) {
-                zona = data.getZona().getNombre().toLowerCase();
+                zona = data.getZona().getName().toLowerCase();
             } else {
                 zona = "No se ha encontrado una Zona";
             }
@@ -277,12 +277,12 @@ public class AlbaranesController implements Initializable {
 
                 cell.txtPeso.setText(albaran.getPeso());
 
-                Zona zona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                Zone zona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
 
                 albaran.setZona(zona);
 
                 if (albaran.getZona() != null) {
-                    cell.lbZona.setText(albaran.getZona().getNombre());
+                    cell.lbZona.setText(albaran.getZona().getName());
 
                 }
 
@@ -298,13 +298,13 @@ public class AlbaranesController implements Initializable {
 
                         FileService.actualizarAlbaran(albaran);
 
-                        Zona nuevaZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                        Zone nuevaZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
 
                         if (nuevaZona != null) {
 
                             albaran.setZona(nuevaZona);
 
-                            cell.lbZona.setText(albaran.getZona().getNombre());
+                            cell.lbZona.setText(albaran.getZona().getName());
                         }
                     }
 
@@ -356,11 +356,11 @@ public class AlbaranesController implements Initializable {
 
                         cell.comboAgencia.setDisable(true);
 
-                        Zona newZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                        Zone newZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
 
                         albaran.setZona(newZona);
 
-                        cell.lbZona.setText(albaran.getZona().getNombre());
+                        cell.lbZona.setText(albaran.getZona().getName());
 
                         cell.lbZona.setStyle(null);
 

@@ -12,9 +12,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
 import tdt.db.dao.ITarifaDao;
-import tdt.model.AgenciaZona;
-import tdt.model.ComparadorTarifa;
-import tdt.model.Tarifa;
+import tdt.model.AgencyZone;
+import tdt.model.RateComparator;
+import tdt.model.Rate;
 import tdt.services.AlertExceptionService;
 
 public class TarifaImpl implements ITarifaDao {
@@ -22,14 +22,14 @@ public class TarifaImpl implements ITarifaDao {
     private final String TABLE_NAME = "TARIFAS";
 
     @Override
-    public ObservableList<Tarifa> obtenerTarifasUI(int idAgencia, int idZona) {
+    public ObservableList<Rate> obtenerTarifasUI(int idAgencia, int idZona) {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = " SELECT kg, id_agencia, id_zona, precio FROM " + TABLE_NAME;
 
-        ObservableList<Tarifa> list = FXCollections.observableArrayList();
+        ObservableList<Rate> list = FXCollections.observableArrayList();
 
         try {
 
@@ -50,7 +50,7 @@ public class TarifaImpl implements ITarifaDao {
 
                     double precio = result.getDouble("precio");
 
-                    list.add(new Tarifa(kg, idAgencia, idZona, idAgenciaZona, precio));
+                    list.add(new Rate(kg, idAgencia, idZona, idAgenciaZona, precio));
                 }
             }
 
@@ -78,17 +78,17 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ArrayList<Tarifa> obtenerTarifasPorKilos(int idZona, int kg) {
+    public ArrayList<Rate> obtenerTarifasPorKilos(int idZona, int kg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Tarifa obtenerTarifa(int idAgencia, int idZona, int kg) {
+    public Rate obtenerTarifa(int idAgencia, int idZona, int kg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean añadirTarifa(Tarifa tarifa) {
+    public boolean añadirTarifa(Rate tarifa) {
         Connection conn = null;
 
         Statement stat = null;
@@ -96,7 +96,7 @@ public class TarifaImpl implements ITarifaDao {
         boolean result = false;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (kg, id_agencia, id_zona, precio) VALUES("
-                + tarifa.getKg() + ", " + tarifa.getIdAgencia() + ", " + tarifa.getIdZona() + ", " + tarifa.getPrecio() + ")";
+                + tarifa.getKg() + ", " + tarifa.getAgencyId() + ", " + tarifa.getZoneId() + ", " + tarifa.getPrice() + ")";
         try {
 
             conn = DBConnection.getConnection();
@@ -105,12 +105,12 @@ public class TarifaImpl implements ITarifaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando Tarifa-----------> " + sql);
+                // System.out.println("Insertando Rate-----------> " + sql);
                 stat.executeUpdate(sql);
 
                 result = true;
 
-                // System.out.println("Tarifa insertada !!");
+                // System.out.println("Rate insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -135,7 +135,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean actualizarTarifa(Tarifa tarifa) {
+    public boolean actualizarTarifa(Rate tarifa) {
         Connection conn = null;
 
         Statement stat = null;
@@ -143,8 +143,8 @@ public class TarifaImpl implements ITarifaDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "precio= " + tarifa.getPrecio()
-                + " WHERE kg = " + tarifa.getKg() + " AND id_zona = " + tarifa.getIdZona() + " AND id_agencia = " + tarifa.getIdAgencia();
+                + "precio= " + tarifa.getPrice()
+                + " WHERE kg = " + tarifa.getKg() + " AND id_zona = " + tarifa.getZoneId() + " AND id_agencia = " + tarifa.getAgencyId();
         try {
 
             conn = DBConnection.getConnection();
@@ -153,10 +153,10 @@ public class TarifaImpl implements ITarifaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Tarifa ---------------> " + sql);
+                // System.out.println("Actualizando Rate ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Tarifa actualizada !!");
+                // System.out.println("Rate actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -198,10 +198,10 @@ public class TarifaImpl implements ITarifaDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Borrando Tarifa ---------------> " + sql);
+                // System.out.println("Borrando Rate ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Tarifa borrada !!");
+                // System.out.println("Rate borrada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -227,7 +227,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ComparadorTarifa compararTarifasAlbaran(double peso, int idZona, int idAgencia) {
+    public RateComparator compararTarifasAlbaran(double peso, int idZona, int idAgencia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -240,7 +240,7 @@ public class TarifaImpl implements ITarifaDao {
                 + " WHERE tar.kg >=" + peso + " AND tar.id_zona=" + idZona
                 + " AND tar.id_agencia=" + idAgencia + " GROUP BY tar.id_agencia";
 
-        ComparadorTarifa resultado = null;
+        RateComparator resultado = null;
 
         try {
 
@@ -277,7 +277,7 @@ public class TarifaImpl implements ITarifaDao {
 
                     int maxKilos = result.getInt("max_kilos");
 
-                    resultado = new ComparadorTarifa(kg, nombreAgencia, idAgencia, idZona, precio, plazoEntrega, bultos, recargo, minimoReembolso, envioGrande, comision, incremento, maxKilos);
+                    resultado = new RateComparator(kg, nombreAgencia, idAgencia, idZona, precio, plazoEntrega, bultos, recargo, minimoReembolso, envioGrande, comision, incremento, maxKilos);
                 }
             }
 
@@ -305,7 +305,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<AgenciaZona> obtenerAgenciasPorZona(int idZona) {
+    public ObservableList<AgencyZone> obtenerAgenciasPorZona(int idZona) {
 
         Connection conn = null;
 
@@ -314,7 +314,7 @@ public class TarifaImpl implements ITarifaDao {
         String sql = "SELECT az.id_agencia, az.incremento, az.plazo_entrega, az.max_kilos, a.nombre, a.bultos, a.envio_grande, a.comision  "
                 + "FROM agencias_zonas az LEFT JOIN  agencias a USING(id_agencia) WHERE az.id_zona=" + idZona;
 
-        ObservableList<AgenciaZona> list = FXCollections.observableArrayList();
+        ObservableList<AgencyZone> list = FXCollections.observableArrayList();
 
         try {
 
@@ -346,7 +346,7 @@ public class TarifaImpl implements ITarifaDao {
 
                     double comision = result.getDouble("comision");
 
-                    list.add(new AgenciaZona(idAgencia, idZona, incremento, plazoEntrega, maxKilos, nombre, bultos, envioGrande, comision));
+                    list.add(new AgencyZone(idAgencia, idZona, incremento, plazoEntrega, maxKilos, nombre, bultos, envioGrande, comision));
                 }
             }
 
@@ -374,14 +374,14 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<Tarifa> obtenerTarifasPorZonaAgencia(int idZona, int idAgencia) {
+    public ObservableList<Rate> obtenerTarifasPorZonaAgencia(int idZona, int idAgencia) {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = "SELECT kg, precio FROM " + TABLE_NAME + " WHERE id_zona=" + idZona + " AND id_agencia=" + idAgencia;
 
-        ObservableList<Tarifa> list = FXCollections.observableArrayList();
+        ObservableList<Rate> list = FXCollections.observableArrayList();
 
         try {
 
@@ -400,7 +400,7 @@ public class TarifaImpl implements ITarifaDao {
 
                     double precio = result.getDouble("precio");
 
-                    list.add(new Tarifa(kg, idAgencia, idZona, precio));
+                    list.add(new Rate(kg, idAgencia, idZona, precio));
                 }
             }
 
@@ -678,7 +678,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<Tarifa> copiarTarifa(String nombreAgencia, String nombreZona) {
+    public ObservableList<Rate> copiarTarifa(String nombreAgencia, String nombreZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -688,7 +688,7 @@ public class TarifaImpl implements ITarifaDao {
                 + "LEFT JOIN zonas z on tar.id_zona = z.id_zona "
                 + "WHERE z.nombre_zona='" + nombreZona + "' AND a.nombre='" + nombreAgencia + "'";
 
-        ObservableList<Tarifa> list = FXCollections.observableArrayList();
+        ObservableList<Rate> list = FXCollections.observableArrayList();
 
         try {
 
@@ -706,7 +706,7 @@ public class TarifaImpl implements ITarifaDao {
                     int kg = result.getInt("kg");
                     double precio = result.getDouble("precio");
 
-                    list.add(new Tarifa(kg, precio));
+                    list.add(new Rate(kg, precio));
                 }
             }
 
@@ -734,7 +734,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Tarifa> values) {
+    public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Rate> values) {
         Connection conn = null;
 
         PreparedStatement ps = null;
@@ -752,12 +752,12 @@ public class TarifaImpl implements ITarifaDao {
                 ps = conn.prepareStatement(sql);
 
                 // System.out.println("Insertando Agencia-Zona -----------> " + sql);
-                for (Tarifa tar : values) {
+                for (Rate tar : values) {
 
                     ps.setInt(1, tar.getKg());
                     ps.setInt(2, idZona);
                     ps.setInt(3, idAgencia);
-                    ps.setDouble(4, tar.getPrecio());
+                    ps.setDouble(4, tar.getPrice());
                     ps.addBatch();
                 }
 
@@ -790,14 +790,14 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean borrarTarifa(Tarifa tar) {
+    public boolean borrarTarifa(Rate tar) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "DELETE FROM tarifas WHERE kg=" + tar.getKg() + " AND id_agencia=" + tar.getIdAgencia() + " AND id_zona=" + tar.getIdZona();
+        String sql = "DELETE FROM tarifas WHERE kg=" + tar.getKg() + " AND id_agencia=" + tar.getAgencyId() + " AND id_zona=" + tar.getZoneId();
         try {
 
             conn = DBConnection.getConnection();

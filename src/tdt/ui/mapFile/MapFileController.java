@@ -12,25 +12,25 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
-import tdt.model.VariableArchivo;
+import tdt.model.FileVariable;
 
 public class MapFileController implements Initializable {
 
     @FXML
-    private TableView<VariableArchivo> mapFileTable;
+    private TableView<FileVariable> mapFileTable;
 
     @FXML
-    private TableColumn<VariableArchivo, String> key;
+    private TableColumn<FileVariable, String> key;
 
     @FXML
-    private TableColumn<VariableArchivo, Integer> start;
+    private TableColumn<FileVariable, Integer> start;
 
     @FXML
-    private TableColumn<VariableArchivo, Integer> end;
+    private TableColumn<FileVariable, Integer> end;
 
     private IVariableArchivoDao variableDao;
 
-    private ObservableList<VariableArchivo> list;
+    private ObservableList<FileVariable> list;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,9 +57,9 @@ public class MapFileController implements Initializable {
     }
 
     @FXML
-    private void saveStart(TableColumn.CellEditEvent<VariableArchivo, Integer> event) {
+    private void saveStart(TableColumn.CellEditEvent<FileVariable, Integer> event) {
 
-        VariableArchivo newValue = event.getRowValue();
+        FileVariable newValue = event.getRowValue();
 
         newValue.setStart(event.getNewValue());
 
@@ -67,9 +67,9 @@ public class MapFileController implements Initializable {
     }
 
     @FXML
-    private void saveEnd(TableColumn.CellEditEvent<VariableArchivo, Integer> event) {
+    private void saveEnd(TableColumn.CellEditEvent<FileVariable, Integer> event) {
 
-        VariableArchivo newValue = event.getRowValue();
+        FileVariable newValue = event.getRowValue();
 
         newValue.setEnd(event.getNewValue());
 
@@ -77,7 +77,7 @@ public class MapFileController implements Initializable {
     }
 
     @FXML
-    private void iniStartEdit(TableColumn.CellEditEvent<VariableArchivo, Integer> event) {
+    private void iniStartEdit(TableColumn.CellEditEvent<FileVariable, Integer> event) {
 
     }
 }

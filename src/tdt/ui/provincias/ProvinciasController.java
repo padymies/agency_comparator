@@ -14,16 +14,16 @@ import tdt.db.dao.IProvinciaDao;
 import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.db.daoImpl.ZonaImpl;
-import tdt.model.Provincia;
+import tdt.model.City;
 
 public class ProvinciasController implements Initializable {
 
     @FXML
-    private TableView<Provincia> table;
+    private TableView<City> table;
     @FXML
-    private TableColumn<Provincia, String> nombre;
+    private TableColumn<City, String> nombre;
     @FXML
-    private TableColumn<Provincia, String> codigo;
+    private TableColumn<City, String> codigo;
     @FXML
     private TableColumn<?, String> zona;
 
@@ -31,7 +31,7 @@ public class ProvinciasController implements Initializable {
 
     private IZonaDao zonaDao;
 
-    private ObservableList<Provincia> listaProvincias;
+    private ObservableList<City> listaProvincias;
 
     private ObservableList<String> nombresZonas;
 
@@ -72,7 +72,7 @@ public class ProvinciasController implements Initializable {
         
         zona.setOnEditCommit((value) -> {
 
-            Provincia prov = (Provincia) value.getRowValue();
+            City prov = (City) value.getRowValue();
 
             provinciaDao.actualizarProvinciaZona(prov.getId(), value.getNewValue());
 

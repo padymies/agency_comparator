@@ -3,28 +3,28 @@ package tdt.db.dao;
 
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
-import tdt.model.AgenciaZona;
-import tdt.model.ComparadorTarifa;
-import tdt.model.Tarifa;
+import tdt.model.AgencyZone;
+import tdt.model.RateComparator;
+import tdt.model.Rate;
 
 
 public interface ITarifaDao {
 
-    public ObservableList<Tarifa> obtenerTarifasUI(int idAgencia, int idZona);
+    public ObservableList<Rate> obtenerTarifasUI(int idAgencia, int idZona);
     
-    public ArrayList<Tarifa> obtenerTarifasPorKilos(int idZona, int kg);
+    public ArrayList<Rate> obtenerTarifasPorKilos(int idZona, int kg);
 
-    public Tarifa obtenerTarifa(int idAgencia, int idZona, int kg);
+    public Rate obtenerTarifa(int idAgencia, int idZona, int kg);
     
-    public ObservableList<Tarifa> obtenerTarifasPorZonaAgencia(int idZona, int idAgencia);
+    public ObservableList<Rate> obtenerTarifasPorZonaAgencia(int idZona, int idAgencia);
 
-    public boolean añadirTarifa(Tarifa tarifa);
+    public boolean añadirTarifa(Rate tarifa);
 
-    public boolean actualizarTarifa(Tarifa tarifa);
+    public boolean actualizarTarifa(Rate tarifa);
     
-    public ComparadorTarifa compararTarifasAlbaran(double peso, int idZona, int idAgencia);
+    public RateComparator compararTarifasAlbaran(double peso, int idZona, int idAgencia);
     
-    public ObservableList<AgenciaZona> obtenerAgenciasPorZona(int IdZona);
+    public ObservableList<AgencyZone> obtenerAgenciasPorZona(int IdZona);
     
     public ObservableList<String> obtenerNombresAgenciasPorZona(String nombreZona);
     
@@ -36,11 +36,11 @@ public interface ITarifaDao {
     
     public int obtenerMaxKilo(int idAgencia, int idZona);
     
-    public ObservableList<Tarifa> copiarTarifa(String nombreAgencia, String nombreZona);
+    public ObservableList<Rate> copiarTarifa(String nombreAgencia, String nombreZona);
     
-    public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Tarifa> values);
+    public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Rate> values);
     
     public boolean borrarTarifasDeAgencia(int idZona, int idAgencia);
     
-    public boolean borrarTarifa(Tarifa tar);
+    public boolean borrarTarifa(Rate tar);
 }
