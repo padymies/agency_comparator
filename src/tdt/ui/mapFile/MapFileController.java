@@ -10,9 +10,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
-import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.FileVariable;
+import tdt.db.dao.IFileVariableDao;
 
 public class MapFileController implements Initializable {
 
@@ -28,7 +28,7 @@ public class MapFileController implements Initializable {
     @FXML
     private TableColumn<FileVariable, Integer> end;
 
-    private IVariableArchivoDao variableDao;
+    private IFileVariableDao variableDao;
 
     private ObservableList<FileVariable> list;
 
@@ -43,7 +43,7 @@ public class MapFileController implements Initializable {
 
         variableDao = new VariableArchivoImpl();
 
-        list = variableDao.ObservableVariableArchivo();
+        list = variableDao.observableFileVariable();
 
         mapFileTable.setItems(list);
 
@@ -63,7 +63,7 @@ public class MapFileController implements Initializable {
 
         newValue.setStart(event.getNewValue());
 
-        variableDao.actualizarVariableArchivo(newValue);
+        variableDao.updateFileVariable(newValue);
     }
 
     @FXML
@@ -73,7 +73,7 @@ public class MapFileController implements Initializable {
 
         newValue.setEnd(event.getNewValue());
 
-        variableDao.actualizarVariableArchivo(newValue);
+        variableDao.updateFileVariable(newValue);
     }
 
     @FXML

@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import javafx.collections.ObservableList;
 import tdt.db.dao.IAppConfig;
-import tdt.db.dao.IExclusionesDao;
-import tdt.db.dao.ITarifaDao;
-import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.AppConfigImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
@@ -19,16 +16,19 @@ import tdt.model.Albaran;
 import tdt.model.RateComparator;
 import tdt.model.Exclusion;
 import tdt.db.dao.IAgencyDao;
+import tdt.db.dao.IExclusionDao;
+import tdt.db.dao.IRateDao;
+import tdt.db.dao.IZoneDao;
 
 public class ComparatorService {
 
-    private IExclusionesDao exclusionesDao;
+    private IExclusionDao exclusionesDao;
 
     private IAgencyDao agenciasDao;
 
-    private ITarifaDao tarifaDao;
+    private IRateDao tarifaDao;
 
-    private IZonaDao zonaDao;
+    private IZoneDao zonaDao;
 
     private IAppConfig configDao;
 
@@ -49,7 +49,7 @@ public class ComparatorService {
             // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
             if (albaran.getMEJOR_AGENCIA() == null) {
 
-                ObservableList<AgencyZone> listaAgencias = tarifaDao.obtenerAgenciasPorZona(albaran.getZona().getZoneId());
+                ObservableList<AgencyZone> listaAgencias = tarifaDao.getAgenciesByZone(albaran.getZona().getZoneId());
 
                 checkExclusiones(albaran, listaAgencias);
 
@@ -59,7 +59,7 @@ public class ComparatorService {
                     for (AgencyZone agenciaZona : listaAgencias) {
 
                         // Kilo mayor de la tarifa de la agencia_zona
-                        int maxKilos = tarifaDao.obtenerMaxKilo(agenciaZona.getAgencyId(), agenciaZona.getZoneId());
+                        int maxKilos = tarifaDao.getMaxKilo(agenciaZona.getAgencyId(), agenciaZona.getZoneId());
 
                         double peso = -1;
                         try {
@@ -77,12 +77,12 @@ public class ComparatorService {
                             if (peso != -1 && (agenciaZona.getMaxKilos() == 0 || agenciaZona.getMaxKilos() >= peso)) {
                                 if (maxKilos >= peso) {
 
-                                    result = tarifaDao.compararTarifasAlbaran(peso, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
+                                    result = tarifaDao.ratesNotesCompare(peso, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
 
                                 } else {
                                     if (agenciaZona.getIncrease() > 0) { // SE APLICA INCREMENTO SI TIENE
 
-                                        result = tarifaDao.compararTarifasAlbaran(maxKilos, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
+                                        result = tarifaDao.ratesNotesCompare(maxKilos, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
 
                                         result.setPrice(result.getPrice() + (peso - maxKilos * agenciaZona.getIncrease()));
 
@@ -151,7 +151,7 @@ public class ComparatorService {
                     });*/
                     RateComparator first = resultadoList.get(0);
 
-                    double porcentajeUrgencia = configDao.getPorcentajeUrgencia();
+                    double porcentajeUrgencia = configDao.getUrgencyPercent();
 
                     double precioUrgencia = 0;
 
@@ -186,7 +186,7 @@ public class ComparatorService {
 
         exclusionesDao = new ExclusionesImpl();
 
-        Exclusion ex = exclusionesDao.obtenerExclusionPorCP(albaran.getPostalDestino());
+        Exclusion ex = exclusionesDao.getExclusionByPostalCode(albaran.getPostalDestino());
 
         if (ex != null) {
             switch (ex.getInclusion_exclusion()) {

@@ -10,11 +10,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-import tdt.db.dao.IProvinciaDao;
-import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.City;
+import tdt.db.dao.ICityDao;
+import tdt.db.dao.IZoneDao;
 
 public class ProvinciasController implements Initializable {
 
@@ -27,9 +27,9 @@ public class ProvinciasController implements Initializable {
     @FXML
     private TableColumn<?, String> zona;
 
-    private IProvinciaDao provinciaDao;
+    private ICityDao provinciaDao;
 
-    private IZonaDao zonaDao;
+    private IZoneDao zonaDao;
 
     private ObservableList<City> listaProvincias;
 
@@ -42,11 +42,11 @@ public class ProvinciasController implements Initializable {
 
         provinciaDao = new ProvinciaImpl();
 
-        nombresZonas = zonaDao.obtenerNombresZonas();
+        nombresZonas = zonaDao.getZoneNames();
         
         nombresZonas.add(0, "Sin zona");
 
-        listaProvincias = provinciaDao.obtenerProvinciasZona();
+        listaProvincias = provinciaDao.getZoneCities();
 
         nombre.setCellValueFactory(new PropertyValueFactory("nombre"));
 
@@ -74,7 +74,7 @@ public class ProvinciasController implements Initializable {
 
             City prov = (City) value.getRowValue();
 
-            provinciaDao.actualizarProvinciaZona(prov.getId(), value.getNewValue());
+            provinciaDao.updateZoneCity(prov.getId(), value.getNewValue());
 
         });
 

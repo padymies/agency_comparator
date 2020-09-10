@@ -1,24 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.db.dao;
 
-/**
- *
- * @author Usuario
- */
+
 public interface IAppConfig {
     
     
-    public double getPorcentajeUrgencia();
+    public double getUrgencyPercent();
     
-    public boolean actualizarPorcentajeUrgencia(double porcentaje);
+    public boolean updateUrgencyPercent(double percent);
     
-    public boolean borrarPorcentajeUrgencia();
+    public boolean deleteUrgencyPercent();
     
     public String getPassAdmin();
     
-    public boolean actualizarPassAdmin(String pass);
+    public boolean updatePassAdmin(String pass);
 }

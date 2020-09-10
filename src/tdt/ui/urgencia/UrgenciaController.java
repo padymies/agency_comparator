@@ -44,7 +44,7 @@ public class UrgenciaController implements Initializable {
         ConfigStage.setIcon(btnUrgencia, "check.png", 12);
         configDao = new AppConfigImpl();
 
-        urgencia = configDao.getPorcentajeUrgencia();
+        urgencia = configDao.getUrgencyPercent();
 
         txtUrgencia.setText(String.valueOf(urgencia));
     }
@@ -54,7 +54,7 @@ public class UrgenciaController implements Initializable {
         try {
             double newUrgencia = Double.parseDouble(txtUrgencia.getText().trim());
 
-            configDao.actualizarPorcentajeUrgencia(newUrgencia);
+            configDao.updateUrgencyPercent(newUrgencia);
 
             ((Node) event.getSource()).getScene().getWindow().hide();
 

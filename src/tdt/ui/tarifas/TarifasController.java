@@ -12,12 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
 import tdt.services.ConfigStage;
 import tdt.ui.tarifas.tabContent.TabContentController;
+import tdt.db.dao.IZoneDao;
 
 /**
  * FXML Controller class
@@ -32,7 +32,7 @@ public class TarifasController implements Initializable {
     @FXML
     private Button btnAddZona;
 
-    private IZonaDao zonaDao;
+    private IZoneDao zonaDao;
 
     private ObservableList<Zone> listaZonas;
 
@@ -43,7 +43,7 @@ public class TarifasController implements Initializable {
 
         zonaDao = new ZonaImpl();
 
-        listaZonas = zonaDao.obtenerZonasUI();
+        listaZonas = zonaDao.getZonesUI();
 
         ConfigStage.setIcon(btnAddZona, "add.png", 16);
 

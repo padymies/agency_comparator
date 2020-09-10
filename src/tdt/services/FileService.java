@@ -12,16 +12,16 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
 import tdt.model.FileVariable;
+import tdt.db.dao.IFileVariableDao;
 
 public class FileService {
 
     private static File file;
 
-    private static IVariableArchivoDao variableDao;
+    private static IFileVariableDao variableDao;
 
     public static ArrayList<String> extractRegisters(File file) {
 

@@ -14,20 +14,20 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.IExclusionesDao;
 import tdt.model.Exclusion;
 import tdt.services.AlertExceptionService;
+import tdt.db.dao.IExclusionDao;
 
 /**
  *
  * @author Usuario
  */
-public class ExclusionesImpl implements IExclusionesDao {
+public class ExclusionesImpl implements IExclusionDao {
 
     String TABLE_NAME = "exclusiones_postales";
 
     @Override
-    public ObservableList<Exclusion> obtenerExclusiones() {
+    public ObservableList<Exclusion> getExclusions() {
         Connection conn = null;
 
         Statement stat = null;
@@ -85,7 +85,7 @@ public class ExclusionesImpl implements IExclusionesDao {
     }
 
     @Override
-    public Exclusion obtenerExclusion(int id) {
+    public Exclusion getExclusion(int id) {
         Connection conn = null;
 
         Statement stat = null;
@@ -142,7 +142,7 @@ public class ExclusionesImpl implements IExclusionesDao {
     }
 
     @Override
-    public int añadirExclusion(Exclusion exclusion) {
+    public int addExclusion(Exclusion exclusion) {
         Connection conn = null;
 
         Statement stat = null;
@@ -199,7 +199,7 @@ public class ExclusionesImpl implements IExclusionesDao {
     }
 
     @Override
-    public boolean actualizarExclusiones(Exclusion exclusion) {
+    public boolean updateExclusions(Exclusion exclusion) {
         Connection conn = null;
 
         Statement stat = null;
@@ -248,7 +248,7 @@ public class ExclusionesImpl implements IExclusionesDao {
     }
 
     @Override
-    public boolean borrarExclusion(int exclusionId) {
+    public boolean deleteExclusion(int exclusionId) {
         Connection conn = null;
 
         Statement stat = null;
@@ -297,7 +297,7 @@ public class ExclusionesImpl implements IExclusionesDao {
     }
 
     @Override
-    public Exclusion obtenerExclusionPorCP(String cp) {
+    public Exclusion getExclusionByPostalCode(String cp) {
         Connection conn = null;
 
         Statement stat = null;

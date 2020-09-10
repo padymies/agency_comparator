@@ -14,20 +14,20 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.IZonaDao;
 import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
+import tdt.db.dao.IZoneDao;
 
 /**
  *
  * @author Usuario
  */
-public class ZonaImpl implements IZonaDao {
+public class ZonaImpl implements IZoneDao {
 
     private final String TABLE_NAME = "ZONAS";
 
     @Override
-    public ObservableList<Zone> obtenerZonasUI() {
+    public ObservableList<Zone> getZonesUI() {
         Connection conn = null;
 
         Statement stat = null;
@@ -85,7 +85,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public Zone obtenerZona(int idZona) {
+    public Zone getZone(int idZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -142,7 +142,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public int añadirZona(Zone zona) {
+    public int addZone(Zone zona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -198,7 +198,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public boolean actualizarZona(Zone zona) {
+    public boolean updateZone(Zone zona) {
 
         Connection conn = null;
 
@@ -247,7 +247,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public boolean borrarZona(int zonaId) {
+    public boolean deleteZone(int zonaId) {
 
         Connection conn = null;
 
@@ -296,7 +296,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public ObservableList<String> obtenerNombresZonas() {
+    public ObservableList<String> getZoneNames() {
         Connection conn = null;
 
         Statement stat = null;
@@ -348,7 +348,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public Zone obtenerZonaPorProvincia(String cp) {
+    public Zone getZoneByCity(String cp) {
         Connection conn = null;
 
         Statement stat = null;
@@ -409,7 +409,7 @@ public class ZonaImpl implements IZonaDao {
     }
 
     @Override
-    public Zone obtenerZonaPorPais(String nombrePais) {
+    public Zone getZoneByCountry(String nombrePais) {
         Connection conn = null;
 
         Statement stat = null;

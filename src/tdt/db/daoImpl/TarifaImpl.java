@@ -11,18 +11,18 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.ITarifaDao;
 import tdt.model.AgencyZone;
 import tdt.model.RateComparator;
 import tdt.model.Rate;
 import tdt.services.AlertExceptionService;
+import tdt.db.dao.IRateDao;
 
-public class TarifaImpl implements ITarifaDao {
+public class TarifaImpl implements IRateDao {
 
     private final String TABLE_NAME = "TARIFAS";
 
     @Override
-    public ObservableList<Rate> obtenerTarifasUI(int idAgencia, int idZona) {
+    public ObservableList<Rate> getRatesUI(int idAgencia, int idZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -78,17 +78,17 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ArrayList<Rate> obtenerTarifasPorKilos(int idZona, int kg) {
+    public ArrayList<Rate> getRatesByKilos(int idZona, int kg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Rate obtenerTarifa(int idAgencia, int idZona, int kg) {
+    public Rate getRate(int idAgencia, int idZona, int kg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean añadirTarifa(Rate tarifa) {
+    public boolean addRate(Rate tarifa) {
         Connection conn = null;
 
         Statement stat = null;
@@ -135,7 +135,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean actualizarTarifa(Rate tarifa) {
+    public boolean updateRate(Rate tarifa) {
         Connection conn = null;
 
         Statement stat = null;
@@ -182,7 +182,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean borrarTarifasDeAgencia(int idZona, int idAgencia) {
+    public boolean deleteRatesFromAgency(int idZona, int idAgencia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -227,7 +227,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public RateComparator compararTarifasAlbaran(double peso, int idZona, int idAgencia) {
+    public RateComparator ratesNotesCompare(double peso, int idZona, int idAgencia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -305,7 +305,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<AgencyZone> obtenerAgenciasPorZona(int idZona) {
+    public ObservableList<AgencyZone> getAgenciesByZone(int idZona) {
 
         Connection conn = null;
 
@@ -374,7 +374,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<Rate> obtenerTarifasPorZonaAgencia(int idZona, int idAgencia) {
+    public ObservableList<Rate> getRateByAgencyZone(int idZona, int idAgencia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -428,7 +428,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean añadirAgenciaZona(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
+    public boolean addZoneAgency(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
         Connection conn = null;
 
         Statement stat = null;
@@ -475,7 +475,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean actualizarAgenciaZona(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
+    public boolean updateZoneAgency(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
         Connection conn = null;
 
         Statement stat = null;
@@ -523,7 +523,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean borrarAgenciaZona(int idAgencia, int idZona) {
+    public boolean deleteZoneAgency(int idAgencia, int idZona) {
 
         Connection conn = null;
 
@@ -572,7 +572,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public int obtenerMaxKilo(int idAgencia, int idZona) {
+    public int getMaxKilo(int idAgencia, int idZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -624,7 +624,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<String> obtenerNombresAgenciasPorZona(String nombreZona) {
+    public ObservableList<String> getAgenciesNameByZone(String nombreZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -678,7 +678,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public ObservableList<Rate> copiarTarifa(String nombreAgencia, String nombreZona) {
+    public ObservableList<Rate> copyRate(String nombreAgencia, String nombreZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -734,7 +734,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean pegarTarifa(int idZona, int idAgencia, ObservableList<Rate> values) {
+    public boolean pasteRate(int idZona, int idAgencia, ObservableList<Rate> values) {
         Connection conn = null;
 
         PreparedStatement ps = null;
@@ -790,7 +790,7 @@ public class TarifaImpl implements ITarifaDao {
     }
 
     @Override
-    public boolean borrarTarifa(Rate tar) {
+    public boolean deleteRate(Rate tar) {
         Connection conn = null;
 
         Statement stat = null;

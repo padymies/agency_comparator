@@ -14,20 +14,20 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.IProvinciaDao;
 import tdt.model.City;
 import tdt.services.AlertExceptionService;
+import tdt.db.dao.ICityDao;
 
 /**
  *
  * @author Usuario
  */
-public class ProvinciaImpl implements IProvinciaDao {
+public class ProvinciaImpl implements ICityDao {
 
     private final String TABLE_NAME = "provincias";
 
     @Override
-    public ObservableList<City> obtenerProvincias() {
+    public ObservableList<City> getCities() {
         Connection conn = null;
 
         Statement stat = null;
@@ -82,7 +82,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public City obtenerProvincia(int provinciaId) {
+    public City getCity(int provinciaId) {
         Connection conn = null;
 
         Statement stat = null;
@@ -136,7 +136,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public boolean actualizarProvincia(City provincia) {
+    public boolean updateCity(City provincia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -184,7 +184,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public int añadirProvincia(City provincia) {
+    public int addCity(City provincia) {
         Connection conn = null;
 
         Statement stat = null;
@@ -243,7 +243,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public boolean borrarProvincia(int provinciaId) {
+    public boolean deleteCity(int provinciaId) {
         Connection conn = null;
 
         Statement stat = null;
@@ -291,7 +291,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<City> obtenerProvinciasDeZona(int idZona) {
+    public ObservableList<City> getCitiesByZone(int idZona) {
         Connection conn = null;
 
         Statement stat = null;
@@ -347,7 +347,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<City> obtenerProvinciasSinZonaAsociada() {
+    public ObservableList<City> getCitiesNoZone() {
 
         Connection conn = null;
 
@@ -404,7 +404,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public ObservableList<City> obtenerProvinciasZona() {
+    public ObservableList<City> getZoneCities() {
         Connection conn = null;
 
         Statement stat = null;
@@ -466,7 +466,7 @@ public class ProvinciaImpl implements IProvinciaDao {
     }
 
     @Override
-    public boolean actualizarProvinciaZona(int id_provincia, String nombre_zona) {
+    public boolean updateZoneCity(int id_provincia, String nombre_zona) {
         Connection conn = null;
 
         Statement stat = null;

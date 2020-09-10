@@ -3,14 +3,14 @@ package tdt.services;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Albaran;
 import tdt.model.Zone;
+import tdt.db.dao.IZoneDao;
 
 public class AlbaranService {
 
-    private static IZonaDao zonaDao;
+    private static IZoneDao zonaDao;
 
     public static Zone setAlbaranZona(Albaran albaran, Label lbZona, ListView list) {
 
@@ -35,15 +35,15 @@ public class AlbaranService {
 
         if (pais.toLowerCase().equals("españa")) {
 
-            zona = zonaDao.obtenerZonaPorProvincia(cp);
+            zona = zonaDao.getZoneByCity(cp);
             
             if(zona == null) {
                 cp = albaran.getPostalDestino().substring(0, 2);
-                zona = zonaDao.obtenerZonaPorProvincia(cp);
+                zona = zonaDao.getZoneByCity(cp);
             }
             
         } else {
-            zona = zonaDao.obtenerZonaPorPais(albaran.getPais());
+            zona = zonaDao.getZoneByCountry(albaran.getPais());
         }
 
         if (zona != null) {

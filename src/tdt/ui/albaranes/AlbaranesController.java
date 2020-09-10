@@ -38,7 +38,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import tdt.db.dao.IZonaDao;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Albaran;
@@ -53,6 +52,7 @@ import tdt.services.ValidatorService;
 import tdt.ui.albaranes.form.AlbaranFormController;
 import tdt.ui.salidaComparacion.SalidaController;
 import tdt.db.dao.IAgencyDao;
+import tdt.db.dao.IZoneDao;
 
 public class AlbaranesController implements Initializable {
 
@@ -67,7 +67,7 @@ public class AlbaranesController implements Initializable {
 
     private IAgencyDao agenciaDao;
 
-    private IZonaDao zonaDao;
+    private IZoneDao zonaDao;
 
     private ObservableList<String> nombreAgencias;
 
@@ -114,7 +114,7 @@ public class AlbaranesController implements Initializable {
 
         zonaDao = new ZonaImpl();
 
-        nombreZonas = zonaDao.obtenerNombresZonas();
+        nombreZonas = zonaDao.getZoneNames();
 
         txtBuscar.setOnKeyPressed(event -> {
 

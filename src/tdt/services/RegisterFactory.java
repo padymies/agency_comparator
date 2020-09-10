@@ -2,16 +2,16 @@ package tdt.services;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import tdt.db.dao.IVariableArchivoDao;
 import tdt.db.daoImpl.VariableArchivoImpl;
 import tdt.model.Albaran;
 import tdt.model.FileVariable;
+import tdt.db.dao.IFileVariableDao;
 
 public class RegisterFactory {
 
     private static Albaran albaran;
 
-    private static IVariableArchivoDao variableDao;
+    private static IFileVariableDao variableDao;
 
     private static HashMap<String, FileVariable> list;
 
@@ -19,7 +19,7 @@ public class RegisterFactory {
 
         variableDao = new VariableArchivoImpl();
 
-        list = variableDao.HashMapVariableArchivo();
+        list = variableDao.hashMapFileVariable();
 
         try {
             // ==== SE RESTA 1 A CADA VALOR PORQUE EL CLIENTE EMPIEZA A CONTAR EN 1 Y NO EN 0 COMO UN ARRAY ==== //

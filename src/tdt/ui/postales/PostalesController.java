@@ -16,10 +16,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import tdt.db.dao.IProvinciaDao;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.model.City;
 import tdt.services.AlertService;
+import tdt.db.dao.ICityDao;
 
 public class PostalesController implements Initializable {
 
@@ -30,7 +30,7 @@ public class PostalesController implements Initializable {
     @FXML
     private TableColumn<City, String> codigo;
 
-    private IProvinciaDao provinciaDao;
+    private ICityDao provinciaDao;
     @FXML
     private HBox hBox;
     @FXML
@@ -47,7 +47,7 @@ public class PostalesController implements Initializable {
 
         provinciaDao = new ProvinciaImpl();
 
-        ObservableList<City> listaProvincias = provinciaDao.obtenerProvincias();
+        ObservableList<City> listaProvincias = provinciaDao.getCities();
 
         provincia.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
@@ -64,7 +64,7 @@ public class PostalesController implements Initializable {
         if (!inputCp.getText().isEmpty() && !inputProv.getText().isEmpty()) {
             City p = new City(inputProv.getText().trim(), inputCp.getText().trim());
             System.out.println(p.toString());
-            int result = provinciaDao.añadirProvincia(p);
+            int result = provinciaDao.addCity(p);
             if(result != -1) {
                 tablaProvincias.getItems().add(p);
             }
@@ -94,7 +94,7 @@ public class PostalesController implements Initializable {
 
                 if (type == okButton) {
 
-                    boolean result = provinciaDao.borrarProvincia(seleccionado.getId());
+                    boolean result = provinciaDao.deleteCity(seleccionado.getId());
                     
                     if(result) {
                     tablaProvincias.getItems().remove(seleccionado);

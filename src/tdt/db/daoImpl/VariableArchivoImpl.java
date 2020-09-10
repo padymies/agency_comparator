@@ -10,16 +10,16 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.db.dao.IVariableArchivoDao;
 import tdt.model.FileVariable;
 import tdt.services.AlertExceptionService;
+import tdt.db.dao.IFileVariableDao;
 
-public class VariableArchivoImpl implements IVariableArchivoDao {
+public class VariableArchivoImpl implements IFileVariableDao {
 
     private final String TABLE_NAME = "VARIABLES_ARCHIVO";
 
     @Override
-    public HashMap<String, FileVariable> HashMapVariableArchivo() {
+    public HashMap<String, FileVariable> hashMapFileVariable() {
 
         Connection conn = null;
 
@@ -72,7 +72,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     }
 
     @Override
-    public ObservableList<FileVariable> ObservableVariableArchivo() {
+    public ObservableList<FileVariable> observableFileVariable() {
 
         Connection conn = null;
 
@@ -127,7 +127,7 @@ public class VariableArchivoImpl implements IVariableArchivoDao {
     }
 
     @Override
-    public boolean actualizarVariableArchivo(FileVariable variableArchivo) {
+    public boolean updateFileVariable(FileVariable variableArchivo) {
 
         Connection conn = null;
 

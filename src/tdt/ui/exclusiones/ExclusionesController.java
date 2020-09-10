@@ -22,13 +22,13 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
-import tdt.db.dao.IExclusionesDao;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
 import tdt.model.Exclusion;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
 import tdt.db.dao.IAgencyDao;
+import tdt.db.dao.IExclusionDao;
 
 public class ExclusionesController implements Initializable {
 
@@ -41,7 +41,7 @@ public class ExclusionesController implements Initializable {
     @FXML
     private TableView<Exclusion> tableEx;
 
-    private IExclusionesDao exclusionesDao;
+    private IExclusionDao exclusionesDao;
 
     private IAgencyDao agenciaDao;
 
@@ -72,7 +72,7 @@ public class ExclusionesController implements Initializable {
 
         exclusionesDao = new ExclusionesImpl();
 
-        listaExclusiones = exclusionesDao.obtenerExclusiones();
+        listaExclusiones = exclusionesDao.getExclusions();
 
         nombreAgencias = agenciaDao.getAgencyNames();
 
@@ -202,7 +202,7 @@ public class ExclusionesController implements Initializable {
 
             Exclusion ex = new Exclusion(cp, agencia, accion);
 
-            int result = exclusionesDao.añadirExclusion(ex);
+            int result = exclusionesDao.addExclusion(ex);
 
             if (result != -1) {
                 tableEx.getItems().add(ex);
@@ -235,7 +235,7 @@ public class ExclusionesController implements Initializable {
 
                 if (type == okButton) {
 
-                    exclusionesDao.borrarExclusion(item.getId());
+                    exclusionesDao.deleteExclusion(item.getId());
 
                     tableEx.getItems().remove(item);
 

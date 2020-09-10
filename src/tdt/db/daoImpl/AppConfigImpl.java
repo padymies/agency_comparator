@@ -24,7 +24,7 @@ public class AppConfigImpl implements IAppConfig {
     private String TABLE_NAME = "configuracion_app";
 
     @Override
-    public double getPorcentajeUrgencia() {
+    public double getUrgencyPercent() {
 
         Connection conn = null;
 
@@ -75,7 +75,7 @@ public class AppConfigImpl implements IAppConfig {
     }
 
     @Override
-    public boolean actualizarPorcentajeUrgencia(double porcentaje) {
+    public boolean updateUrgencyPercent(double porcentaje) {
         Connection conn = null;
 
         Statement stat = null;
@@ -122,7 +122,7 @@ public class AppConfigImpl implements IAppConfig {
     }
 
     @Override
-    public boolean borrarPorcentajeUrgencia() {
+    public boolean deleteUrgencyPercent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -177,7 +177,7 @@ public class AppConfigImpl implements IAppConfig {
     }
 
     @Override
-    public boolean actualizarPassAdmin(String pass) {
+    public boolean updatePassAdmin(String pass) {
         Connection conn = null;
 
         Statement stat = null;
