@@ -9,7 +9,7 @@ import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.AppConfigImpl;
 import tdt.db.daoImpl.ExclusionesImpl;
 import tdt.db.daoImpl.TarifaImpl;
-import tdt.db.daoImpl.ZonaImpl;
+import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
 import tdt.model.Note;
@@ -35,7 +35,7 @@ public class ComparatorService {
     public ComparatorService() {
         tarifaDao = new TarifaImpl();
 
-        zonaDao = new ZonaImpl();
+        zonaDao = new ZoneImpl();
 
         agenciasDao = new AgencyImpl();
 
@@ -47,9 +47,9 @@ public class ComparatorService {
         for (Note albaran : albaranes) {
 
             // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
-            if (albaran.getMEJOR_AGENCIA() == null) {
+            if (albaran.getBEST_AGENCY() == null) {
 
-                ObservableList<AgencyZone> listaAgencias = tarifaDao.getAgenciesByZone(albaran.getZona().getZoneId());
+                ObservableList<AgencyZone> listaAgencias = tarifaDao.getAgenciesByZone(albaran.getZone().getZoneId());
 
                 checkExclusiones(albaran, listaAgencias);
 
@@ -64,7 +64,7 @@ public class ComparatorService {
                         double peso = -1;
                         try {
 
-                            peso = Math.ceil(Double.parseDouble(albaran.getPeso()));
+                            peso = Math.ceil(Double.parseDouble(albaran.getWeight()));
                         } catch (NumberFormatException e) {
                             AlertExceptionService pesoAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
                             pesoAlert.showAndWait();
@@ -77,12 +77,12 @@ public class ComparatorService {
                             if (peso != -1 && (agenciaZona.getMaxKilos() == 0 || agenciaZona.getMaxKilos() >= peso)) {
                                 if (maxKilos >= peso) {
 
-                                    result = tarifaDao.ratesNotesCompare(peso, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
+                                    result = tarifaDao.ratesNotesCompare(peso, albaran.getZone().getZoneId(), agenciaZona.getAgencyId());
 
                                 } else {
                                     if (agenciaZona.getIncrease() > 0) { // SE APLICA INCREMENTO SI TIENE
 
-                                        result = tarifaDao.ratesNotesCompare(maxKilos, albaran.getZona().getZoneId(), agenciaZona.getAgencyId());
+                                        result = tarifaDao.ratesNotesCompare(maxKilos, albaran.getZone().getZoneId(), agenciaZona.getAgencyId());
 
                                         result.setPrice(result.getPrice() + (peso - maxKilos * agenciaZona.getIncrease()));
 
@@ -112,7 +112,7 @@ public class ComparatorService {
                             item.setPrice(item.getPrice() + porcentaje);
                         }
 
-                        if (albaran.getReembolso() != null) {
+                        if (albaran.getRefund() != null) {
 
                             double precioReembolso = 0;
 
@@ -163,15 +163,15 @@ public class ComparatorService {
                             for (int i = 1; i < resultadoList.size(); i++) {
                                 if (resultadoList.get(i).getDeliveryTime() < first.getDeliveryTime()
                                         && resultadoList.get(i).getPrice() - first.getPrice() < precioUrgencia) {
-                                    albaran.setMEJOR_AGENCIA(resultadoList.get(i).getAgencyName());
+                                    albaran.setBEST_AGENCY(resultadoList.get(i).getAgencyName());
                                     break;
                                 }
                             }
                         }
                     }
 
-                    if (albaran.getMEJOR_AGENCIA() == null) {
-                        albaran.setMEJOR_AGENCIA(first.getAgencyName());
+                    if (albaran.getBEST_AGENCY() == null) {
+                        albaran.setBEST_AGENCY(first.getAgencyName());
                     }
 
                 }
@@ -186,7 +186,7 @@ public class ComparatorService {
 
         exclusionesDao = new ExclusionesImpl();
 
-        Exclusion ex = exclusionesDao.getExclusionByPostalCode(albaran.getPostalDestino());
+        Exclusion ex = exclusionesDao.getExclusionByPostalCode(albaran.getDestinationPostalCode());
 
         if (ex != null) {
             switch (ex.getInclusion_exclusion()) {
@@ -196,7 +196,7 @@ public class ComparatorService {
 
                     Agency agencia = agenciasDao.getAgency(ex.getAgencyId());
 
-                    albaran.setMEJOR_AGENCIA(agencia.getName());
+                    albaran.setBEST_AGENCY(agencia.getName());
 
                     break;
                 case -1:

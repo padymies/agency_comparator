@@ -60,10 +60,10 @@ public class paneBase extends TitledPane {
             if (albaran != null) {
                 listItemBase cell = new listItemBase();
                 cell.ref.setText(albaran.getRef());
-                cell.nom.setText(albaran.getNombreDestino());
-                cell.pais.setText(albaran.getPais());
-                cell.pobl.setText(albaran.getPoblaDestino());
-                cell.cp.setText(albaran.getPostalDestino());
+                cell.nom.setText(albaran.getDestinyName());
+                cell.pais.setText(albaran.getCountry());
+                cell.pobl.setText(albaran.getDestinationCity());
+                cell.cp.setText(albaran.getDestinationPostalCode());
 
                 setGraphic(cell);
             } else {

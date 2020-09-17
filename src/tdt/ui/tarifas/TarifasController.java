@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import tdt.db.daoImpl.ZonaImpl;
+import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
 import tdt.services.ConfigStage;
@@ -41,7 +41,7 @@ public class TarifasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        zonaDao = new ZonaImpl();
+        zonaDao = new ZoneImpl();
 
         listaZonas = zonaDao.getZonesUI();
 

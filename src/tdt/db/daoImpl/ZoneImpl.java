@@ -22,7 +22,7 @@ import tdt.db.dao.IZoneDao;
  *
  * @author Usuario
  */
-public class ZonaImpl implements IZoneDao {
+public class ZoneImpl implements IZoneDao {
 
     private final String TABLE_NAME = "ZONAS";
 
@@ -78,7 +78,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -135,7 +135,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return zona;
@@ -190,7 +190,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return id;
@@ -240,7 +240,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -288,7 +288,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class
+                Logger.getLogger(ZoneImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -341,7 +341,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -402,7 +402,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return zona;
@@ -461,7 +461,7 @@ public class ZonaImpl implements IZoneDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ZonaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ZoneImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return zona;

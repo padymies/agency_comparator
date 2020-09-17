@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import tdt.db.daoImpl.ZonaImpl;
+import tdt.db.daoImpl.ZoneImpl;
 import tdt.db.dao.IZoneDao;
 
 public abstract class importForm extends AnchorPane {
@@ -101,7 +101,7 @@ public abstract class importForm extends AnchorPane {
 
         importBtn.setDisable(true);
         importComboAgencia.setDisable(true);
-        zonaDao = new ZonaImpl();
+        zonaDao = new ZoneImpl();
 
         ObservableList<String> listaZonas = zonaDao.getZoneNames();
 

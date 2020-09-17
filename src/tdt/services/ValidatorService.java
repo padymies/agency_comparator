@@ -65,9 +65,9 @@ public class ValidatorService {
     }
 
     public static boolean albaranValidator(Note al) {
-        boolean result = al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
-                && !al.getRef().isEmpty() && !al.getDirecDestino().isEmpty() && !al.getEmail().isEmpty() && !al.getPostalDestino().isEmpty()
-                && !al.getTfnoDestino().isEmpty() && !al.getPeso().isEmpty();
+        boolean result = al.getZone() != null && !al.getDestinationCity().isEmpty() && !al.getCountry().isEmpty() && !al.getDestinyName().isEmpty()
+                && !al.getRef().isEmpty() && !al.getDestinationAddress().isEmpty() && !al.getEmail().isEmpty() && !al.getDestinationPostalCode().isEmpty()
+                && !al.getDestinationPhone().isEmpty() && !al.getWeight().isEmpty();
 
         return result;
     }

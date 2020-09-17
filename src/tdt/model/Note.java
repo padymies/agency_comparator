@@ -103,29 +103,29 @@ public class Note {
         this.GLS = gls;
     }
 
-    public String getMEJOR_AGENCIA() {
+    public String getBEST_AGENCY() {
         return BEST_AGENCY;
     }
 
-    public void setMEJOR_AGENCIA(String MEJOR_AGENCIA) {
-        this.BEST_AGENCY = MEJOR_AGENCIA;
+    public void setBEST_AGENCY(String BEST_AGENCY) {
+        this.BEST_AGENCY = BEST_AGENCY;
     }
 
     
-    public String getCliente() {
+    public String getClient() {
         return CLIENT;
     }
 
-    public void setCliente(String cliente) {
-        this.CLIENT = cliente;
+    public void setClient(String client) {
+        this.CLIENT = client;
     }
 
-    public String getDepartamento() {
+    public String getDepartament() {
         return DEPARTAMENT;
     }
 
-    public void setDepartamento(String departamento) {
-        this.DEPARTAMENT = departamento;
+    public void setDepartament(String departament) {
+        this.DEPARTAMENT = departament;
     }
 
     public String getRef() {
@@ -136,12 +136,12 @@ public class Note {
         this.REF = ref;
     }
 
-    public String getFecha() {
+    public String getDate() {
         return DATE;
     }
 
-    public void setFecha(String fecha) {
-        this.DATE = fecha;
+    public void setDate(String date) {
+        this.DATE = date;
     }
 
     public String getTypeServ() {
@@ -152,244 +152,244 @@ public class Note {
         this.TYPE_SERV = typeServ;
     }
 
-    public String getVariante() {
+    public String getVariant() {
         return VARIANT;
     }
 
-    public void setVariante(String variante) {
-        this.VARIANT = variante;
+    public void setVariant(String variant) {
+        this.VARIANT = variant;
     }
 
-    public String getNombreRem() {
+    public String getSenderName() {
         return SENDER_NAME;
     }
 
-    public void setNombreRem(String nombreRem) {
-        this.SENDER_NAME = nombreRem;
+    public void setSenderName(String senderName) {
+        this.SENDER_NAME = senderName;
     }
 
-    public String getDirecRem() {
+    public String getSenderAddress() {
         return SENDER_ADDRESS;
     }
 
-    public void setDirecRem(String direcRem) {
-        this.SENDER_ADDRESS = direcRem;
+    public void setSenderAddress(String senderAddress) {
+        this.SENDER_ADDRESS = senderAddress;
     }
 
-    public String getPoblacionRem() {
+    public String getSenderCity() {
         return SENDER_CITY;
     }
 
-    public void setPoblacionRem(String poblacionRem) {
-        this.SENDER_CITY = poblacionRem;
+    public void setSenderCity(String senderCity) {
+        this.SENDER_CITY = senderCity;
     }
 
-    public String getNombreDestino() {
+    public String getDestinyName() {
         return DESTINATION_NAME;
     }
 
-    public void setNombreDestino(String nombreDestino) {
-        this.DESTINATION_NAME = nombreDestino;
+    public void setDestinyName(String destinyName) {
+        this.DESTINATION_NAME = destinyName;
     }
 
-    public String getDirecDestino() {
+    public String getDestinationAddress() {
         return DESTINATION_ADDRESS;
     }
 
-    public void setDirecDestino(String direcDestino) {
-        this.DESTINATION_ADDRESS = direcDestino;
+    public void setDestinationAddress(String destinationAddress) {
+        this.DESTINATION_ADDRESS = destinationAddress;
     }
 
-    public String getViaDestino() {
+    public String getDestinationRoad() {
         return DESTINATION_ROAD;
     }
 
-    public void setViaDestino(String viaDestino) {
-        this.DESTINATION_ROAD = viaDestino;
+    public void setDestinationRoad(String destinationRoad) {
+        this.DESTINATION_ROAD = destinationRoad;
     }
 
-    public String getNumeroDestino() {
+    public String getDestinationNumber() {
         return DESTINATION_NUMBER;
     }
 
-    public void setNumeroDestino(String numeroDestino) {
-        this.DESTINATION_NUMBER = numeroDestino;
+    public void setDestinationNumber(String destinationNumber) {
+        this.DESTINATION_NUMBER = destinationNumber;
     }
 
-    public String getPisoDestino() {
+    public String getDestinationApartment() {
         return DESTINATION_APARTMENT;
     }
 
-    public void setPisoDestino(String pisoDestino) {
-        this.DESTINATION_APARTMENT = pisoDestino;
+    public void setDestinationApartment(String destinationApartment) {
+        this.DESTINATION_APARTMENT = destinationApartment;
     }
 
-    public String getTfnoDestino() {
+    public String getDestinationPhone() {
         return DESTINATION_PHONE;
     }
 
-    public void setTfnoDestino(String tfnoDestino) {
-        this.DESTINATION_PHONE = tfnoDestino;
+    public void setDestinationPhone(String destinationPhone) {
+        this.DESTINATION_PHONE = destinationPhone;
     }
 
-    public String getPoblaDestino() {
+    public String getDestinationCity() {
         return DESTINATION_CITY;
     }
 
-    public void setPoblaDestino(String poblaDestino) {
-        this.DESTINATION_CITY = poblaDestino;
+    public void setDestinationCity(String destinationCity) {
+        this.DESTINATION_CITY = destinationCity;
     }
 
-    public String getPostalDestino() {
+    public String getDestinationPostalCode() {
         return DESTINATION_POSTAL_CODE;
     }
 
-    public void setPostalDestino(String postalDestino) {
-        this.DESTINATION_POSTAL_CODE = postalDestino;
+    public void setDestinationPostalCode(String destinationPostalCode) {
+        this.DESTINATION_POSTAL_CODE = destinationPostalCode;
     }
 
-    public String getBultos() {
+    public String getBundles() {
         return BUNDLES;
     }
 
-    public void setBultos(String bultos) {
-        this.BUNDLES = bultos;
+    public void setBundles(String bundles) {
+        this.BUNDLES = bundles;
     }
 
-    public String getDocumentos() {
+    public String getDocuments() {
         return DOCUMENTS;
     }
 
-    public void setDocumentos(String documentos) {
-        this.DOCUMENTS = documentos;
+    public void setDocuments(String documents) {
+        this.DOCUMENTS = documents;
     }
 
-    public String getPaquetes() {
+    public String getPackages() {
         return PACKAGES;
     }
 
-    public void setPaquetes(String paquetes) {
-        this.PACKAGES = paquetes;
+    public void setPackages(String packages) {
+        this.PACKAGES = packages;
     }
 
-    public String getAncho() {
+    public String getWidth() {
         return WIDTH;
     }
 
-    public void setAncho(String ancho) {
-        this.WIDTH = ancho;
+    public void setWidth(String width) {
+        this.WIDTH = width;
     }
 
-    public String getAlto() {
+    public String getHeight() {
         return HEIGHT;
     }
 
-    public void setAlto(String alto) {
-        this.HEIGHT = alto;
+    public void setHeight(String height) {
+        this.HEIGHT = height;
     }
 
-    public String getLargo() {
+    public String getLong() {
         return LONG;
     }
 
-    public void setLargo(String largo) {
-        this.LONG = largo;
+    public void setLong(String _long) {
+        this.LONG = _long;
     }
 
-    public String getPeso() {
+    public String getWeight() {
         return WEIGHT;
     }
 
-    public void setPeso(String peso) {
-        this.WEIGHT = peso;
+    public void setWeight(String weight) {
+        this.WEIGHT = weight;
     }
 
-    public String getReembolso() {
+    public String getRefund() {
         return REFUND;
     }
 
-    public void setReembolso(String reembolso) {
-        this.REFUND = reembolso;
+    public void setRefund(String refund) {
+        this.REFUND = refund;
     }
 
-    public String getValor() {
+    public String getValue() {
         return VALUE;
     }
 
-    public void setValor(String valor) {
-        this.VALUE = valor;
+    public void setValue(String value) {
+        this.VALUE = value;
     }
 
-    public String getCtaCliente() {
+    public String getClientBill() {
         return CLIENT_BILL;
     }
 
-    public void setCtaCliente(String ctaCliente) {
-        this.CLIENT_BILL = ctaCliente;
+    public void setClientBill(String clientBill) {
+        this.CLIENT_BILL = clientBill;
     }
 
-    public String getMoneda() {
+    public String getCoin() {
         return COIN;
     }
 
-    public void setMoneda(String moneda) {
-        this.COIN = moneda;
+    public void setCoin(String coin) {
+        this.COIN = coin;
     }
 
-    public String getObservaciones() {
+    public String getObservations() {
         return OBSERVATIONS;
     }
 
-    public void setObservaciones(String observaciones) {
-        this.OBSERVATIONS = observaciones;
+    public void setObservations(String observations) {
+        this.OBSERVATIONS = observations;
     }
 
-    public String getSabado() {
+    public String getSaturday() {
         return SATURDAY;
     }
 
-    public void setSabado(String sabado) {
-        this.SATURDAY = sabado;
+    public void setSaturday(String saturday) {
+        this.SATURDAY = saturday;
     }
 
-    public String getHoraEntr() {
+    public String getInTime() {
         return IN_TIME;
     }
 
-    public void setHoraEntr(String horaEntr) {
-        this.IN_TIME = horaEntr;
+    public void setInTime(String inTime) {
+        this.IN_TIME = inTime;
     }
 
-    public String getRetorno() {
+    public String getReturn() {
         return RETURN;
     }
 
-    public void setRetorno(String retorno) {
-        this.RETURN = retorno;
+    public void setReturn(String _return) {
+        this.RETURN = _return;
     }
 
-    public String getGestionDest() {
+    public String getDestinyManagement() {
         return DESTINY_MANAGEMENT;
     }
 
-    public void setGestionDest(String gestionDest) {
-        this.DESTINY_MANAGEMENT = gestionDest;
+    public void setDestinyManagement(String destinyManagement) {
+        this.DESTINY_MANAGEMENT = destinyManagement;
     }
 
-    public String getPortesDebidos() {
+    public String getDuePostage() {
         return DUE_POSTAGE;
     }
 
-    public void setPortesDebidos(String portesDebidos) {
-        this.DUE_POSTAGE = portesDebidos;
+    public void setDuePostage(String duePostage) {
+        this.DUE_POSTAGE = duePostage;
     }
 
-    public String getFormaPago() {
+    public String getPayWay() {
         return PAY_WAY;
     }
 
-    public void setFormaPago(String formaPago) {
-        this.PAY_WAY = formaPago;
+    public void setPayWay(String payWay) {
+        this.PAY_WAY = payWay;
     }
 
     public String getEmail() {
@@ -400,12 +400,12 @@ public class Note {
         this.EMAIL = email;
     }
 
-    public String getPais() {
+    public String getCountry() {
         return COUNTRY;
     }
 
-    public void setPais(String pais) {
-        this.COUNTRY = pais;
+    public void setCountry(String country) {
+        this.COUNTRY = country;
     }
 
     public String getGls() {
@@ -416,12 +416,12 @@ public class Note {
         this.GLS = gls;
     }
 
-    public Zone getZona() {
+    public Zone getZone() {
         return zone;
     }
 
-    public void setZona(Zone zona) {
-        this.zone = zona;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
 
     

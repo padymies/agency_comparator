@@ -39,10 +39,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import tdt.db.daoImpl.AgencyImpl;
-import tdt.db.daoImpl.ZonaImpl;
+import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Note;
 import tdt.model.Zone;
-import tdt.services.AlbaranService;
+import tdt.services.NoteService;
 import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ComparatorService;
@@ -112,7 +112,7 @@ public class AlbaranesController implements Initializable {
 
         nombreAgencias = agenciaDao.getAgencyNames();
 
-        zonaDao = new ZonaImpl();
+        zonaDao = new ZoneImpl();
 
         nombreZonas = zonaDao.getZoneNames();
 
@@ -151,14 +151,14 @@ public class AlbaranesController implements Initializable {
 
             String lowerCaseBusqueda = busqueda.toLowerCase();
 
-            String nombre = data.getNombreDestino().toLowerCase();
+            String nombre = data.getDestinyName().toLowerCase();
 
-            String poblacion = data.getPoblaDestino().toLowerCase();
+            String poblacion = data.getDestinationCity().toLowerCase();
 
             String zona = "";
 
-            if (data.getZona() != null) {
-                zona = data.getZona().getName().toLowerCase();
+            if (data.getZone() != null) {
+                zona = data.getZone().getName().toLowerCase();
             } else {
                 zona = "No se ha encontrado una Zona";
             }
@@ -216,11 +216,11 @@ public class AlbaranesController implements Initializable {
 
             service.compararAlbaranes(albaranes);
 
-            int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null).count();
-            int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() == null).count();
+            int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() != null).count();
+            int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() == null).count();
 
-            Map<String, List<Note>> result = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
-                    .collect(Collectors.groupingBy(Note::getMEJOR_AGENCIA));
+            Map<String, List<Note>> result = albaranes.stream().filter(predicate -> predicate.getBEST_AGENCY() != null)
+                    .collect(Collectors.groupingBy(Note::getBEST_AGENCY));
 
             boolean resultado = FileService.writeOutFiles(result);
 
@@ -273,44 +273,44 @@ public class AlbaranesController implements Initializable {
 
                 cell.ref.setText(albaran.getRef());
 
-                cell.txtNombreDestino.setText(albaran.getNombreDestino());
+                cell.txtNombreDestino.setText(albaran.getDestinyName());
 
-                cell.txtPeso.setText(albaran.getPeso());
+                cell.txtPeso.setText(albaran.getWeight());
 
-                Zone zona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                Zone zona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
 
-                albaran.setZona(zona);
+                albaran.setZone(zona);
 
-                if (albaran.getZona() != null) {
-                    cell.lbZona.setText(albaran.getZona().getName());
+                if (albaran.getZone() != null) {
+                    cell.lbZona.setText(albaran.getZone().getName());
 
                 }
 
-                cell.lbCP.setText(albaran.getPostalDestino());
+                cell.lbCP.setText(albaran.getDestinationPostalCode());
 
-                cell.txtPais.setText(albaran.getPais());
+                cell.txtPais.setText(albaran.getCountry());
 
                 cell.txtPais.focusedProperty().addListener((observable, oldValue, newValue) -> {
 
                     if (!newValue) {
 
-                        albaran.setPais(cell.txtPais.getText());
+                        albaran.setCountry(cell.txtPais.getText());
 
                         FileService.actualizarAlbaran(albaran);
 
-                        Zone nuevaZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                        Zone nuevaZona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
 
                         if (nuevaZona != null) {
 
-                            albaran.setZona(nuevaZona);
+                            albaran.setZone(nuevaZona);
 
-                            cell.lbZona.setText(albaran.getZona().getName());
+                            cell.lbZona.setText(albaran.getZone().getName());
                         }
                     }
 
                 });
 
-                cell.txtPoblacion.setText(albaran.getPoblaDestino());
+                cell.txtPoblacion.setText(albaran.getDestinationCity());
 
                 cell.txtBultos.setText("1");
 
@@ -320,7 +320,7 @@ public class AlbaranesController implements Initializable {
 
                         if (ValidatorService.integerValidate(cell.txtBultos)) {
 
-                            albaran.setBultos(cell.txtBultos.getText());
+                            albaran.setBundles(cell.txtBultos.getText());
                             FileService.actualizarAlbaran(albaran);
                         }
 
@@ -331,7 +331,7 @@ public class AlbaranesController implements Initializable {
 
                     if (!newValue && !cell.txtPeso.getText().isEmpty()) {
                         if (ValidatorService.doubleValidate(cell.txtPeso)) {
-                            albaran.setPeso(cell.txtPeso.getText().trim());
+                            albaran.setWeight(cell.txtPeso.getText().trim());
                             FileService.actualizarAlbaran(albaran);
                         }
                     }
@@ -356,15 +356,15 @@ public class AlbaranesController implements Initializable {
 
                         cell.comboAgencia.setDisable(true);
 
-                        Zone newZona = AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                        Zone newZona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
 
-                        albaran.setZona(newZona);
+                        albaran.setZone(newZona);
 
-                        cell.lbZona.setText(albaran.getZona().getName());
+                        cell.lbZona.setText(albaran.getZone().getName());
 
                         cell.lbZona.setStyle(null);
 
-                        albaran.setMEJOR_AGENCIA(null);
+                        albaran.setBEST_AGENCY(null);
 
                     }
                 });
@@ -380,13 +380,13 @@ public class AlbaranesController implements Initializable {
 
                             cell.lbZona.setStyle("-fx-text-fill: blue");
 
-                            albaran.setMEJOR_AGENCIA(newValue);
+                            albaran.setBEST_AGENCY(newValue);
 
                         } else {
                             // NO FORZADO AGENCIA
-                            AlbaranService.setAlbaranZona(albaran, cell.lbZona, listView);
+                            NoteService.setNoteZone(albaran, cell.lbZona, listView);
 
-                            albaran.setMEJOR_AGENCIA(null);
+                            albaran.setBEST_AGENCY(null);
 
                         }
                     }

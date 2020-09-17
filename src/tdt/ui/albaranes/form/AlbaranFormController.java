@@ -80,9 +80,9 @@ public class AlbaranFormController implements Initializable {
 
         lbRef.setText(albaran.getRef());
 
-        cliente.setText(albaran.getCliente().trim());
+        cliente.setText(albaran.getClient().trim());
 
-        String date = albaran.getFecha().trim();
+        String date = albaran.getDate().trim();
 
         DateFormat input = new SimpleDateFormat("ddMMyyyy");
 
@@ -100,29 +100,29 @@ public class AlbaranFormController implements Initializable {
 
         email.setText(albaran.getEmail().trim());
 
-        pago.setText(albaran.getFormaPago().trim());
+        pago.setText(albaran.getPayWay().trim());
 
-        txtPais.setText(albaran.getPais().trim());
+        txtPais.setText(albaran.getCountry().trim());
 
-        postalDestino.setText(albaran.getPostalDestino().trim());
+        postalDestino.setText(albaran.getDestinationPostalCode().trim());
 
-        nomreDestino.setText(albaran.getNombreDestino().trim());
+        nomreDestino.setText(albaran.getDestinyName().trim());
 
-        direcDestino.setText(albaran.getDirecDestino().trim());
+        direcDestino.setText(albaran.getDestinationAddress().trim());
 
-        poblacionDestino.setText(albaran.getPoblaDestino().trim());
+        poblacionDestino.setText(albaran.getDestinationCity().trim());
 
-        tfnoDestino.setText(albaran.getTfnoDestino().trim());
+        tfnoDestino.setText(albaran.getDestinationPhone().trim());
 
-        ancho.setText(albaran.getAlto().trim());
+        ancho.setText(albaran.getHeight().trim());
 
-        alto.setText(albaran.getAncho().trim());
+        alto.setText(albaran.getWidth().trim());
 
-        peso.setText(albaran.getPeso().trim());
+        peso.setText(albaran.getWeight().trim());
 
-        reembolso.setText(albaran.getReembolso().trim());
+        reembolso.setText(albaran.getRefund().trim());
 
-        largo.setText(albaran.getLargo().trim());
+        largo.setText(albaran.getLong().trim());
 
         bultos.setText("1");
     }
@@ -143,39 +143,39 @@ public class AlbaranFormController implements Initializable {
                 albaran.setNewRef(lbRef.getText().trim());
             }
 
-            albaran.setCliente(cliente.getText().trim());
+            albaran.setClient(cliente.getText().trim());
 
             String newFe = fecha.getText().replace("-", "");
 
-            albaran.setFecha(newFe);
+            albaran.setDate(newFe);
 
             albaran.setEmail(email.getText().trim());
 
-            albaran.setPostalDestino(postalDestino.getText().trim());
+            albaran.setDestinationPostalCode(postalDestino.getText().trim());
 
-            albaran.setNombreDestino(nomreDestino.getText().trim());
+            albaran.setDestinyName(nomreDestino.getText().trim());
 
-            albaran.setDirecDestino(direcDestino.getText().trim());
+            albaran.setDestinationAddress(direcDestino.getText().trim());
 
-            albaran.setTfnoDestino(tfnoDestino.getText().trim());
+            albaran.setDestinationPhone(tfnoDestino.getText().trim());
 
-            albaran.setPais(txtPais.getText().trim());
+            albaran.setCountry(txtPais.getText().trim());
 
-            albaran.setPoblaDestino(poblacionDestino.getText().trim());
+            albaran.setDestinationCity(poblacionDestino.getText().trim());
 
-            albaran.setFormaPago(pago.getText().trim());
+            albaran.setPayWay(pago.getText().trim());
 
-            albaran.setPeso(peso.getText().trim());
+            albaran.setWeight(peso.getText().trim());
 
-            albaran.setAncho(ancho.getText().trim());
+            albaran.setWidth(ancho.getText().trim());
 
-            albaran.setReembolso(reembolso.getText().trim());
+            albaran.setRefund(reembolso.getText().trim());
 
-            albaran.setLargo(largo.getText().trim());
+            albaran.setLong(largo.getText().trim());
 
-            albaran.setAlto(alto.getText().trim());
+            albaran.setHeight(alto.getText().trim());
 
-            albaran.setBultos(bultos.getText().trim());
+            albaran.setBundles(bultos.getText().trim());
 
             FileService.actualizarAlbaran(albaran);
 

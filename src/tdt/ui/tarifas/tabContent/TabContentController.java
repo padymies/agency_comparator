@@ -50,7 +50,7 @@ import javafx.util.Callback;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ProvinciaImpl;
 import tdt.db.daoImpl.TarifaImpl;
-import tdt.db.daoImpl.ZonaImpl;
+import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
 import tdt.model.City;
@@ -230,7 +230,7 @@ public class TabContentController implements Initializable {
      */
     public TabContentController(int idZona) {
 
-        zonaDao = new ZonaImpl();
+        zonaDao = new ZoneImpl();
 
         tarifaDao = new TarifaImpl();
 

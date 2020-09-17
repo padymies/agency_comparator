@@ -82,47 +82,47 @@ public class RegisterFactory {
 
     public static String generarRegistroAlbaran(Note al) {
         
-        String cliente = al.getCliente();
-        String departamento = al.getDepartamento();
+        String cliente = al.getClient();
+        String departamento = al.getDepartament();
         if (al.getNewRef() != null) {
             al.setRef(al.getNewRef());
             al.setNewRef(null);
         }
         String ref = al.getRef();
-        String fecha = al.getFecha();
+        String fecha = al.getDate();
         String typeSer = al.getTypeServ();
-        String variante = al.getVariante();
-        String nombreRem = al.getNombreRem();
-        String direcRem = al.getDirecRem();
-        String poblacionRem = al.getPoblacionRem();
-        String nombreDestino = al.getNombreDestino();
-        String direcDestino = al.getDirecDestino();
-        String viaDestino = al.getViaDestino();
-        String numeroDestino = al.getNumeroDestino();
-        String pisoDestino = al.getPisoDestino();
-        String tfnoDestino = al.getTfnoDestino();
-        String poblaDestino = al.getPoblaDestino();
-        String postalDestino = al.getPostalDestino();
-        String bultos = al.getBultos();
-        String documentos = al.getDocumentos();
-        String paquetes = al.getPaquetes();
-        String ancho = al.getAncho();
-        String alto = al.getAlto();
-        String largo = al.getLargo();
-        String peso = al.getPeso();
-        String reembolso = al.getReembolso();
-        String valor = al.getValor();
-        String ctaCliente = al.getCtaCliente();
-        String moneda = al.getMoneda();
-        String observaciones = al.getObservaciones();
-        String sabado = al.getSabado();
-        String horaEntr = al.getHoraEntr();
-        String retorno = al.getRetorno();
-        String gestionDest = al.getGestionDest();
-        String portesDebidos = al.getPortesDebidos();
-        String formaPago = al.getFormaPago();
+        String variante = al.getVariant();
+        String nombreRem = al.getSenderName();
+        String direcRem = al.getSenderAddress();
+        String poblacionRem = al.getSenderCity();
+        String nombreDestino = al.getDestinyName();
+        String direcDestino = al.getDestinationAddress();
+        String viaDestino = al.getDestinationRoad();
+        String numeroDestino = al.getDestinationNumber();
+        String pisoDestino = al.getDestinationApartment();
+        String tfnoDestino = al.getDestinationPhone();
+        String poblaDestino = al.getDestinationCity();
+        String postalDestino = al.getDestinationPostalCode();
+        String bultos = al.getBundles();
+        String documentos = al.getDocuments();
+        String paquetes = al.getPackages();
+        String ancho = al.getWidth();
+        String alto = al.getHeight();
+        String largo = al.getLong();
+        String peso = al.getWeight();
+        String reembolso = al.getRefund();
+        String valor = al.getValue();
+        String ctaCliente = al.getClientBill();
+        String moneda = al.getCoin();
+        String observaciones = al.getObservations();
+        String sabado = al.getSaturday();
+        String horaEntr = al.getInTime();
+        String retorno = al.getReturn();
+        String gestionDest = al.getDestinyManagement();
+        String portesDebidos = al.getDuePostage();
+        String formaPago = al.getPayWay();
         String email = al.getEmail();
-        String pais = al.getPais();
+        String pais = al.getCountry();
         String gls = al.getGls();
 
         String[] dataList = {cliente, departamento, ref, fecha, typeSer, variante, nombreRem, direcRem, poblacionRem, nombreDestino, direcDestino, viaDestino, numeroDestino, pisoDestino,
