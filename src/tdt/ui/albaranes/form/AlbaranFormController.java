@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
@@ -60,7 +60,7 @@ public class AlbaranFormController implements Initializable {
     @FXML
     private TextField lbRef;
 
-    private Albaran albaran;
+    private Note albaran;
     @FXML
     private AnchorPane anchorPane;
 
@@ -74,7 +74,7 @@ public class AlbaranFormController implements Initializable {
         ConfigStage.setIcon(btClose1, "cancel.png", 18);
     }
 
-    public void transferAlbaran(Albaran albaran) {
+    public void transferAlbaran(Note albaran) {
 
         this.albaran = albaran;
 

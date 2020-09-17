@@ -7,7 +7,7 @@ package tdt.services;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import tdt.model.Albaran;
+import tdt.model.Note;
 
 /**
  *
@@ -64,7 +64,7 @@ public class ValidatorService {
         return result;
     }
 
-    public static boolean albaranValidator(Albaran al) {
+    public static boolean albaranValidator(Note al) {
         boolean result = al.getZona() != null && !al.getPoblaDestino().isEmpty() && !al.getPais().isEmpty() && !al.getNombreDestino().isEmpty()
                 && !al.getRef().isEmpty() && !al.getDirecDestino().isEmpty() && !al.getEmail().isEmpty() && !al.getPostalDestino().isEmpty()
                 && !al.getTfnoDestino().isEmpty() && !al.getPeso().isEmpty();

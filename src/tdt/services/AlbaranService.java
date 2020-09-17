@@ -4,7 +4,7 @@ package tdt.services;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import tdt.db.daoImpl.ZonaImpl;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.model.Zone;
 import tdt.db.dao.IZoneDao;
 
@@ -12,7 +12,7 @@ public class AlbaranService {
 
     private static IZoneDao zonaDao;
 
-    public static Zone setAlbaranZona(Albaran albaran, Label lbZona, ListView list) {
+    public static Zone setAlbaranZona(Note albaran, Label lbZona, ListView list) {
 
         // TODO: Añadir ciudades aquí 
         // 1- Comprobamos pais

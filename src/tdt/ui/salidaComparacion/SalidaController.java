@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
-import tdt.model.Albaran;
+import tdt.model.Note;
 
 /**
  * FXML Controller class
@@ -34,12 +34,12 @@ public class SalidaController implements Initializable {
         // TODO
     }
 
-    public void loadData(Map<String, List<Albaran>> data) {
+    public void loadData(Map<String, List<Note>> data) {
         for (String key : data.keySet()) {
 
-            List<Albaran> list = data.get(key);
+            List<Note> list = data.get(key);
             
-            ObservableList<Albaran> albaranes = FXCollections.observableArrayList();
+            ObservableList<Note> albaranes = FXCollections.observableArrayList();
             
             albaranes.addAll(list);
 

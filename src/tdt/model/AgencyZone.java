@@ -10,7 +10,7 @@ public class AgencyZone {
     
     private int deliveryTime;
     
-    private int packages;
+    private int bundles;
     
     private boolean bigShipment;
     
@@ -48,14 +48,14 @@ public class AgencyZone {
         this.agencyName = agencyName;
     }
 
-    public AgencyZone(int agencyId, int zoneId, double increase, int deliveryTimne, int maxKilos, String agencyName, int packages, boolean bigShipment, double comision ) {
+    public AgencyZone(int agencyId, int zoneId, double increase, int deliveryTimne, int maxKilos, String agencyName, int bundles, boolean bigShipment, double comision ) {
         this.agencyId = agencyId;
         this.zoneId = zoneId;
         this.increase = increase;
         this.deliveryTime = deliveryTimne;
         this.maxKilos = maxKilos;
         this.agencyName = agencyName;
-        this.packages = packages;
+        this.bundles = bundles;
         this.bigShipment = bigShipment;
         this.comision = comision;
     }
@@ -68,12 +68,12 @@ public class AgencyZone {
         this.comision = comision;
     }
 
-    public int getPackages() {
-        return packages;
+    public int getBundles() {
+        return bundles;
     }
 
-    public void setPackages(int bultos) {
-        this.packages = bultos;
+    public void setBundles(int bundles) {
+        this.bundles = bundles;
     }
 
     public boolean isBigShipment() {

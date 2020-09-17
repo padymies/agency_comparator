@@ -14,7 +14,7 @@ public class RateComparator {
 
     private int deliveryTime;
 
-    private int packages;
+    private int bundles;
 
     private double surchargeFuel;
 
@@ -29,13 +29,13 @@ public class RateComparator {
     private int maxKilos;
     
 
-    public RateComparator(int agencyId, int zoneId, double price, int deliveryTime, int packages, double surchargeFuel, 
+    public RateComparator(int agencyId, int zoneId, double price, int deliveryTime, int bundles, double surchargeFuel, 
             double minimumRefund, boolean bigShipment, double comision, double increase, int maxKilos) {
         this.agencyId = agencyId;
         this.zoneId = zoneId;
         this.price = price;
         this.deliveryTime = deliveryTime;
-        this.packages = packages;
+        this.bundles = bundles;
         this.surchargeFuel = surchargeFuel;
         this.minimumRefund = minimumRefund;
         this.bigShipment = bigShipment;
@@ -45,14 +45,14 @@ public class RateComparator {
     }
 
     public RateComparator(int kg, String agencyName, int agencyId, int zoneId, double price, int deliveryTime,
-            int packages, double surchargeFuel, double minimumRefund, boolean bigShipment, double comision, double increase, int maxKilos) {
+            int bundles, double surchargeFuel, double minimumRefund, boolean bigShipment, double comision, double increase, int maxKilos) {
         this.kg = kg;
         this.agencyName = agencyName;
         this.agencyId = agencyId;
         this.zoneId = zoneId;
         this.price = price;
         this.deliveryTime = deliveryTime;
-        this.packages = packages;
+        this.bundles = bundles;
         this.surchargeFuel = surchargeFuel;
         this.minimumRefund = minimumRefund;
         this.bigShipment = bigShipment;
@@ -120,12 +120,12 @@ public class RateComparator {
         this.deliveryTime = deliveryTime;
     }
 
-    public int getPackages() {
-        return packages;
+    public int getBundles() {
+        return bundles;
     }
 
-    public void setPackages(int packages) {
-        this.packages = packages;
+    public void setBundles(int bundles) {
+        this.bundles = bundles;
     }
 
     public double getSurchargeFuel() {
@@ -170,7 +170,7 @@ public class RateComparator {
 
     @Override
     public String toString() {
-        return "ComparadorTarifa{" + "nombreAgencia=" + agencyName + ", idAgencia=" + agencyId + ", idZona=" + zoneId + ", precio=" + price + ", plazoEntrega=" + deliveryTime + ", bultos=" + packages + ", recargoCombustible=" + surchargeFuel + ", minimoReembolso=" + minimumRefund + ", envioGrande=" + bigShipment + ", incremento=" + increase + ", maxKilos=" + maxKilos + '}';
+        return "ComparadorTarifa{" + "nombreAgencia=" + agencyName + ", idAgencia=" + agencyId + ", idZona=" + zoneId + ", precio=" + price + ", plazoEntrega=" + deliveryTime + ", bultos=" + bundles + ", recargoCombustible=" + surchargeFuel + ", minimoReembolso=" + minimumRefund + ", envioGrande=" + bigShipment + ", incremento=" + increase + ", maxKilos=" + maxKilos + '}';
     }
 
 }

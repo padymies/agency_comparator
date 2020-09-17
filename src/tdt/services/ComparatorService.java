@@ -12,7 +12,7 @@ import tdt.db.daoImpl.TarifaImpl;
 import tdt.db.daoImpl.ZonaImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.model.RateComparator;
 import tdt.model.Exclusion;
 import tdt.db.dao.IAgencyDao;
@@ -42,9 +42,9 @@ public class ComparatorService {
         configDao = new AppConfigImpl();
     }
 
-    public void compararAlbaranes(ArrayList<Albaran> albaranes) {
+    public void compararAlbaranes(ArrayList<Note> albaranes) {
 
-        for (Albaran albaran : albaranes) {
+        for (Note albaran : albaranes) {
 
             // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
             if (albaran.getMEJOR_AGENCIA() == null) {
@@ -182,7 +182,7 @@ public class ComparatorService {
 
     }
 
-    private void checkExclusiones(Albaran albaran, ObservableList<AgencyZone> list) {
+    private void checkExclusiones(Note albaran, ObservableList<AgencyZone> list) {
 
         exclusionesDao = new ExclusionesImpl();
 

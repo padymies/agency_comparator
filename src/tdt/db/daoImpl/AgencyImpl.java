@@ -45,7 +45,7 @@ public class AgencyImpl implements IAgencyDao {
 
                     String name = result.getString("nombre");
 
-                    int packages = result.getInt("bultos");
+                    int bundles = result.getInt("bultos");
 
                     double surchargeFuel = result.getDouble("recargo_combustible");
 
@@ -55,7 +55,7 @@ public class AgencyImpl implements IAgencyDao {
 
                     boolean bigShipment = result.getBoolean("envio_grande");
 
-                    list.add(new Agency(id, name, packages, surchargeFuel, minimumRefund, bigShipment, comision));
+                    list.add(new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision));
                 }
             }
 
@@ -111,7 +111,7 @@ public class AgencyImpl implements IAgencyDao {
 
                 String name = result.getString("nombre");
 
-                int packages = result.getInt("bultos");
+                int bundles = result.getInt("bultos");
 
                 double surchargeFuel = result.getDouble("recargo_combustible");
 
@@ -121,7 +121,7 @@ public class AgencyImpl implements IAgencyDao {
 
                 boolean bigShipment = result.getBoolean("envio_grande");
 
-                agency = new Agency(id, name, packages, surchargeFuel, minimumRefund, bigShipment, comision);
+                agency = new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision);
             }
 
             // System.out.println("Agency recuperada !!");
@@ -157,7 +157,7 @@ public class AgencyImpl implements IAgencyDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision) VALUES('"
-                + agency.getName() + "', " + agency.getPackages() + ", " + agency.getSurchargeFuel()
+                + agency.getName() + "', " + agency.getBundles() + ", " + agency.getSurchargeFuel()
                 + ", " + agency.getMinimumRefund() + ", " + agency.isBigShipment() + ", " + agency.getComision() + ")";
         try {
 
@@ -214,7 +214,7 @@ public class AgencyImpl implements IAgencyDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`name`='" + agencia.getName() + "', `bultos`=" + agencia.getPackages()
+                + "`name`='" + agencia.getName() + "', `bultos`=" + agencia.getBundles()
                 + ", `recargo_combustible`=" + agencia.getSurchargeFuel()
                 + ", `minimo_reembolso`=" + agencia.getMinimumRefund()
                 + ", `envio_grande`=" + agencia.isBigShipment()

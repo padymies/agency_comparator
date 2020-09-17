@@ -7,19 +7,19 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
-import tdt.model.Albaran;
+import tdt.model.Note;
 
 public class paneBase extends TitledPane {
 
     protected final AnchorPane anchorPane;
-    protected ListView<Albaran> list;
+    protected ListView<Note> list;
 
-    public paneBase(String text, ObservableList<Albaran> data) {
+    public paneBase(String text, ObservableList<Note> data) {
 
         setStyle("-fx-font-size: 14");
         anchorPane = new AnchorPane();
         list = new ListView();
-        list.setCellFactory((ListView<Albaran> param) -> new ItemCell());
+        list.setCellFactory((ListView<Note> param) -> new ItemCell());
         list.setItems(data);
         setAnimated(false);
         setPrefHeight(150.0);
@@ -50,10 +50,10 @@ public class paneBase extends TitledPane {
 
     }
 
-    public class ItemCell extends ListCell<Albaran> {
+    public class ItemCell extends ListCell<Note> {
 
         @Override
-        public void updateItem(Albaran albaran, boolean empty) {
+        public void updateItem(Note albaran, boolean empty) {
 
             super.updateItem(albaran, empty);
 

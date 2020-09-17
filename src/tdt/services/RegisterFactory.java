@@ -3,19 +3,19 @@ package tdt.services;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import tdt.db.daoImpl.VariableArchivoImpl;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.model.FileVariable;
 import tdt.db.dao.IFileVariableDao;
 
 public class RegisterFactory {
 
-    private static Albaran albaran;
+    private static Note albaran;
 
     private static IFileVariableDao variableDao;
 
     private static HashMap<String, FileVariable> list;
 
-    public static Albaran generarAlbaran(String data) {
+    public static Note generarAlbaran(String data) {
 
         variableDao = new VariableArchivoImpl();
 
@@ -62,7 +62,7 @@ public class RegisterFactory {
             String pais = data.substring(list.get("PAIS").getStart() - 1, list.get("PAIS").getEnd() - 1).trim();
             String gls = data.substring(list.get("GLS").getStart() - 1, list.get("GLS").getEnd() - 1).trim();
 
-            albaran = new Albaran(
+            albaran = new Note(
                     cliente, departamento, ref, fecha, typeSer, variante,
                     nombreRem, direcRem, poblacionRem, nombreDestino, direcDestino,
                     viaDestino, numeroDestino, pisoDestino,
@@ -80,7 +80,7 @@ public class RegisterFactory {
         return albaran;
     }
 
-    public static String generarRegistroAlbaran(Albaran al) {
+    public static String generarRegistroAlbaran(Note al) {
         
         String cliente = al.getCliente();
         String departamento = al.getDepartamento();
@@ -133,7 +133,7 @@ public class RegisterFactory {
 
         String line = "";
 
-        Field[] fields = Albaran.class.getDeclaredFields();
+        Field[] fields = Note.class.getDeclaredFields();
 
         for (int i = 0; i < fields.length - 1; i++) {
             if (!fields[i].getName().equals("zona") && !fields[i].getName().equals("newRef") && !fields[i].getName().equals("MEJOR_AGENCIA")) {

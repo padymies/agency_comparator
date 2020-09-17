@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import tdt.db.daoImpl.VariableArchivoImpl;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.model.FileVariable;
 import tdt.db.dao.IFileVariableDao;
 
@@ -77,7 +77,7 @@ public class FileService {
         return registerList;
     }
 
-    public static void actualizarAlbaran(Albaran albaran) {
+    public static void actualizarAlbaran(Note albaran) {
         variableDao = new VariableArchivoImpl();
 
         FileVariable var = null;
@@ -157,12 +157,12 @@ public class FileService {
 
     }
 
-    public static boolean writeOutFiles(Map<String, List<Albaran>> result) {
+    public static boolean writeOutFiles(Map<String, List<Note>> result) {
         boolean resultado = true;
 
         for (String key : result.keySet()) {
 
-            List<Albaran> albaranes = result.get(key);
+            List<Note> albaranes = result.get(key);
 
             String desktopPath = null;
 
@@ -201,7 +201,7 @@ public class FileService {
 
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(newFile), "ISO-8859-1"));
 
-                for (Albaran line : albaranes) {
+                for (Note line : albaranes) {
                     try {
                         
                         String newLine = RegisterFactory.generarRegistroAlbaran(line);

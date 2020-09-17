@@ -5,16 +5,16 @@ public class Agency {
     private int agencyId;
 
     private String name;
-    private int packages;
+    private int bundles;
     private double surchargeFuel;
     private double minimumRefund;
     private boolean bigShipment;
     private double comision;
 
-    public Agency(int agencyId, String name, int packages, double surchargeFuel, double minimumRefund, boolean bigShipment, double comision) {
+    public Agency(int agencyId, String name, int bundles, double surchargeFuel, double minimumRefund, boolean bigShipment, double comision) {
         this.agencyId = agencyId;
         this.name = name;
-        this.packages = packages;
+        this.bundles = bundles;
         this.surchargeFuel = surchargeFuel;
         this.minimumRefund = minimumRefund;
         this.bigShipment = bigShipment;
@@ -23,7 +23,7 @@ public class Agency {
 
     public Agency(String nombre, int bultos, double recargo_combustible, double minimo_reembolso, boolean envio_grande, double comision) {
         this.name = nombre;
-        this.packages = bultos;
+        this.bundles = bultos;
         this.surchargeFuel = recargo_combustible;
         this.minimumRefund = minimo_reembolso;
         this.bigShipment = envio_grande;
@@ -54,12 +54,12 @@ public class Agency {
         this.name = name;
     }
 
-    public int getPackages() {
-        return packages;
+    public int getBundles() {
+        return bundles;
     }
 
-    public void setPackages(int packages) {
-        this.packages = packages;
+    public void setBundles(int bundles) {
+        this.bundles = bundles;
     }
 
     public double getSurchargeFuel() {
@@ -88,8 +88,8 @@ public class Agency {
 
     @Override
     public String toString() {
-        return "Agency{" + "agencyId=" + agencyId + ", name=" + name + ", packages="
-                + packages + ", surChargeFuel=" + surchargeFuel + ", minimumRefund=" + minimumRefund
+        return "Agency{" + "agencyId=" + agencyId + ", name=" + name + ", bundles="
+                + bundles + ", surChargeFuel=" + surchargeFuel + ", minimumRefund=" + minimumRefund
                 + ", bigShipment=" + bigShipment + ", comision=" + comision + '}';
     }
 

@@ -40,7 +40,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.ZonaImpl;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.model.Zone;
 import tdt.services.AlbaranService;
 import tdt.services.AlertExceptionService;
@@ -57,7 +57,7 @@ import tdt.db.dao.IZoneDao;
 public class AlbaranesController implements Initializable {
 
     @FXML
-    private ListView<Albaran> listView;
+    private ListView<Note> listView;
 
     @FXML
     private Button btnComparar;
@@ -73,7 +73,7 @@ public class AlbaranesController implements Initializable {
 
     private ObservableList<String> nombreZonas;
 
-    private FilteredList<Albaran> filteredList;
+    private FilteredList<Note> filteredList;
     @FXML
     private Label lbFiltro;
     @FXML
@@ -171,11 +171,11 @@ public class AlbaranesController implements Initializable {
 
     }
 
-    public void trannsferLista(ObservableList<Albaran> albaranes) {
+    public void trannsferLista(ObservableList<Note> albaranes) {
 
         if (albaranes.size() > 0) {
 
-            listView.setCellFactory((ListView<Albaran> param) -> new AlbaranCell());
+            listView.setCellFactory((ListView<Note> param) -> new AlbaranCell());
 
             filteredList = new FilteredList<>(albaranes, data -> true);
 
@@ -188,12 +188,12 @@ public class AlbaranesController implements Initializable {
     @FXML
     private void iniciarComparacion(ActionEvent event)  {
 
-        ObservableList<Albaran> filas = listView.getItems();
+        ObservableList<Note> filas = listView.getItems();
         filas.forEach(item -> {
             FileService.actualizarAlbaran(item); // SOBREESCRIBIMOS EL ARCHIVO CON LAS MODIFICACIONES HECHAS
 
         });
-        ObservableList<Albaran> filasSeleccionadas = listView.getSelectionModel().getSelectedItems();
+        ObservableList<Note> filasSeleccionadas = listView.getSelectionModel().getSelectedItems();
 
         if (filasSeleccionadas.isEmpty()) {
 
@@ -203,7 +203,7 @@ public class AlbaranesController implements Initializable {
 
         } else {
 
-            ArrayList<Albaran> albaranes = new ArrayList<>();
+            ArrayList<Note> albaranes = new ArrayList<>();
 
             filasSeleccionadas.forEach(action -> {
                 if (ValidatorService.albaranValidator(action)) {
@@ -219,8 +219,8 @@ public class AlbaranesController implements Initializable {
             int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null).count();
             int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() == null).count();
 
-            Map<String, List<Albaran>> result = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
-                    .collect(Collectors.groupingBy(Albaran::getMEJOR_AGENCIA));
+            Map<String, List<Note>> result = albaranes.stream().filter(predicate -> predicate.getMEJOR_AGENCIA() != null)
+                    .collect(Collectors.groupingBy(Note::getMEJOR_AGENCIA));
 
             boolean resultado = FileService.writeOutFiles(result);
 
@@ -260,10 +260,10 @@ public class AlbaranesController implements Initializable {
         }
     }
 
-    public class AlbaranCell extends ListCell<Albaran> {
+    public class AlbaranCell extends ListCell<Note> {
 
         @Override
-        public void updateItem(Albaran albaran, boolean empty) {
+        public void updateItem(Note albaran, boolean empty) {
 
             super.updateItem(albaran, empty);
 
@@ -415,7 +415,7 @@ public class AlbaranesController implements Initializable {
 
     }
 
-    private void showAlbaranForm(Albaran albaran) {
+    private void showAlbaranForm(Note albaran) {
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("form/albaranForm.fxml"));

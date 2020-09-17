@@ -26,7 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tdt.db.dao.IAppConfig;
 import tdt.db.daoImpl.AppConfigImpl;
-import tdt.model.Albaran;
+import tdt.model.Note;
 import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
@@ -141,7 +141,7 @@ public class AppController implements Initializable {
 
         ArrayList<String> registerList;
 
-        Albaran reg;
+        Note reg;
 
         fileChooser = new FileChooser();
 
@@ -156,7 +156,7 @@ public class AppController implements Initializable {
 
             registerList = FileService.extractRegisters(file);
 
-            ObservableList<Albaran> listaAlbaranes = FXCollections.observableArrayList();
+            ObservableList<Note> listaAlbaranes = FXCollections.observableArrayList();
 
             for (String register : registerList) {
 
@@ -183,7 +183,7 @@ public class AppController implements Initializable {
         }
     }
 
-    private void mostrarAlbaranes(ObservableList<Albaran> albaranes) {
+    private void mostrarAlbaranes(ObservableList<Note> albaranes) {
 
         try {
 
