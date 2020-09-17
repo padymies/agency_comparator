@@ -27,14 +27,14 @@
           <Menu fx:id="menuConf" mnemonicParsing="false" text="Configuración">
             <items>
               <MenuItem id="import" fx:id="importFile" mnemonicParsing="false" onAction="#configMapFile" text="Variables de archivo" visible="false" />
-                  <MenuItem id="import" fx:id="menuAgencias" mnemonicParsing="false" onAction="#showProviders" text="Agencias" visible="false" />
-                  <MenuItem id="import" fx:id="menuTarifas" mnemonicParsing="false" onAction="#showTarifas" text="Tarifas" visible="false" />
-                  <MenuItem id="import" fx:id="menuPostales" mnemonicParsing="false" onAction="#showPostales" text="Códigos Postales" visible="false" />
-                  <MenuItem id="import" fx:id="menuProvincias" mnemonicParsing="false" onAction="#showProvincias" text="Provincias-Zonas" visible="false" />
-                  <MenuItem id="import" fx:id="menuExclusiones" mnemonicParsing="false" onAction="#showExclusiones" text="Exclusiones" visible="false" />
-                  <MenuItem id="urgencia" fx:id="menuUrgencia" mnemonicParsing="false" onAction="#showUrgencia" text="\% urgencia" visible="false" />
-                  <MenuItem fx:id="log" mnemonicParsing="false" onAction="#logIn" text="Abrir como administrador" />
-                  <MenuItem fx:id="close" mnemonicParsing="false" onAction="#logout" text="Cerrar sesión   " visible="false" />
+                  <MenuItem id="agencyMenu" fx:id="agencyMenu" mnemonicParsing="false" onAction="#showAgencies" text="Agencias" visible="false" />
+                  <MenuItem id="rateMenu" fx:id="rateMenu" mnemonicParsing="false" onAction="#showRates" text="Tarifas" visible="false" />
+                  <MenuItem id="postalMenu" fx:id="postalMenu" mnemonicParsing="false" onAction="#showPostalCodes" text="Códigos Postales" visible="false" />
+                  <MenuItem id="cityMenu" fx:id="cityMenu" mnemonicParsing="false" onAction="#showCities" text="Provincias-Zonas" visible="false" />
+                  <MenuItem id="exclusionMenu" fx:id="exclusionMenu" mnemonicParsing="false" onAction="#showExclusions" text="Exclusiones" visible="false" />
+                  <MenuItem id="urgencyMenu" fx:id="urgencyMenu" mnemonicParsing="false" onAction="#showUrgency" text="\% urgencia" visible="false" />
+                  <MenuItem fx:id="logMenu" mnemonicParsing="false" onAction="#logIn" text="Abrir como administrador" />
+                  <MenuItem fx:id="closeMenu" mnemonicParsing="false" onAction="#logout" text="Cerrar sesión   " visible="false" />
             </items>
           </Menu>
         </menus>
@@ -42,7 +42,7 @@
             <Point3D />
          </rotationAxis>
       </MenuBar>
-      <Button fx:id="fileChosoer" layoutX="139.0" layoutY="138.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="30.0" prefWidth="191.0" text="    Importar archivo ...">
+      <Button fx:id="btnFileChooser" layoutX="139.0" layoutY="138.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="30.0" prefWidth="191.0" text="    Importar archivo ...">
          <font>
             <Font size="14.0" />
          </font></Button>

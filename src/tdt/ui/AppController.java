@@ -32,7 +32,7 @@ import tdt.services.AlertService;
 import tdt.services.ConfigStage;
 import tdt.services.FileService;
 import tdt.services.RegisterFactory;
-import tdt.ui.albaranes.AlbaranesController;
+import tdt.ui.notes.NotesController;
 
 public class AppController implements Initializable {
 
@@ -43,36 +43,38 @@ public class AppController implements Initializable {
     private MenuItem importFile;
 
     @FXML
-    private Button fileChosoer;
+    private Button btnFileChooser;
 
     @FXML
-    private MenuItem menuAgencias;
+    private Menu menuConf;
 
     @FXML
-    private MenuItem menuTarifas;
+    private MenuItem agencyMenu;
 
     @FXML
-    private MenuItem menuPostales;
+    private MenuItem rateMenu;
 
     @FXML
-    MenuItem log;
+    private MenuItem postalMenu;
 
     @FXML
-    private MenuItem menuProvincias;
+    private MenuItem logMenu;
 
     @FXML
-    private MenuItem menuExclusiones;
+    private MenuItem cityMenu;
 
     @FXML
-    private MenuItem menuUrgencia;
+    private MenuItem exclusionMenu;
+
+    @FXML
+    private MenuItem urgencyMenu;
+
+    @FXML
+    private MenuItem closeMenu;
 
     private FileChooser fileChooser;
 
     private Stage stage;
-    @FXML
-    private Menu menuConf;
-    @FXML
-    private MenuItem close;
 
     private Image enableIcon;
 
@@ -82,7 +84,7 @@ public class AppController implements Initializable {
 
     private ImageView disableImg;
 
-    private ImageView fondo;
+    private ImageView backGroundImg;
 
     @FXML
     private AnchorPane pane;
@@ -90,7 +92,7 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        ConfigStage.setIcon(fileChosoer, "file.png", 22);
+        ConfigStage.setIcon(btnFileChooser, "file.png", 22);
 
         enableIcon = new Image("file:resources/img/enable.png");
 
@@ -113,21 +115,21 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showProviders(ActionEvent event) {
+    private void showAgencies(ActionEvent event) {
 
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("providers/providers.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("agencies/agencies.fxml"));
 
             Parent root1 = (Parent) fxmlLoader.load();
 
-            Stage stage = new Stage();
+            Stage agenciesStage = new Stage();
 
-            ConfigStage.configStage(stage, "Agencias", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(agenciesStage, "Agencias", Modality.APPLICATION_MODAL);
 
-            stage.setScene(new Scene(root1));
+            agenciesStage.setScene(new Scene(root1));
 
-            stage.show();
+            agenciesStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Agencias", e);
@@ -156,7 +158,7 @@ public class AppController implements Initializable {
 
             registerList = FileService.extractRegisters(file);
 
-            ObservableList<Note> listaAlbaranes = FXCollections.observableArrayList();
+            ObservableList<Note> notesList = FXCollections.observableArrayList();
 
             for (String register : registerList) {
 
@@ -164,7 +166,7 @@ public class AppController implements Initializable {
 
                 if (reg != null) {
 
-                    listaAlbaranes.add(reg);
+                    notesList.add(reg);
 
                 } else {
 
@@ -174,34 +176,34 @@ public class AppController implements Initializable {
                 }
             }
 
-            if (listaAlbaranes.size() > 0) {
+            if (notesList.size() > 0) {
 
-                mostrarAlbaranes(listaAlbaranes);
+                showNotes(notesList);
 
             }
 
         }
     }
 
-    private void mostrarAlbaranes(ObservableList<Note> albaranes) {
+    private void showNotes(ObservableList<Note> notes) {
 
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("albaranes/albaranes.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("notes/notes.fxml"));
 
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root = (Parent) fxmlLoader.load();
 
-            AlbaranesController albaranesController = fxmlLoader.getController();
+            NotesController notesController = fxmlLoader.getController();
 
-            albaranesController.trannsferLista(albaranes);
+            notesController.trannsferLista(notes);
 
-            Stage stageAlbaranes = new Stage();
+            Stage notesStage = new Stage();
 
-            ConfigStage.configStage(stageAlbaranes, "Albaranes", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(notesStage, "Albaranes", Modality.APPLICATION_MODAL);
 
-            stageAlbaranes.setScene(new Scene(root1));
+            notesStage.setScene(new Scene(root));
 
-            stageAlbaranes.show();
+            notesStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Albaranes", e);
@@ -217,13 +219,13 @@ public class AppController implements Initializable {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mapFile/MapFile.fxml"));
 
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root = (Parent) fxmlLoader.load();
 
             Stage stageMapFIle = new Stage();
 
             ConfigStage.configStage(stageMapFIle, "Posiciones de archivo", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root1));
+            stageMapFIle.setScene(new Scene(root));
 
             stageMapFIle.show();
 
@@ -236,11 +238,11 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showTarifas(ActionEvent event) {
+    private void showRates(ActionEvent event) {
 
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("tarifas/Tarifas.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("rates/rates.fxml"));
 
             Parent root = (Parent) fxmlLoader.load();
 
@@ -260,20 +262,20 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showPostales(ActionEvent event) {
+    private void showPostalCodes(ActionEvent event) {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("postales/postales.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("postal/postal.fxml"));
 
             Parent root = (Parent) fxmlLoader.load();
 
-            Stage stageMapFIle = new Stage();
+            Stage postalStage = new Stage();
 
-            ConfigStage.configStage(stageMapFIle, "Códigos postales", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(postalStage, "Códigos postales", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            postalStage.setScene(new Scene(root));
 
-            stageMapFIle.show();
+            postalStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Códigos postales", e);
@@ -283,20 +285,20 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showProvincias(ActionEvent event) {
+    private void showCities(ActionEvent event) {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("provincias/provincias.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("cities/cities.fxml"));
 
             Parent root = (Parent) fxmlLoader.load();
 
-            Stage stageMapFIle = new Stage();
+            Stage citiesStage = new Stage();
 
-            ConfigStage.configStage(stageMapFIle, "Provincias", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(citiesStage, "Provincias", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            citiesStage.setScene(new Scene(root));
 
-            stageMapFIle.show();
+            citiesStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Provincias", e);
@@ -306,20 +308,20 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showExclusiones(ActionEvent event) {
+    private void showExclusions(ActionEvent event) {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("exclusiones/exclusiones.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("exclusions/exclusions.fxml"));
 
             Parent root = (Parent) fxmlLoader.load();
 
-            Stage stageMapFIle = new Stage();
+            Stage exclusionStage = new Stage();
 
-            ConfigStage.configStage(stageMapFIle, "Exclusiones", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(exclusionStage, "Exclusiones", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            exclusionStage.setScene(new Scene(root));
 
-            stageMapFIle.show();
+            exclusionStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Excepciones", e);
@@ -330,20 +332,20 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    private void showUrgencia(ActionEvent event) {
+    private void showUrgency(ActionEvent event) {
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("urgencia/urgencia.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("urgency/urgency.fxml"));
 
             Parent root = (Parent) fxmlLoader.load();
 
-            Stage stageMapFIle = new Stage();
+            Stage urgencyStage = new Stage();
 
-            ConfigStage.configStage(stageMapFIle, "Porcentaje de urgencia", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(urgencyStage, "Porcentaje de urgencia", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            urgencyStage.setScene(new Scene(root));
 
-            stageMapFIle.show();
+            urgencyStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Porcentaje de urgencia", e);
@@ -361,7 +363,7 @@ public class AppController implements Initializable {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("logForm.fxml"));
 
-            LogFormController contr = new LogFormController() {
+            LogFormController loginController = new LogFormController() {
 
                 @Override
                 public void login() {
@@ -380,17 +382,17 @@ public class AppController implements Initializable {
                 }
             };
 
-            fxmlLoader.setController(contr);
+            fxmlLoader.setController(loginController);
 
             Parent root = (Parent) fxmlLoader.load();
 
-            Stage stageMapFIle = new Stage();
+            Stage loginStage = new Stage();
 
-            ConfigStage.configStage(stageMapFIle, "Administrador", Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(loginStage, "Administrador", Modality.APPLICATION_MODAL);
 
-            stageMapFIle.setScene(new Scene(root));
+            loginStage.setScene(new Scene(root));
 
-            stageMapFIle.show();
+            loginStage.show();
 
         } catch (IOException e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de inicio de sesión", e);
@@ -404,30 +406,30 @@ public class AppController implements Initializable {
     private void logout(ActionEvent event) {
 
         menuConf.setGraphic(disableImg);
-        menuAgencias.setVisible(false);
-        menuExclusiones.setVisible(false);
-        menuPostales.setVisible(false);
-        menuPostales.setVisible(false);
-        menuProvincias.setVisible(false);
-        menuTarifas.setVisible(false);
-        menuUrgencia.setVisible(false);
-        close.setVisible(false);
-        log.setVisible(true);
+        agencyMenu.setVisible(false);
+        exclusionMenu.setVisible(false);
+        postalMenu.setVisible(false);
+        postalMenu.setVisible(false);
+        cityMenu.setVisible(false);
+        rateMenu.setVisible(false);
+        urgencyMenu.setVisible(false);
+        closeMenu.setVisible(false);
+        logMenu.setVisible(true);
 
     }
 
     private void logedIn() {
 
         menuConf.setGraphic(enableImg);
-        menuAgencias.setVisible(true);
-        menuExclusiones.setVisible(true);
-        menuPostales.setVisible(true);
-        menuPostales.setVisible(true);
-        menuProvincias.setVisible(true);
-        menuTarifas.setVisible(true);
-        menuUrgencia.setVisible(true);
-        close.setVisible(true);
-        log.setVisible(false);
+        agencyMenu.setVisible(true);
+        exclusionMenu.setVisible(true);
+        postalMenu.setVisible(true);
+        postalMenu.setVisible(true);
+        cityMenu.setVisible(true);
+        rateMenu.setVisible(true);
+        urgencyMenu.setVisible(true);
+        closeMenu.setVisible(true);
+        logMenu.setVisible(false);
     }
 
 }
