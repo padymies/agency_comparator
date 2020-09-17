@@ -22,7 +22,7 @@ import tdt.db.dao.ICityDao;
  *
  * @author Usuario
  */
-public class ProvinciaImpl implements ICityDao {
+public class CityImpl implements ICityDao {
 
     private final String TABLE_NAME = "provincias";
 
@@ -75,7 +75,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -129,7 +129,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return p;
@@ -176,7 +176,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class
+                Logger.getLogger(CityImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -236,7 +236,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return id;
@@ -283,7 +283,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class
+                Logger.getLogger(CityImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -340,7 +340,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return lista;
@@ -397,7 +397,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return lista;
@@ -459,7 +459,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return lista;
@@ -506,7 +506,7 @@ public class ProvinciaImpl implements ICityDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ProvinciaImpl.class
+                Logger.getLogger(CityImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }

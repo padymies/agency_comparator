@@ -14,7 +14,7 @@ import tdt.model.FileVariable;
 import tdt.services.AlertExceptionService;
 import tdt.db.dao.IFileVariableDao;
 
-public class VariableArchivoImpl implements IFileVariableDao {
+public class FileVariableImpl implements IFileVariableDao {
 
     private final String TABLE_NAME = "VARIABLES_ARCHIVO";
 
@@ -65,7 +65,7 @@ public class VariableArchivoImpl implements IFileVariableDao {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FileVariableImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -120,7 +120,7 @@ public class VariableArchivoImpl implements IFileVariableDao {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FileVariableImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -167,7 +167,7 @@ public class VariableArchivoImpl implements IFileVariableDao {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FileVariableImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return false;
@@ -220,7 +220,7 @@ public class VariableArchivoImpl implements IFileVariableDao {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(VariableArchivoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FileVariableImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return var;

@@ -64,10 +64,10 @@ public class ValidatorService {
         return result;
     }
 
-    public static boolean albaranValidator(Note al) {
-        boolean result = al.getZone() != null && !al.getDestinationCity().isEmpty() && !al.getCountry().isEmpty() && !al.getDestinyName().isEmpty()
-                && !al.getRef().isEmpty() && !al.getDestinationAddress().isEmpty() && !al.getEmail().isEmpty() && !al.getDestinationPostalCode().isEmpty()
-                && !al.getDestinationPhone().isEmpty() && !al.getWeight().isEmpty();
+    public static boolean noteValidator(Note note) {
+        boolean result = note.getZone() != null && !note.getDestinationCity().isEmpty() && !note.getCountry().isEmpty() && !note.getDestinationName().isEmpty()
+                && !note.getRef().isEmpty() && !note.getDestinationAddress().isEmpty() && !note.getEmail().isEmpty() && !note.getDestinationPostalCode().isEmpty()
+                && !note.getDestinationPhone().isEmpty() && !note.getWeight().isEmpty();
 
         return result;
     }

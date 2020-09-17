@@ -12,10 +12,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import tdt.db.daoImpl.VariableArchivoImpl;
-import tdt.model.Note;
-import tdt.model.FileVariable;
 import tdt.db.dao.IFileVariableDao;
+import tdt.db.daoImpl.FileVariableImpl;
+import tdt.model.FileVariable;
+import tdt.model.Note;
 
 public class FileService {
 
@@ -77,8 +77,8 @@ public class FileService {
         return registerList;
     }
 
-    public static void actualizarAlbaran(Note albaran) {
-        variableDao = new VariableArchivoImpl();
+    public static void updateNote(Note note) {
+        variableDao = new FileVariableImpl();
 
         FileVariable var = null;
 
@@ -109,9 +109,9 @@ public class FileService {
 
                     String refFile = sCurrentLine.substring(var.getStart() - 1, var.getEnd() - 1).trim();
 
-                    if (refFile.equals(albaran.getRef())) {
+                    if (refFile.equals(note.getRef())) {
 
-                        String newLine = RegisterFactory.generarRegistroAlbaran(albaran);
+                        String newLine = RegisterFactory.generateNoteRegister(note);
 
                         out.write(newLine + "\n");
 
@@ -157,12 +157,12 @@ public class FileService {
 
     }
 
-    public static boolean writeOutFiles(Map<String, List<Note>> result) {
-        boolean resultado = true;
+    public static boolean writeOutFiles(Map<String, List<Note>> resultNotes) {
+        boolean result = true;
 
-        for (String key : result.keySet()) {
+        for (String key : resultNotes.keySet()) {
 
-            List<Note> albaranes = result.get(key);
+            List<Note> albaranes = resultNotes.get(key);
 
             String desktopPath = null;
 
@@ -204,7 +204,7 @@ public class FileService {
                 for (Note line : albaranes) {
                     try {
                         
-                        String newLine = RegisterFactory.generarRegistroAlbaran(line);
+                        String newLine = RegisterFactory.generateNoteRegister(line);
 
                         out.write(newLine + "\n");
                         
@@ -221,7 +221,7 @@ public class FileService {
 
                 alert.showAndWait();
 
-                resultado = false;
+                result = false;
 
             } finally {
                 try {
@@ -244,7 +244,7 @@ public class FileService {
                 }
             }
         }
-        return resultado;
+        return result;
     }
 
 }

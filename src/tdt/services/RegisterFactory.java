@@ -2,22 +2,22 @@ package tdt.services;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import tdt.db.daoImpl.VariableArchivoImpl;
-import tdt.model.Note;
-import tdt.model.FileVariable;
 import tdt.db.dao.IFileVariableDao;
+import tdt.db.daoImpl.FileVariableImpl;
+import tdt.model.FileVariable;
+import tdt.model.Note;
 
 public class RegisterFactory {
 
-    private static Note albaran;
+    private static Note note;
 
     private static IFileVariableDao variableDao;
 
     private static HashMap<String, FileVariable> list;
 
-    public static Note generarAlbaran(String data) {
+    public static Note generateNote(String data) {
 
-        variableDao = new VariableArchivoImpl();
+        variableDao = new FileVariableImpl();
 
         list = variableDao.hashMapFileVariable();
 
@@ -62,7 +62,7 @@ public class RegisterFactory {
             String pais = data.substring(list.get("PAIS").getStart() - 1, list.get("PAIS").getEnd() - 1).trim();
             String gls = data.substring(list.get("GLS").getStart() - 1, list.get("GLS").getEnd() - 1).trim();
 
-            albaran = new Note(
+            note = new Note(
                     cliente, departamento, ref, fecha, typeSer, variante,
                     nombreRem, direcRem, poblacionRem, nombreDestino, direcDestino,
                     viaDestino, numeroDestino, pisoDestino,
@@ -77,57 +77,57 @@ public class RegisterFactory {
 
             alert.showAndWait();
         }
-        return albaran;
+        return note;
     }
 
-    public static String generarRegistroAlbaran(Note al) {
+    public static String generateNoteRegister(Note note) {
         
-        String cliente = al.getClient();
-        String departamento = al.getDepartament();
-        if (al.getNewRef() != null) {
-            al.setRef(al.getNewRef());
-            al.setNewRef(null);
+        String client = note.getClient();
+        String departament = note.getDepartament();
+        if (note.getNewRef() != null) {
+            note.setRef(note.getNewRef());
+            note.setNewRef(null);
         }
-        String ref = al.getRef();
-        String fecha = al.getDate();
-        String typeSer = al.getTypeServ();
-        String variante = al.getVariant();
-        String nombreRem = al.getSenderName();
-        String direcRem = al.getSenderAddress();
-        String poblacionRem = al.getSenderCity();
-        String nombreDestino = al.getDestinyName();
-        String direcDestino = al.getDestinationAddress();
-        String viaDestino = al.getDestinationRoad();
-        String numeroDestino = al.getDestinationNumber();
-        String pisoDestino = al.getDestinationApartment();
-        String tfnoDestino = al.getDestinationPhone();
-        String poblaDestino = al.getDestinationCity();
-        String postalDestino = al.getDestinationPostalCode();
-        String bultos = al.getBundles();
-        String documentos = al.getDocuments();
-        String paquetes = al.getPackages();
-        String ancho = al.getWidth();
-        String alto = al.getHeight();
-        String largo = al.getLong();
-        String peso = al.getWeight();
-        String reembolso = al.getRefund();
-        String valor = al.getValue();
-        String ctaCliente = al.getClientBill();
-        String moneda = al.getCoin();
-        String observaciones = al.getObservations();
-        String sabado = al.getSaturday();
-        String horaEntr = al.getInTime();
-        String retorno = al.getReturn();
-        String gestionDest = al.getDestinyManagement();
-        String portesDebidos = al.getDuePostage();
-        String formaPago = al.getPayWay();
-        String email = al.getEmail();
-        String pais = al.getCountry();
-        String gls = al.getGls();
+        String ref = note.getRef();
+        String date = note.getDate();
+        String typeSer = note.getTypeServ();
+        String variant = note.getVariant();
+        String senderName = note.getSenderName();
+        String senderAddress = note.getSenderAddress();
+        String senderCity = note.getSenderCity();
+        String destinationName = note.getDestinationName();
+        String destinationAddress = note.getDestinationAddress();
+        String destinationRoad = note.getDestinationRoad();
+        String destinationNumber = note.getDestinationNumber();
+        String destinationApartment = note.getDestinationApartment();
+        String destinationPhone = note.getDestinationPhone();
+        String destinationCity = note.getDestinationCity();
+        String destinationPostalCode = note.getDestinationPostalCode();
+        String bundles = note.getBundles();
+        String documents = note.getDocuments();
+        String packages = note.getPackages();
+        String width = note.getWidth();
+        String height = note.getHeight();
+        String _long = note.getLong();
+        String weight = note.getWeight();
+        String refund = note.getRefund();
+        String value = note.getValue();
+        String clientBill = note.getClientBill();
+        String coin = note.getCoin();
+        String observations = note.getObservations();
+        String saturday = note.getSaturday();
+        String inTime = note.getInTime();
+        String _return = note.getReturn();
+        String destinationManagement = note.getDestinationManagement();
+        String duePostage = note.getDuePostage();
+        String payWay = note.getPayWay();
+        String email = note.getEmail();
+        String country = note.getCountry();
+        String gls = note.getGls();
 
-        String[] dataList = {cliente, departamento, ref, fecha, typeSer, variante, nombreRem, direcRem, poblacionRem, nombreDestino, direcDestino, viaDestino, numeroDestino, pisoDestino,
-            tfnoDestino, poblaDestino, postalDestino, bultos, documentos, paquetes, ancho, alto, largo, peso, reembolso, valor, ctaCliente, moneda, observaciones, sabado, horaEntr, retorno, gestionDest,
-            portesDebidos, formaPago, email, pais, gls};
+        String[] dataList = {client, departament, ref, date, typeSer, variant, senderName, senderAddress, senderCity, destinationName, destinationAddress, destinationRoad, destinationNumber, destinationApartment,
+            destinationPhone, destinationCity, destinationPostalCode, bundles, documents, packages, width, height, _long, weight, refund, value, clientBill, coin, observations, saturday, inTime, _return, destinationManagement,
+            duePostage, payWay, email, country, gls};
 
         char fill = ' ';
 
@@ -136,11 +136,11 @@ public class RegisterFactory {
         Field[] fields = Note.class.getDeclaredFields();
 
         for (int i = 0; i < fields.length - 1; i++) {
-            if (!fields[i].getName().equals("zona") && !fields[i].getName().equals("newRef") && !fields[i].getName().equals("MEJOR_AGENCIA")) {
+            if (!fields[i].getName().equals("zone") && !fields[i].getName().equals("newRef") && !fields[i].getName().equals("BEST_AGENCY")) {
 
-                int width = (list.get(fields[i].getName()).getEnd()) - (list.get(fields[i].getName()).getStart()) - dataList[i].length();
+                int widthField = (list.get(fields[i].getName()).getEnd()) - (list.get(fields[i].getName()).getStart()) - dataList[i].length();
 
-                line += dataList[i] + new String(new char[width]).replace('\0', fill);
+                line += dataList[i] + new String(new char[widthField]).replace('\0', fill);
             }
         }
 

@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import tdt.db.daoImpl.ProvinciaImpl;
+import tdt.db.daoImpl.CityImpl;
 import tdt.model.City;
 import tdt.services.AlertService;
 import tdt.db.dao.ICityDao;
@@ -45,7 +45,7 @@ public class PostalesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        provinciaDao = new ProvinciaImpl();
+        provinciaDao = new CityImpl();
 
         ObservableList<City> listaProvincias = provinciaDao.getCities();
 

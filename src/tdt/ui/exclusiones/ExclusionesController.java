@@ -23,7 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 import tdt.db.daoImpl.AgencyImpl;
-import tdt.db.daoImpl.ExclusionesImpl;
+import tdt.db.daoImpl.ExclusionsImpl;
 import tdt.model.Exclusion;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
@@ -70,7 +70,7 @@ public class ExclusionesController implements Initializable {
 
         agenciaDao = new AgencyImpl();
 
-        exclusionesDao = new ExclusionesImpl();
+        exclusionesDao = new ExclusionsImpl();
 
         listaExclusiones = exclusionesDao.getExclusions();
 
@@ -117,7 +117,7 @@ public class ExclusionesController implements Initializable {
 
         tableEx.setEditable(true);
 
-        exclusionesDao = new ExclusionesImpl();
+        exclusionesDao = new ExclusionsImpl();
 
         cmbAccion.setConverter(accionConverter());
 

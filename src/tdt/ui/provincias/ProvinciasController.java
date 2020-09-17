@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-import tdt.db.daoImpl.ProvinciaImpl;
+import tdt.db.daoImpl.CityImpl;
 import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.City;
 import tdt.db.dao.ICityDao;
@@ -40,7 +40,7 @@ public class ProvinciasController implements Initializable {
 
         zonaDao = new ZoneImpl();
 
-        provinciaDao = new ProvinciaImpl();
+        provinciaDao = new CityImpl();
 
         nombresZonas = zonaDao.getZoneNames();
         

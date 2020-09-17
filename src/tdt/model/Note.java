@@ -34,7 +34,7 @@ public class Note {
     private String SATURDAY; // 492
     private String IN_TIME; // 493-497
     private String RETURN; // 498
-    private String DESTINY_MANAGEMENT; // 499
+    private String DESTINATION_MANAGEMENT; // 499
     private String DUE_POSTAGE; // 500
     private String PAY_WAY; // 501-503
     private String EMAIL; // 504-553
@@ -62,7 +62,7 @@ public class Note {
             String senderCity, String destinationName, String destinationAddress, String destinationRoad, String destinationNumber, 
             String destinationApartment, String destinationPhone, String destinationCity, String destinationPostalCode, String bundles, String documents,
             String packages, String width, String height, String _long, String weight, String refund, String value, String clientBill, String coin,
-            String observations, String saturday, String inTime, String _return, String destinyManagement, String duePostage, String payWay, String email, String country, String gls) {
+            String observations, String saturday, String inTime, String _return, String destinationManagement, String duePostage, String payWay, String email, String country, String gls) {
         this.CLIENT = client;
         this.DEPARTAMENT = departament;
         this.REF = ref;
@@ -95,7 +95,7 @@ public class Note {
         this.SATURDAY = saturday;
         this.IN_TIME = inTime;
         this.RETURN = _return;
-        this.DESTINY_MANAGEMENT = destinyManagement;
+        this.DESTINATION_MANAGEMENT = destinationManagement;
         this.DUE_POSTAGE = duePostage;
         this.PAY_WAY = payWay;
         this.EMAIL = email;
@@ -184,12 +184,12 @@ public class Note {
         this.SENDER_CITY = senderCity;
     }
 
-    public String getDestinyName() {
+    public String getDestinationName() {
         return DESTINATION_NAME;
     }
 
-    public void setDestinyName(String destinyName) {
-        this.DESTINATION_NAME = destinyName;
+    public void setDestinationName(String destinationName) {
+        this.DESTINATION_NAME = destinationName;
     }
 
     public String getDestinationAddress() {
@@ -368,12 +368,12 @@ public class Note {
         this.RETURN = _return;
     }
 
-    public String getDestinyManagement() {
-        return DESTINY_MANAGEMENT;
+    public String getDestinationManagement() {
+        return DESTINATION_MANAGEMENT;
     }
 
-    public void setDestinyManagement(String destinyManagement) {
-        this.DESTINY_MANAGEMENT = destinyManagement;
+    public void setDestinationManagement(String destinationManagement) {
+        this.DESTINATION_MANAGEMENT = destinationManagement;
     }
 
     public String getDuePostage() {
@@ -440,7 +440,7 @@ public class Note {
                 ", valor=" + VALUE.trim() + ", ctaCliente=" + CLIENT_BILL.trim() + ", moneda=" +
                 COIN.trim() + ", observaciones=" + OBSERVATIONS.trim() + ", sabado=" + SATURDAY.trim() +
                 ", horaEntr=" + IN_TIME.trim() + ", retorno=" + RETURN.trim() + ", gestionDest=" +
-                DESTINY_MANAGEMENT.trim() + ", portesDebidos=" + DUE_POSTAGE.trim() + ", formaPago=" +
+                DESTINATION_MANAGEMENT.trim() + ", portesDebidos=" + DUE_POSTAGE.trim() + ", formaPago=" +
                 PAY_WAY.trim() + ", email=" + EMAIL.trim() + ", pais=" + COUNTRY.trim() +
                 ", gls=" + GLS.trim() + '}';
     }

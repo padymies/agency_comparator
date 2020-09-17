@@ -11,8 +11,8 @@ import tdt.db.dao.IRateDao;
 import tdt.db.dao.IZoneDao;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.AppConfigImpl;
-import tdt.db.daoImpl.ExclusionesImpl;
-import tdt.db.daoImpl.TarifaImpl;
+import tdt.db.daoImpl.ExclusionsImpl;
+import tdt.db.daoImpl.RateImpl;
 import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
@@ -33,7 +33,7 @@ public class ComparatorService {
     private IAppConfig configDao;
 
     public ComparatorService() {
-        rateDao = new TarifaImpl();
+        rateDao = new RateImpl();
 
         zoneDao = new ZoneImpl();
 
@@ -184,7 +184,7 @@ public class ComparatorService {
 
     private void checkExclusions(Note note, ObservableList<AgencyZone> list) {
 
-        exclusionsDao = new ExclusionesImpl();
+        exclusionsDao = new ExclusionsImpl();
 
         Exclusion ex = exclusionsDao.getExclusionByPostalCode(note.getDestinationPostalCode());
 

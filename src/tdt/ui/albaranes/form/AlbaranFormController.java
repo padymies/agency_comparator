@@ -106,7 +106,7 @@ public class AlbaranFormController implements Initializable {
 
         postalDestino.setText(albaran.getDestinationPostalCode().trim());
 
-        nomreDestino.setText(albaran.getDestinyName().trim());
+        nomreDestino.setText(albaran.getDestinationName().trim());
 
         direcDestino.setText(albaran.getDestinationAddress().trim());
 
@@ -153,7 +153,7 @@ public class AlbaranFormController implements Initializable {
 
             albaran.setDestinationPostalCode(postalDestino.getText().trim());
 
-            albaran.setDestinyName(nomreDestino.getText().trim());
+            albaran.setDestinationName(nomreDestino.getText().trim());
 
             albaran.setDestinationAddress(direcDestino.getText().trim());
 
@@ -177,7 +177,7 @@ public class AlbaranFormController implements Initializable {
 
             albaran.setBundles(bultos.getText().trim());
 
-            FileService.actualizarAlbaran(albaran);
+            FileService.updateNote(albaran);
 
             anchorPane.getScene().getWindow().hide();
 

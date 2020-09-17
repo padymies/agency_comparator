@@ -17,7 +17,7 @@ import tdt.model.Rate;
 import tdt.services.AlertExceptionService;
 import tdt.db.dao.IRateDao;
 
-public class TarifaImpl implements IRateDao {
+public class RateImpl implements IRateDao {
 
     private final String TABLE_NAME = "TARIFAS";
 
@@ -71,7 +71,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -128,7 +128,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -175,7 +175,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -220,7 +220,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -298,7 +298,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return resultado;
@@ -367,7 +367,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -421,7 +421,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -468,7 +468,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -516,7 +516,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -564,7 +564,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class
+                Logger.getLogger(RateImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -617,7 +617,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return kg;
@@ -671,7 +671,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -727,7 +727,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -783,7 +783,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -829,7 +829,7 @@ public class TarifaImpl implements IRateDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(TarifaImpl.class
+                Logger.getLogger(RateImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }

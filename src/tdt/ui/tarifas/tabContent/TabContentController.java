@@ -48,8 +48,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import tdt.db.daoImpl.AgencyImpl;
-import tdt.db.daoImpl.ProvinciaImpl;
-import tdt.db.daoImpl.TarifaImpl;
+import tdt.db.daoImpl.CityImpl;
+import tdt.db.daoImpl.RateImpl;
 import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
@@ -232,11 +232,11 @@ public class TabContentController implements Initializable {
 
         zonaDao = new ZoneImpl();
 
-        tarifaDao = new TarifaImpl();
+        tarifaDao = new RateImpl();
 
         agenciaDao = new AgencyImpl();
 
-        provinciaDao = new ProvinciaImpl();
+        provinciaDao = new CityImpl();
 
         if (idZona != -1) { // ES EDICION deZONA
 

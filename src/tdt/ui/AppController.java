@@ -160,7 +160,7 @@ public class AppController implements Initializable {
 
             for (String register : registerList) {
 
-                reg = RegisterFactory.generarAlbaran(register);
+                reg = RegisterFactory.generateNote(register);
 
                 if (reg != null) {
 

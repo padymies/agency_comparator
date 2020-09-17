@@ -22,7 +22,7 @@ import tdt.db.dao.IExclusionDao;
  *
  * @author Usuario
  */
-public class ExclusionesImpl implements IExclusionDao {
+public class ExclusionsImpl implements IExclusionDao {
 
     String TABLE_NAME = "exclusiones_postales";
 
@@ -78,7 +78,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExclusionsImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return list;
@@ -135,7 +135,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExclusionsImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return exclusion;
@@ -192,7 +192,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExclusionsImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return id;
@@ -240,7 +240,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class
+                Logger.getLogger(ExclusionsImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -288,7 +288,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class
+                Logger.getLogger(ExclusionsImpl.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -347,7 +347,7 @@ public class ExclusionesImpl implements IExclusionDao {
 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ExclusionesImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExclusionsImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return exclusion;

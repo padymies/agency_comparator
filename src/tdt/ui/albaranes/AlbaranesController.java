@@ -151,7 +151,7 @@ public class AlbaranesController implements Initializable {
 
             String lowerCaseBusqueda = busqueda.toLowerCase();
 
-            String nombre = data.getDestinyName().toLowerCase();
+            String nombre = data.getDestinationName().toLowerCase();
 
             String poblacion = data.getDestinationCity().toLowerCase();
 
@@ -190,7 +190,7 @@ public class AlbaranesController implements Initializable {
 
         ObservableList<Note> filas = listView.getItems();
         filas.forEach(item -> {
-            FileService.actualizarAlbaran(item); // SOBREESCRIBIMOS EL ARCHIVO CON LAS MODIFICACIONES HECHAS
+            FileService.updateNote(item); // SOBREESCRIBIMOS EL ARCHIVO CON LAS MODIFICACIONES HECHAS
 
         });
         ObservableList<Note> filasSeleccionadas = listView.getSelectionModel().getSelectedItems();
@@ -206,7 +206,7 @@ public class AlbaranesController implements Initializable {
             ArrayList<Note> albaranes = new ArrayList<>();
 
             filasSeleccionadas.forEach(action -> {
-                if (ValidatorService.albaranValidator(action)) {
+                if (ValidatorService.noteValidator(action)) {
                     albaranes.add(action);
 
                 }
@@ -273,7 +273,7 @@ public class AlbaranesController implements Initializable {
 
                 cell.ref.setText(albaran.getRef());
 
-                cell.txtNombreDestino.setText(albaran.getDestinyName());
+                cell.txtNombreDestino.setText(albaran.getDestinationName());
 
                 cell.txtPeso.setText(albaran.getWeight());
 
@@ -296,7 +296,7 @@ public class AlbaranesController implements Initializable {
 
                         albaran.setCountry(cell.txtPais.getText());
 
-                        FileService.actualizarAlbaran(albaran);
+                        FileService.updateNote(albaran);
 
                         Zone nuevaZona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
 
@@ -321,7 +321,7 @@ public class AlbaranesController implements Initializable {
                         if (ValidatorService.integerValidate(cell.txtBultos)) {
 
                             albaran.setBundles(cell.txtBultos.getText());
-                            FileService.actualizarAlbaran(albaran);
+                            FileService.updateNote(albaran);
                         }
 
                     }
@@ -332,7 +332,7 @@ public class AlbaranesController implements Initializable {
                     if (!newValue && !cell.txtPeso.getText().isEmpty()) {
                         if (ValidatorService.doubleValidate(cell.txtPeso)) {
                             albaran.setWeight(cell.txtPeso.getText().trim());
-                            FileService.actualizarAlbaran(albaran);
+                            FileService.updateNote(albaran);
                         }
                     }
 
@@ -394,7 +394,7 @@ public class AlbaranesController implements Initializable {
                 });
                 setGraphic(cell);
 
-                if (!ValidatorService.albaranValidator(albaran)) {
+                if (!ValidatorService.noteValidator(albaran)) {
                     cell.getStyleClass().add("invalidRow");
                 } else {
                     cell.getStyleClass().clear();
