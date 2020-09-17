@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class AlertService extends Alert {
 
-    public AlertService(AlertType alertType, String title, String message, String detalle) {
+    public AlertService(AlertType alertType, String title, String message, String detail) {
 
         super(alertType);
 
@@ -27,13 +27,13 @@ public class AlertService extends Alert {
 
         Text text = new Text("\n"+ message);
        
-        Text text2 = new Text("\n\n" + detalle);
+        Text textDetail = new Text("\n\n" + detail);
 
         text.setStyle("-fx-font-size: 14px; -fx-fill: black;");
        
-        text2.setStyle("-fx-font-size: 12px; -fx-fill: black;");
+        textDetail.setStyle("-fx-font-size: 12px; -fx-fill: black;");
 
-        TextFlow flow = new TextFlow(text, text2);
+        TextFlow flow = new TextFlow(text, textDetail);
 
         getDialogPane().setContent(flow);
         

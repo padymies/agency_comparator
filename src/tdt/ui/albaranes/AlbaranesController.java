@@ -214,7 +214,7 @@ public class AlbaranesController implements Initializable {
 
             ComparatorService service = new ComparatorService();
 
-            service.compararAlbaranes(albaranes);
+            service.noteCompare(albaranes);
 
             int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() != null).count();
             int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() == null).count();
