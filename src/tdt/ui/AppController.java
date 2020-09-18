@@ -195,7 +195,7 @@ public class AppController implements Initializable {
 
             NotesController notesController = fxmlLoader.getController();
 
-            notesController.trannsferLista(notes);
+            notesController.trannsferList(notes);
 
             Stage notesStage = new Stage();
 

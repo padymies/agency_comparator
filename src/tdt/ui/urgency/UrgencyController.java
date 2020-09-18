@@ -27,13 +27,13 @@ import tdt.services.ConfigStage;
 public class UrgencyController implements Initializable {
 
     @FXML
-    private TextField txtUrgencia;
+    private TextField txtUrgency;
     @FXML
-    private Button btnUrgencia;
+    private Button btnUrgency;
 
     private IAppConfig configDao;
 
-    private double urgencia;
+    private double urgency;
 
     /**
      * Initializes the controller class.
@@ -41,20 +41,20 @@ public class UrgencyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        ConfigStage.setIcon(btnUrgencia, "check.png", 12);
+        ConfigStage.setIcon(btnUrgency, "check.png", 12);
         configDao = new AppConfigImpl();
 
-        urgencia = configDao.getUrgencyPercent();
+        urgency = configDao.getUrgencyPercent();
 
-        txtUrgencia.setText(String.valueOf(urgencia));
+        txtUrgency.setText(String.valueOf(urgency));
     }
 
     @FXML
-    private void saveUrgencia(ActionEvent event) {
+    private void saveUrgency(ActionEvent event) {
         try {
-            double newUrgencia = Double.parseDouble(txtUrgencia.getText().trim());
+            double newUrgency = Double.parseDouble(txtUrgency.getText().trim());
 
-            configDao.updateUrgencyPercent(newUrgencia);
+            configDao.updateUrgencyPercent(newUrgency);
 
             ((Node) event.getSource()).getScene().getWindow().hide();
 

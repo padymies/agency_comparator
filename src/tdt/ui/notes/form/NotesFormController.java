@@ -73,7 +73,7 @@ public class NotesFormController implements Initializable {
         ConfigStage.setIcon(btnClose, "cancel.png", 18);
     }
 
-    public void transferAlbaran(Note note) {
+    public void transferNote(Note note) {
 
         this.note = note;
 

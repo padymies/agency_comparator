@@ -1,4 +1,4 @@
-package tdt.ui.salidaComparacion;
+package tdt.ui.comparator_output;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

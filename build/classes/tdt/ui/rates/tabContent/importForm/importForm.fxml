@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="42.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.tarifas.tabContent.importForm.ImportFormController">
+<AnchorPane id="AnchorPane" prefHeight="42.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox id="hBox" fx:id="hBox" alignment="CENTER_LEFT" layoutY="-50.0" prefHeight="42.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox id="cmbImportZona" fx:id="importComboZona" prefHeight="25.0" prefWidth="188.0" promptText="Seleccione Zona">
+            <ComboBox id="cmbImportZone" fx:id="importComboZona" prefHeight="25.0" prefWidth="188.0" promptText="Seleccione Zona">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox id="cmbImportAgencia" fx:id="importComboAgencia" prefHeight="25.0" prefWidth="217.0" promptText="Seleccione Agencia">
+            <ComboBox id="cmbImportAgency" fx:id="importComboAgency" prefHeight="25.0" prefWidth="217.0" promptText="Seleccione Agencia">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

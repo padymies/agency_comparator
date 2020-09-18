@@ -12,12 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import tdt.db.dao.IZoneDao;
 import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Zone;
 import tdt.services.AlertExceptionService;
 import tdt.services.ConfigStage;
 import tdt.ui.rates.tabContent.TabContentController;
-import tdt.db.dao.IZoneDao;
 
 /**
  * FXML Controller class
@@ -30,37 +30,37 @@ public class RatesController implements Initializable {
     private TabPane tabPane;
 
     @FXML
-    private Button btnAddZona;
+    private Button btnAddZone;
 
-    private IZoneDao zonaDao;
+    private IZoneDao zoneDao;
 
-    private ObservableList<Zone> listaZonas;
+    private ObservableList<Zone> zoneList;
 
     private ArrayList<TabContentController> controllerArrayList;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        zonaDao = new ZoneImpl();
+        zoneDao = new ZoneImpl();
 
-        listaZonas = zonaDao.getZonesUI();
+        zoneList = zoneDao.getZonesUI();
 
-        ConfigStage.setIcon(btnAddZona, "add.png", 16);
+        ConfigStage.setIcon(btnAddZone, "add.png", 16);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 
         controllerArrayList = new ArrayList<>();
 
-        for (int i = 0; i < listaZonas.size(); i++) {
+        for (int i = 0; i < zoneList.size(); i++) {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("tabContent/tabContent.fxml"));
             try {
 
-                TabContentController controller = new TabContentController(listaZonas.get(i).getZoneId());
+                TabContentController controller = new TabContentController(zoneList.get(i).getZoneId());
 
                 loader.setController(controller);
 
-                Tab tab = new Tab(listaZonas.get(i).getName(), loader.load());
+                Tab tab = new Tab(zoneList.get(i).getName(), loader.load());
 
                 tab.setClosable(false);
 
@@ -68,14 +68,14 @@ public class RatesController implements Initializable {
 
                 tabPane.getTabs().add(tab);
 
-                controllerArrayList.get(i).getTxtNombreZona().setText(listaZonas.get(i).getName());
+                controllerArrayList.get(i).getTxtZoneName().setText(zoneList.get(i).getName());
 
-                controllerArrayList.get(i).getTxtPais().setText(listaZonas.get(i).getCountry());
+                controllerArrayList.get(i).getTxtCountry().setText(zoneList.get(i).getCountry());
 
-                controllerArrayList.get(i).getTxtDescripcion().setText(listaZonas.get(i).getDescription());
+                controllerArrayList.get(i).getTxtDescription().setText(zoneList.get(i).getDescription());
 
             } catch (IOException e) {
-                AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar el contenido de la zona " + listaZonas.get(i).getName(), e);
+                AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido cargar el contenido de la zona " + zoneList.get(i).getName(), e);
 
                 alert.showAndWait();
             }
@@ -84,7 +84,7 @@ public class RatesController implements Initializable {
     }
 
     @FXML
-    private void addNewZona(ActionEvent event) {
+    private void addNewZone(ActionEvent event) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("tabContent/tabContent.fxml"));
         try {

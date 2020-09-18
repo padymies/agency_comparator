@@ -21,32 +21,32 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" layoutX="49.0" layoutY="336.0" prefHeight="394.0" prefWidth="591.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="336.0">
                <content>
-                  <ListView id="listZonas" fx:id="listZonas" prefHeight="461.0" prefWidth="672.0" />
+                  <ListView id="zoneList" fx:id="zoneList" prefHeight="461.0" prefWidth="672.0" />
                </content>
             </ScrollPane>
             <Label layoutX="27.0" layoutY="108.0" text="Pais" textOverrun="CLIP" />
             <Label layoutX="340.0" layoutY="61.0" text="Descripcion" textOverrun="CLIP" />
-            <TextField id="txtPais" fx:id="txtPais" layoutX="104.0" layoutY="104.0" prefHeight="20.0" prefWidth="150.0" />
-            <TextArea id="txtDescripcion" fx:id="txtDescripcion" layoutX="417.0" layoutY="61.0" prefHeight="73.0" prefWidth="235.0" />
+            <TextField id="txtCountry" fx:id="txtCountry" layoutX="104.0" layoutY="104.0" prefHeight="20.0" prefWidth="150.0" />
+            <TextArea id="txtDescription" fx:id="txtDescription" layoutX="417.0" layoutY="61.0" prefHeight="73.0" prefWidth="235.0" />
             <Label layoutX="30.0" layoutY="233.0" text="Agencias">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
             <Separator layoutX="28.0" layoutY="256.0" prefHeight="3.0" prefWidth="496.0" />
-            <Button id="btnAgenciaZona" fx:id="btnAgenciaZona" layoutX="523.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Añadir Agencia" />
+            <Button id="btnAgencyZone" fx:id="btnAgencyZone" layoutX="523.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Añadir Agencia" />
             <Label layoutX="83.0" layoutY="310.0" text="Nombre" />
             <Label layoutX="386.0" layoutY="310.0" text="Máximo Kilos" />
             <Label layoutX="303.0" layoutY="310.0" text="Incremento" />
             
             <HBox fx:id="hboxNewForm" alignment="CENTER_LEFT" layoutX="26.0" layoutY="268.0" prefHeight="37.0" prefWidth="627.0" visible="false">
                <children>
-                  <ComboBox fx:id="comboAgencias" prefHeight="25.0" prefWidth="170.0" promptText="Seleccione una Agencia">
+                  <ComboBox fx:id="comboAgencies" prefHeight="25.0" prefWidth="170.0" promptText="Seleccione una Agencia">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <TextField fx:id="newPlazoEntrega" layoutX="244.0" layoutY="16.0" prefHeight="25.0" prefWidth="90.0" promptText="Plazo entrega">
+                  <TextField fx:id="newDeliveryTime" layoutX="244.0" layoutY="16.0" prefHeight="25.0" prefWidth="90.0" promptText="Plazo entrega">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
@@ -61,7 +61,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnNewAgencia" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Guardar">
+                  <Button fx:id="btnNewAgency" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Guardar">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
@@ -73,23 +73,23 @@
                   </Button>
                </children>
             </HBox>
-            <TextArea id="txtDescripcion" fx:id="txtProvincias" layoutX="105.0" layoutY="163.0" prefHeight="38.0" prefWidth="549.0" />
+            <TextArea id="txtCities" fx:id="txtCities" layoutX="105.0" layoutY="163.0" prefHeight="38.0" prefWidth="549.0" />
             <Label layoutX="211.0" layoutY="310.0" text="Plazo entrega" />
-            <Button fx:id="btnProvincias" layoutX="23.0" layoutY="163.0" mnemonicParsing="false" onAction="#goToProvincias" text="Provincias" />
+            <Button fx:id="btnCities" layoutX="23.0" layoutY="163.0" mnemonicParsing="false" onAction="#goToCities" text="Provincias" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="851.0" layoutY="310.0" prefHeight="480.0" prefWidth="218.0">
          <children>
-            <TableView id="tableTarifas" fx:id="tableTarifas" layoutX="112.0" layoutY="112.0" prefHeight="611.0" prefWidth="218.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView id="rateTable" fx:id="rateTable" layoutX="112.0" layoutY="112.0" prefHeight="611.0" prefWidth="218.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
                   <TableColumn fx:id="columnKg" prefWidth="107.0" text="Kilos" />
-                  <TableColumn fx:id="columnPrecio" prefWidth="110.0" text="Precio" />
+                  <TableColumn fx:id="columnPrice" prefWidth="110.0" text="Precio" />
                </columns>
             </TableView>
          </children>
       </AnchorPane>
       <TextField id="txtKilos" fx:id="txtKilos" layoutX="850.0" layoutY="257.0" prefHeight="30.0" prefWidth="38.0" />
-      <TextField id="txtPrecio" fx:id="txtPrecio" layoutX="921.0" layoutY="257.0" prefHeight="30.0" prefWidth="45.0" />
+      <TextField id="txtPrice" fx:id="txtPrice" layoutX="921.0" layoutY="257.0" prefHeight="30.0" prefWidth="45.0" />
       <Label layoutX="850.0" layoutY="45.0" text="Tarifas">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -100,14 +100,14 @@
       <Label layoutX="892.0" layoutY="264.0" text="Kg" />
       <Label layoutX="970.0" layoutY="264.0" text="€" />
       <Label layoutX="27.0" layoutY="64.0" text="Zona" textOverrun="CLIP" />
-      <TextField id="txtNombreZona" fx:id="txtNombreZona" layoutX="104.0" layoutY="59.0" prefHeight="25.0" prefWidth="150.0" />
+      <TextField id="txtZoneName" fx:id="txtZoneName" layoutX="104.0" layoutY="59.0" prefHeight="25.0" prefWidth="150.0" />
       <HBox alignment="CENTER" layoutX="54.0" layoutY="731.0" prefHeight="87.0" prefWidth="591.0">
          <children>
-            <Button fx:id="btnGuardar" mnemonicParsing="false" prefHeight="30.0" prefWidth="141.0" text="Guardar Zona">
+            <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="30.0" prefWidth="141.0" text="Guardar Zona">
                <font>
                   <Font size="14.0" />
                </font></Button>
-            <Button fx:id="btnBorrar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="139.0" text="Borrar Zona">
+            <Button fx:id="btnDelete" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="139.0" text="Borrar Zona">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
@@ -117,12 +117,12 @@
             </Button>
          </children>
       </HBox>
-      <Button id="btnAddTarifa" fx:id="btnAddTarifa" layoutX="997.0" layoutY="257.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="72.0" text="Añadir" />
+      <Button id="btnAddRate" fx:id="btnAddRate" layoutX="997.0" layoutY="257.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="72.0" text="Añadir" />
       <Label layoutX="849.0" layoutY="89.0" text="Zona:" />
       <Label layoutX="849.0" layoutY="117.0" text="Agencia:" />
-      <Label id="lbTarifaZona" fx:id="lbTarifaZona" layoutX="907.0" layoutY="89.0" prefHeight="17.0" prefWidth="161.0" />
-      <Label id="lbTarifaAgencia" fx:id="lbTarifaAgencia" layoutX="907.0" layoutY="117.0" prefHeight="17.0" prefWidth="161.0" />
-      <Button fx:id="btnImportar" disable="true" layoutX="847.0" layoutY="149.0" mnemonicParsing="false" onAction="#importarTarifa" text="Importar tarifa" />
+      <Label id="lbRateZone" fx:id="lbRateZone" layoutX="907.0" layoutY="89.0" prefHeight="17.0" prefWidth="161.0" />
+      <Label id="lbRateAgency" fx:id="lbRateAgency" layoutX="907.0" layoutY="117.0" prefHeight="17.0" prefWidth="161.0" />
+      <Button fx:id="btnImport" disable="true" layoutX="847.0" layoutY="149.0" mnemonicParsing="false" onAction="#rateImport" text="Importar tarifa" />
       <Separator layoutX="739.0" layoutY="37.0" orientation="VERTICAL" prefHeight="831.0" prefWidth="7.0" />
    </children>
 </AnchorPane>

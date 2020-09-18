@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tdt.ui.salidaComparacion;
+package tdt.ui.comparator_output;
 
 import java.net.URL;
 import java.util.List;
@@ -21,10 +21,10 @@ import tdt.model.Note;
  *
  * @author Usuario
  */
-public class SalidaController implements Initializable {
+public class OutputController implements Initializable {
 
     @FXML
-    private Accordion acordeon;
+    private Accordion accordion;
 
     /**
      * Initializes the controller class.
@@ -39,13 +39,13 @@ public class SalidaController implements Initializable {
 
             List<Note> list = data.get(key);
             
-            ObservableList<Note> albaranes = FXCollections.observableArrayList();
+            ObservableList<Note> notes = FXCollections.observableArrayList();
             
-            albaranes.addAll(list);
+            notes.addAll(list);
 
-            paneBase pane = new paneBase(key, albaranes);
+            paneBase pane = new paneBase(key, notes);
 
-            acordeon.getPanes().add(pane);
+            accordion.getPanes().add(pane);
         }
     }
 

@@ -1,4 +1,4 @@
-package tdt.ui.salidaComparacion;
+package tdt.ui.comparator_output;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

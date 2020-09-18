@@ -2,43 +2,43 @@ package tdt.model;
 
 public class Note {
 
-    private String CLIENT; // 0-4
-    private String DEPARTAMENT; // 5-9
+    private String CLIENTE; // 0-4
+    private String DEPARTAMENTO; // 5-9
     private String REF; // 10-39
-    private String DATE; // 40-47
-    private String TYPE_SERV; // 48-51 
-    private String VARIANT; // 52
-    private String SENDER_NAME; // 53-82
-    private String SENDER_ADDRESS; // 83-112
-    private String SENDER_CITY; // 113-142
-    private String DESTINATION_NAME; // 143-182
-    private String DESTINATION_ADDRESS; //183-282
-    private String DESTINATION_ROAD; //283-285
-    private String DESTINATION_NUMBER; // 286-295
-    private String DESTINATION_APARTMENT; // 296-297
-    private String DESTINATION_PHONE; // 298-309
-    private String DESTINATION_CITY; // 310-349
-    private String DESTINATION_POSTAL_CODE; // 350-354
-    private String BUNDLES; // 355-357
-    private String DOCUMENTS; // 358-360
-    private String PACKAGES; // 361-363
-    private String WIDTH; // 364-366
-    private String HEIGHT; //367-369
-    private String LONG; // 370-372
-    private String WEIGHT; // 373-384
-    private String REFUND; // 385-396
-    private String VALUE; //397-408
-    private String CLIENT_BILL; // 409-420
-    private String COIN; // 421-421
-    private String OBSERVATIONS; // 422-491
-    private String SATURDAY; // 492
-    private String IN_TIME; // 493-497
-    private String RETURN; // 498
-    private String DESTINATION_MANAGEMENT; // 499
-    private String DUE_POSTAGE; // 500
-    private String PAY_WAY; // 501-503
+    private String FECHA; // 40-47
+    private String TIPO_SERV; // 48-51 
+    private String VARIANTE; // 52
+    private String NOMBRE_REM; // 53-82
+    private String DIRECC_REM; // 83-112
+    private String POBLACION_REM; // 113-142
+    private String NOMBRE_DESTINO; // 143-182
+    private String DIRECC_DESTINO; //183-282
+    private String VIA_DESTINO; //283-285
+    private String NUMERO_DESTINO; // 286-295
+    private String PISO_DESTINO; // 296-297
+    private String TFNO_DESTINO; // 298-309
+    private String POBLACION_DESTINO; // 310-349
+    private String POSTAL_DESTINO; // 350-354
+    private String BULTOS; // 355-357
+    private String DOCUMENTOS; // 358-360
+    private String PAQUETES; // 361-363
+    private String ANCHO; // 364-366
+    private String ALTO; //367-369
+    private String LARGO; // 370-372
+    private String PESO; // 373-384
+    private String REEMBOLSO; // 385-396
+    private String VALOR; //397-408
+    private String CUENTA_CLIENTE; // 409-420
+    private String MONEDA; // 421-421
+    private String OBSERVACIONES; // 422-491
+    private String SABADO; // 492
+    private String HORA_ENTRADA; // 493-497
+    private String RETORNO; // 498
+    private String GESTION_DESTINO; // 499
+    private String PORTES_DEBIDOS; // 500
+    private String FORMA_PAGO; // 501-503
     private String EMAIL; // 504-553
-    private String COUNTRY; // 554-593
+    private String PAIS; // 554-593
     private String GLS; // 594-635
     
     
@@ -63,43 +63,43 @@ public class Note {
             String destinationApartment, String destinationPhone, String destinationCity, String destinationPostalCode, String bundles, String documents,
             String packages, String width, String height, String _long, String weight, String refund, String value, String clientBill, String coin,
             String observations, String saturday, String inTime, String _return, String destinationManagement, String duePostage, String payWay, String email, String country, String gls) {
-        this.CLIENT = client;
-        this.DEPARTAMENT = departament;
+        this.CLIENTE = client;
+        this.DEPARTAMENTO = departament;
         this.REF = ref;
-        this.DATE = date;
-        this.TYPE_SERV = typeServ;
-        this.VARIANT = variant;
-        this.SENDER_NAME = senderName;
-        this.SENDER_ADDRESS = senderAddress;
-        this.SENDER_CITY = senderCity;
-        this.DESTINATION_NAME = destinationName;
-        this.DESTINATION_ADDRESS = destinationAddress;
-        this.DESTINATION_ROAD = destinationRoad;
-        this.DESTINATION_NUMBER = destinationNumber;
-        this.DESTINATION_APARTMENT = destinationApartment;
-        this.DESTINATION_PHONE = destinationPhone;
-        this.DESTINATION_CITY = destinationCity;
-        this.DESTINATION_POSTAL_CODE = destinationPostalCode;
-        this.BUNDLES = bundles;
-        this.DOCUMENTS = documents;
-        this.PACKAGES = packages;
-        this.WIDTH = width;
-        this.HEIGHT = height;
-        this.LONG = _long;
-        this.WEIGHT = weight;
-        this.REFUND = refund;
-        this.VALUE = value;
-        this.CLIENT_BILL = clientBill;
-        this.COIN = coin;
-        this.OBSERVATIONS = observations;
-        this.SATURDAY = saturday;
-        this.IN_TIME = inTime;
-        this.RETURN = _return;
-        this.DESTINATION_MANAGEMENT = destinationManagement;
-        this.DUE_POSTAGE = duePostage;
-        this.PAY_WAY = payWay;
+        this.FECHA = date;
+        this.TIPO_SERV = typeServ;
+        this.VARIANTE = variant;
+        this.NOMBRE_REM = senderName;
+        this.DIRECC_REM = senderAddress;
+        this.POBLACION_REM = senderCity;
+        this.NOMBRE_DESTINO = destinationName;
+        this.DIRECC_DESTINO = destinationAddress;
+        this.VIA_DESTINO = destinationRoad;
+        this.NUMERO_DESTINO = destinationNumber;
+        this.PISO_DESTINO = destinationApartment;
+        this.TFNO_DESTINO = destinationPhone;
+        this.POBLACION_DESTINO = destinationCity;
+        this.POSTAL_DESTINO = destinationPostalCode;
+        this.BULTOS = bundles;
+        this.DOCUMENTOS = documents;
+        this.PAQUETES = packages;
+        this.ANCHO = width;
+        this.ALTO = height;
+        this.LARGO = _long;
+        this.PESO = weight;
+        this.REEMBOLSO = refund;
+        this.VALOR = value;
+        this.CUENTA_CLIENTE = clientBill;
+        this.MONEDA = coin;
+        this.OBSERVACIONES = observations;
+        this.SABADO = saturday;
+        this.HORA_ENTRADA = inTime;
+        this.RETORNO = _return;
+        this.GESTION_DESTINO = destinationManagement;
+        this.PORTES_DEBIDOS = duePostage;
+        this.FORMA_PAGO = payWay;
         this.EMAIL = email;
-        this.COUNTRY = country;
+        this.PAIS = country;
         this.GLS = gls;
     }
 
@@ -113,19 +113,19 @@ public class Note {
 
     
     public String getClient() {
-        return CLIENT;
+        return CLIENTE;
     }
 
     public void setClient(String client) {
-        this.CLIENT = client;
+        this.CLIENTE = client;
     }
 
     public String getDepartament() {
-        return DEPARTAMENT;
+        return DEPARTAMENTO;
     }
 
     public void setDepartament(String departament) {
-        this.DEPARTAMENT = departament;
+        this.DEPARTAMENTO = departament;
     }
 
     public String getRef() {
@@ -137,259 +137,259 @@ public class Note {
     }
 
     public String getDate() {
-        return DATE;
+        return FECHA;
     }
 
     public void setDate(String date) {
-        this.DATE = date;
+        this.FECHA = date;
     }
 
     public String getTypeServ() {
-        return TYPE_SERV;
+        return TIPO_SERV;
     }
 
     public void setTypeServ(String typeServ) {
-        this.TYPE_SERV = typeServ;
+        this.TIPO_SERV = typeServ;
     }
 
     public String getVariant() {
-        return VARIANT;
+        return VARIANTE;
     }
 
     public void setVariant(String variant) {
-        this.VARIANT = variant;
+        this.VARIANTE = variant;
     }
 
     public String getSenderName() {
-        return SENDER_NAME;
+        return NOMBRE_REM;
     }
 
     public void setSenderName(String senderName) {
-        this.SENDER_NAME = senderName;
+        this.NOMBRE_REM = senderName;
     }
 
     public String getSenderAddress() {
-        return SENDER_ADDRESS;
+        return DIRECC_REM;
     }
 
     public void setSenderAddress(String senderAddress) {
-        this.SENDER_ADDRESS = senderAddress;
+        this.DIRECC_REM = senderAddress;
     }
 
     public String getSenderCity() {
-        return SENDER_CITY;
+        return POBLACION_REM;
     }
 
     public void setSenderCity(String senderCity) {
-        this.SENDER_CITY = senderCity;
+        this.POBLACION_REM = senderCity;
     }
 
     public String getDestinationName() {
-        return DESTINATION_NAME;
+        return NOMBRE_DESTINO;
     }
 
     public void setDestinationName(String destinationName) {
-        this.DESTINATION_NAME = destinationName;
+        this.NOMBRE_DESTINO = destinationName;
     }
 
     public String getDestinationAddress() {
-        return DESTINATION_ADDRESS;
+        return DIRECC_DESTINO;
     }
 
     public void setDestinationAddress(String destinationAddress) {
-        this.DESTINATION_ADDRESS = destinationAddress;
+        this.DIRECC_DESTINO = destinationAddress;
     }
 
     public String getDestinationRoad() {
-        return DESTINATION_ROAD;
+        return VIA_DESTINO;
     }
 
     public void setDestinationRoad(String destinationRoad) {
-        this.DESTINATION_ROAD = destinationRoad;
+        this.VIA_DESTINO = destinationRoad;
     }
 
     public String getDestinationNumber() {
-        return DESTINATION_NUMBER;
+        return NUMERO_DESTINO;
     }
 
     public void setDestinationNumber(String destinationNumber) {
-        this.DESTINATION_NUMBER = destinationNumber;
+        this.NUMERO_DESTINO = destinationNumber;
     }
 
     public String getDestinationApartment() {
-        return DESTINATION_APARTMENT;
+        return PISO_DESTINO;
     }
 
     public void setDestinationApartment(String destinationApartment) {
-        this.DESTINATION_APARTMENT = destinationApartment;
+        this.PISO_DESTINO = destinationApartment;
     }
 
     public String getDestinationPhone() {
-        return DESTINATION_PHONE;
+        return TFNO_DESTINO;
     }
 
     public void setDestinationPhone(String destinationPhone) {
-        this.DESTINATION_PHONE = destinationPhone;
+        this.TFNO_DESTINO = destinationPhone;
     }
 
     public String getDestinationCity() {
-        return DESTINATION_CITY;
+        return POBLACION_DESTINO;
     }
 
     public void setDestinationCity(String destinationCity) {
-        this.DESTINATION_CITY = destinationCity;
+        this.POBLACION_DESTINO = destinationCity;
     }
 
     public String getDestinationPostalCode() {
-        return DESTINATION_POSTAL_CODE;
+        return POSTAL_DESTINO;
     }
 
     public void setDestinationPostalCode(String destinationPostalCode) {
-        this.DESTINATION_POSTAL_CODE = destinationPostalCode;
+        this.POSTAL_DESTINO = destinationPostalCode;
     }
 
     public String getBundles() {
-        return BUNDLES;
+        return BULTOS;
     }
 
     public void setBundles(String bundles) {
-        this.BUNDLES = bundles;
+        this.BULTOS = bundles;
     }
 
     public String getDocuments() {
-        return DOCUMENTS;
+        return DOCUMENTOS;
     }
 
     public void setDocuments(String documents) {
-        this.DOCUMENTS = documents;
+        this.DOCUMENTOS = documents;
     }
 
     public String getPackages() {
-        return PACKAGES;
+        return PAQUETES;
     }
 
     public void setPackages(String packages) {
-        this.PACKAGES = packages;
+        this.PAQUETES = packages;
     }
 
     public String getWidth() {
-        return WIDTH;
+        return ANCHO;
     }
 
     public void setWidth(String width) {
-        this.WIDTH = width;
+        this.ANCHO = width;
     }
 
     public String getHeight() {
-        return HEIGHT;
+        return ALTO;
     }
 
     public void setHeight(String height) {
-        this.HEIGHT = height;
+        this.ALTO = height;
     }
 
     public String getLong() {
-        return LONG;
+        return LARGO;
     }
 
     public void setLong(String _long) {
-        this.LONG = _long;
+        this.LARGO = _long;
     }
 
     public String getWeight() {
-        return WEIGHT;
+        return PESO;
     }
 
     public void setWeight(String weight) {
-        this.WEIGHT = weight;
+        this.PESO = weight;
     }
 
     public String getRefund() {
-        return REFUND;
+        return REEMBOLSO;
     }
 
     public void setRefund(String refund) {
-        this.REFUND = refund;
+        this.REEMBOLSO = refund;
     }
 
     public String getValue() {
-        return VALUE;
+        return VALOR;
     }
 
     public void setValue(String value) {
-        this.VALUE = value;
+        this.VALOR = value;
     }
 
     public String getClientBill() {
-        return CLIENT_BILL;
+        return CUENTA_CLIENTE;
     }
 
     public void setClientBill(String clientBill) {
-        this.CLIENT_BILL = clientBill;
+        this.CUENTA_CLIENTE = clientBill;
     }
 
     public String getCoin() {
-        return COIN;
+        return MONEDA;
     }
 
     public void setCoin(String coin) {
-        this.COIN = coin;
+        this.MONEDA = coin;
     }
 
     public String getObservations() {
-        return OBSERVATIONS;
+        return OBSERVACIONES;
     }
 
     public void setObservations(String observations) {
-        this.OBSERVATIONS = observations;
+        this.OBSERVACIONES = observations;
     }
 
     public String getSaturday() {
-        return SATURDAY;
+        return SABADO;
     }
 
     public void setSaturday(String saturday) {
-        this.SATURDAY = saturday;
+        this.SABADO = saturday;
     }
 
     public String getInTime() {
-        return IN_TIME;
+        return HORA_ENTRADA;
     }
 
     public void setInTime(String inTime) {
-        this.IN_TIME = inTime;
+        this.HORA_ENTRADA = inTime;
     }
 
     public String getReturn() {
-        return RETURN;
+        return RETORNO;
     }
 
     public void setReturn(String _return) {
-        this.RETURN = _return;
+        this.RETORNO = _return;
     }
 
     public String getDestinationManagement() {
-        return DESTINATION_MANAGEMENT;
+        return GESTION_DESTINO;
     }
 
     public void setDestinationManagement(String destinationManagement) {
-        this.DESTINATION_MANAGEMENT = destinationManagement;
+        this.GESTION_DESTINO = destinationManagement;
     }
 
     public String getDuePostage() {
-        return DUE_POSTAGE;
+        return PORTES_DEBIDOS;
     }
 
     public void setDuePostage(String duePostage) {
-        this.DUE_POSTAGE = duePostage;
+        this.PORTES_DEBIDOS = duePostage;
     }
 
     public String getPayWay() {
-        return PAY_WAY;
+        return FORMA_PAGO;
     }
 
     public void setPayWay(String payWay) {
-        this.PAY_WAY = payWay;
+        this.FORMA_PAGO = payWay;
     }
 
     public String getEmail() {
@@ -401,11 +401,11 @@ public class Note {
     }
 
     public String getCountry() {
-        return COUNTRY;
+        return PAIS;
     }
 
     public void setCountry(String country) {
-        this.COUNTRY = country;
+        this.PAIS = country;
     }
 
     public String getGls() {
@@ -428,20 +428,20 @@ public class Note {
     
     @Override
     public String toString() {
-        return "Register{" + "cliente=" + CLIENT.trim() + ", departamento=" + DEPARTAMENT.trim() +
-                ", ref=" + REF.trim() + ", fecha=" + DATE.trim() + ", typeServ=" + TYPE_SERV.trim() +
-                ", variante=" + VARIANT.trim() + ", nombreRem=" + SENDER_NAME.trim() + ", direcRem=" +
-                SENDER_ADDRESS.trim() + ", poblacionRem=" + SENDER_CITY.trim() + ", nombreDestino=" +
-                DESTINATION_NAME.trim() + ", pisoDestino=" + DESTINATION_APARTMENT.trim() + ", tfnoDestino=" +
-                DESTINATION_PHONE.trim() + ", poblaDestino=" + DESTINATION_CITY.trim() + ", postalDestino=" +
-                DESTINATION_POSTAL_CODE.trim() + ", bultos=" + BUNDLES.trim() + ", documentos=" + DOCUMENTS.trim() +
-                ", paquetes=" + PACKAGES.trim() + ", ancho=" + WIDTH.trim() + ", alto=" + HEIGHT.trim() +
-                ", largo=" + LONG.trim() + ", peso=" + WEIGHT.trim() + ", reembolso=" + REFUND.trim() +
-                ", valor=" + VALUE.trim() + ", ctaCliente=" + CLIENT_BILL.trim() + ", moneda=" +
-                COIN.trim() + ", observaciones=" + OBSERVATIONS.trim() + ", sabado=" + SATURDAY.trim() +
-                ", horaEntr=" + IN_TIME.trim() + ", retorno=" + RETURN.trim() + ", gestionDest=" +
-                DESTINATION_MANAGEMENT.trim() + ", portesDebidos=" + DUE_POSTAGE.trim() + ", formaPago=" +
-                PAY_WAY.trim() + ", email=" + EMAIL.trim() + ", pais=" + COUNTRY.trim() +
+        return "Register{" + "cliente=" + CLIENTE.trim() + ", departamento=" + DEPARTAMENTO.trim() +
+                ", ref=" + REF.trim() + ", fecha=" + FECHA.trim() + ", typeServ=" + TIPO_SERV.trim() +
+                ", variante=" + VARIANTE.trim() + ", nombreRem=" + NOMBRE_REM.trim() + ", direcRem=" +
+                DIRECC_REM.trim() + ", poblacionRem=" + POBLACION_REM.trim() + ", nombreDestino=" +
+                NOMBRE_DESTINO.trim() + ", pisoDestino=" + PISO_DESTINO.trim() + ", tfnoDestino=" +
+                TFNO_DESTINO.trim() + ", poblaDestino=" + POBLACION_DESTINO.trim() + ", postalDestino=" +
+                POSTAL_DESTINO.trim() + ", bultos=" + BULTOS.trim() + ", documentos=" + DOCUMENTOS.trim() +
+                ", paquetes=" + PAQUETES.trim() + ", ancho=" + ANCHO.trim() + ", alto=" + ALTO.trim() +
+                ", largo=" + LARGO.trim() + ", peso=" + PESO.trim() + ", reembolso=" + REEMBOLSO.trim() +
+                ", valor=" + VALOR.trim() + ", ctaCliente=" + CUENTA_CLIENTE.trim() + ", moneda=" +
+                MONEDA.trim() + ", observaciones=" + OBSERVACIONES.trim() + ", sabado=" + SABADO.trim() +
+                ", horaEntr=" + HORA_ENTRADA.trim() + ", retorno=" + RETORNO.trim() + ", gestionDest=" +
+                GESTION_DESTINO.trim() + ", portesDebidos=" + PORTES_DEBIDOS.trim() + ", formaPago=" +
+                FORMA_PAGO.trim() + ", email=" + EMAIL.trim() + ", pais=" + PAIS.trim() +
                 ", gls=" + GLS.trim() + '}';
     }
 

@@ -24,7 +24,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="1150.0">
                      <children>
-                        <ListView id="albaranList" fx:id="listView" layoutX="-9.0" layoutY="-8.0" prefHeight="426.0" prefWidth="1083.0" style="-fx-control-inner-background:: #f000" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-9.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-8.0">
+                        <ListView id="listView" fx:id="listView" layoutX="-9.0" layoutY="-8.0" prefHeight="426.0" prefWidth="1083.0" style="-fx-control-inner-background:: #f000" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="-9.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-8.0">
                            <padding>
                               <Insets bottom="15.0" top="15.0" />
                            </padding>
@@ -43,7 +43,7 @@
             <Label layoutX="427.0" layoutY="6.0" text="País" />
             <HBox alignment="CENTER" layoutX="-3.0" layoutY="430.0" prefHeight="73.0" prefWidth="1101.0">
                <children>
-                  <Button fx:id="btnComparar" mnemonicParsing="false" onAction="#iniciarComparacion" prefHeight="34.0" prefWidth="169.0" text="Comparar Albaranes">
+                  <Button fx:id="btnComparator" mnemonicParsing="false" onAction="#compare" prefHeight="34.0" prefWidth="169.0" text="Comparar Albaranes">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -55,7 +55,7 @@
       </AnchorPane>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1100.0">
          <children>
-            <Label fx:id="lbFiltro" text="Filtro">
+            <Label fx:id="lbFilter" text="Filtro">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin>
@@ -63,7 +63,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField id="txtBuscar" fx:id="txtBuscar">
+            <TextField id="txtFind" fx:id="txtFind">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>

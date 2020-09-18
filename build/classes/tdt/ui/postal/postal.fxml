@@ -41,12 +41,12 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addProvincia" text="Añadir">
+            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addCity" text="Añadir">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteProv" text="Eliminar">
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteCity" text="Eliminar">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>

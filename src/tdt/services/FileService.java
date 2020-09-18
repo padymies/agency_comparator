@@ -162,7 +162,7 @@ public class FileService {
 
         for (String key : resultNotes.keySet()) {
 
-            List<Note> albaranes = resultNotes.get(key);
+            List<Note> notes = resultNotes.get(key);
 
             String desktopPath = null;
 
@@ -201,7 +201,7 @@ public class FileService {
 
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(newFile), "ISO-8859-1"));
 
-                for (Note line : albaranes) {
+                for (Note line : notes) {
                     try {
                         
                         String newLine = RegisterFactory.generateNoteRegister(line);

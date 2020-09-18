@@ -47,23 +47,23 @@ public class PostalController implements Initializable {
 
         cityDao = new CityImpl();
 
-        ObservableList<City> listaProvincias = cityDao.getCities();
+        ObservableList<City> cityList = cityDao.getCities();
 
         city.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         code.setCellValueFactory(new PropertyValueFactory<>("code"));
 
-        citiesTable.setItems(listaProvincias);
+        citiesTable.setItems(cityList);
 
         citiesTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     @FXML
-    private void addProvincia(ActionEvent event) {
+    private void addCity(ActionEvent event) {
         
         if (!txtPostalCode.getText().isEmpty() && !txtCity.getText().isEmpty()) {
             City p = new City(txtCity.getText().trim(), txtPostalCode.getText().trim());
-            System.out.println(p.toString());
+           
             int result = cityDao.addCity(p);
             if(result != -1) {
                 citiesTable.getItems().add(p);
@@ -76,12 +76,12 @@ public class PostalController implements Initializable {
     }
 
     @FXML
-    private void deleteProv(ActionEvent event) {
+    private void deleteCity(ActionEvent event) {
 
-        City seleccionado = citiesTable.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
+        City selected = citiesTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
             // Eliminar
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "Seguro que quiere eliminar el codigo postal " + seleccionado.getCode() + "?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "Seguro que quiere eliminar el codigo postal " + selected.getCode() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
@@ -94,10 +94,10 @@ public class PostalController implements Initializable {
 
                 if (type == okButton) {
 
-                    boolean result = cityDao.deleteCity(seleccionado.getId());
+                    boolean result = cityDao.deleteCity(selected.getId());
                     
                     if(result) {
-                    citiesTable.getItems().remove(seleccionado);
+                    citiesTable.getItems().remove(selected);
                         
                     }
                     

@@ -9,28 +9,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import tdt.db.daoImpl.ZoneImpl;
 import tdt.db.dao.IZoneDao;
+import tdt.db.daoImpl.ZoneImpl;
 
 public abstract class importForm extends AnchorPane {
 
-    private IZoneDao zonaDao;
+    private IZoneDao zoneDao;
 
     protected final HBox hBox;
-    protected final ComboBox importComboZona;
-    protected final ComboBox importComboAgencia;
+    protected final ComboBox importComboZone;
+    protected final ComboBox importComboAgency;
     protected final Button importBtn;
 
     public HBox gethBox() {
         return hBox;
     }
 
-    public ComboBox getImportComboZona() {
-        return importComboZona;
+    public ComboBox getImportComboZone() {
+        return importComboZone;
     }
 
-    public ComboBox getImportComboAgencia() {
-        return importComboAgencia;
+    public ComboBox getImportComboAgency() {
+        return importComboAgency;
     }
 
     public Button getImportBtn() {
@@ -40,8 +40,8 @@ public abstract class importForm extends AnchorPane {
     public importForm() {
 
         hBox = new HBox();
-        importComboZona = new ComboBox();
-        importComboAgencia = new ComboBox();
+        importComboZone = new ComboBox();
+        importComboAgency = new ComboBox();
         importBtn = new Button();
 
         setId("AnchorPane");
@@ -58,61 +58,61 @@ public abstract class importForm extends AnchorPane {
         hBox.setPrefHeight(42.0);
         hBox.setPrefWidth(600.0);
 
-        importComboZona.setId("cmbImportZona");
-        importComboZona.setPrefHeight(25.0);
-        importComboZona.setPrefWidth(188.0);
-        importComboZona.setPromptText("Seleccione Zona");
-        HBox.setMargin(importComboZona, new Insets(0.0, 0.0, 0.0, 20.0));
+        importComboZone.setId("cmbImportZona");
+        importComboZone.setPrefHeight(25.0);
+        importComboZone.setPrefWidth(188.0);
+        importComboZone.setPromptText("Seleccione Zona");
+        HBox.setMargin(importComboZone, new Insets(0.0, 0.0, 0.0, 20.0));
 
-        importComboAgencia.setId("cmbImportAgencia");
-        importComboAgencia.setPrefHeight(25.0);
-        importComboAgencia.setPrefWidth(217.0);
-        importComboAgencia.setPromptText("Seleccione Agencia");
-        HBox.setMargin(importComboAgencia, new Insets(0.0, 0.0, 0.0, 10.0));
+        importComboAgency.setId("cmbImportAgencia");
+        importComboAgency.setPrefHeight(25.0);
+        importComboAgency.setPrefWidth(217.0);
+        importComboAgency.setPromptText("Seleccione Agencia");
+        HBox.setMargin(importComboAgency, new Insets(0.0, 0.0, 0.0, 10.0));
 
         importBtn.setId("btnImport");
         importBtn.setMnemonicParsing(false);
         importBtn.setText("Importar Tarifa");
         HBox.setMargin(importBtn, new Insets(0.0, 0.0, 0.0, 30.0));
 
-        hBox.getChildren().add(importComboZona);
-        hBox.getChildren().add(importComboAgencia);
+        hBox.getChildren().add(importComboZone);
+        hBox.getChildren().add(importComboAgency);
         hBox.getChildren().add(importBtn);
         getChildren().add(hBox);
 
-        importComboZona.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+        importComboZone.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                zonaChange(oldValue, newValue);
+                zoneChange(oldValue, newValue);
             }
         }
         );
-        importComboAgencia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+        importComboAgency.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                agenciaChange(oldValue, newValue);
+                agencyChange(oldValue, newValue);
             }
         }
         );
 
         importBtn.setOnAction(event -> {
-            importar(event);
+            doImport(event);
         });
 
         importBtn.setDisable(true);
-        importComboAgencia.setDisable(true);
-        zonaDao = new ZoneImpl();
+        importComboAgency.setDisable(true);
+        zoneDao = new ZoneImpl();
 
-        ObservableList<String> listaZonas = zonaDao.getZoneNames();
+        ObservableList<String> listaZonas = zoneDao.getZoneNames();
 
-        importComboZona.setItems(listaZonas);
+        importComboZone.setItems(listaZonas);
 
     }
 
-    protected abstract void importar(ActionEvent actionEvent);
+    protected abstract void doImport(ActionEvent actionEvent);
 
-    protected abstract void zonaChange(Object oldValue, Object newValue);
+    protected abstract void zoneChange(Object oldValue, Object newValue);
 
-    protected abstract void agenciaChange(Object oldValue, Object newValue);
+    protected abstract void agencyChange(Object oldValue, Object newValue);
 
 }

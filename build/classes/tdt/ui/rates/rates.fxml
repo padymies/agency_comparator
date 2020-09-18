@@ -11,6 +11,6 @@
     </stylesheets>
    <children>
       <TabPane id="tabPane" fx:id="tabPane" layoutX="293.0" layoutY="50.0" prefHeight="857.0" prefWidth="1157.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
-      <Button id="btnAdZona" fx:id="btnAddZona" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#addNewZona" text="Añadir Nueva Zona" />
+      <Button id="btnAdZone" fx:id="btnAddZone" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#addNewZone" text="Añadir Nueva Zona" />
    </children>
 </AnchorPane>

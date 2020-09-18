@@ -58,9 +58,9 @@ public class StartConfigController implements Initializable {
 
             props.setProp("tdt.ip", ip);
 
-            App p = new App();
+            App app = new App();
             try {
-                p.start(new Stage());
+                app.start(new Stage());
             } catch (Exception ex) {
                 AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana Principal", ex);
 

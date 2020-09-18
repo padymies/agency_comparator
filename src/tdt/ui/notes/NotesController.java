@@ -51,8 +51,8 @@ import tdt.services.ConfigStage;
 import tdt.services.FileService;
 import tdt.services.NoteService;
 import tdt.services.ValidatorService;
+import tdt.ui.comparator_output.OutputController;
 import tdt.ui.notes.form.NotesFormController;
-import tdt.ui.salidaComparacion.SalidaController;
 
 public class NotesController implements Initializable {
 
@@ -60,22 +60,22 @@ public class NotesController implements Initializable {
     private ListView<Note> listView;
 
     @FXML
-    private Button btnComparar;
+    private Button btnComparator;
 
     @FXML
-    private TextField txtBuscar;
+    private TextField txtFind;
 
-    private IAgencyDao agenciaDao;
+    private IAgencyDao agencyDao;
 
-    private IZoneDao zonaDao;
+    private IZoneDao zoneDao;
 
-    private ObservableList<String> nombreAgencias;
+    private ObservableList<String> agencyNames;
 
-    private ObservableList<String> nombreZonas;
+    private ObservableList<String> zoneNames;
 
     private FilteredList<Note> filteredList;
     @FXML
-    private Label lbFiltro;
+    private Label lbFilter;
     @FXML
     private CheckBox chkSelectAll;
 
@@ -90,9 +90,9 @@ public class NotesController implements Initializable {
 
         imgV.setFitWidth(16);
 
-        lbFiltro.setGraphic(imgV);
+        lbFilter.setGraphic(imgV);
 
-        ConfigStage.setIcon(btnComparar, "analisis.png", 26);
+        ConfigStage.setIcon(btnComparator, "analisis.png", 26);
 
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -108,19 +108,19 @@ public class NotesController implements Initializable {
 
         });
 
-        agenciaDao = new AgencyImpl();
+        agencyDao = new AgencyImpl();
 
-        nombreAgencias = agenciaDao.getAgencyNames();
+        agencyNames = agencyDao.getAgencyNames();
 
-        zonaDao = new ZoneImpl();
+        zoneDao = new ZoneImpl();
 
-        nombreZonas = zonaDao.getZoneNames();
+        zoneNames = zoneDao.getZoneNames();
 
-        txtBuscar.setOnKeyPressed(event -> {
+        txtFind.setOnKeyPressed(event -> {
 
             if (event.getCode() == KeyCode.ENTER) {
 
-                buscarAlbaran();
+                findNote();
             }
         });
 
@@ -139,45 +139,45 @@ public class NotesController implements Initializable {
 
     }
 
-    private void buscarAlbaran() {
+    private void findNote() {
 
-        String busqueda = txtBuscar.getText();
+        String current = txtFind.getText();
 
         filteredList.setPredicate(data -> {
 
-            if (busqueda == null || busqueda.isEmpty()) {
+            if (current == null || current.isEmpty()) {
                 return true;
             }
 
-            String lowerCaseBusqueda = busqueda.toLowerCase();
+            String lowerCaseBusqueda = current.toLowerCase();
 
-            String nombre = data.getDestinationName().toLowerCase();
+            String name = data.getDestinationName().toLowerCase();
 
-            String poblacion = data.getDestinationCity().toLowerCase();
+            String city = data.getDestinationCity().toLowerCase();
 
-            String zona = "";
+            String zone = "";
 
             if (data.getZone() != null) {
-                zona = data.getZone().getName().toLowerCase();
+                zone = data.getZone().getName().toLowerCase();
             } else {
-                zona = "No se ha encontrado una Zona";
+                zone = "No se ha encontrado una Zona";
             }
 
             return (data.getRef().matches("(.*)" + lowerCaseBusqueda + "(.*)")
-                    || nombre.matches("(.*)" + lowerCaseBusqueda + "(.*)")
-                    || zona.matches("(.*)" + lowerCaseBusqueda + "(.*)")
-                    || poblacion.matches("(.*)" + lowerCaseBusqueda + "(.*)"));
+                    || name.matches("(.*)" + lowerCaseBusqueda + "(.*)")
+                    || zone.matches("(.*)" + lowerCaseBusqueda + "(.*)")
+                    || city.matches("(.*)" + lowerCaseBusqueda + "(.*)"));
         });
 
     }
 
-    public void trannsferLista(ObservableList<Note> albaranes) {
+    public void trannsferList(ObservableList<Note> notes) {
 
-        if (albaranes.size() > 0) {
+        if (notes.size() > 0) {
 
-            listView.setCellFactory((ListView<Note> param) -> new AlbaranCell());
+            listView.setCellFactory((ListView<Note> param) -> new NoteCell());
 
-            filteredList = new FilteredList<>(albaranes, data -> true);
+            filteredList = new FilteredList<>(notes, data -> true);
 
             listView.setItems(filteredList);
 
@@ -186,16 +186,16 @@ public class NotesController implements Initializable {
     }
 
     @FXML
-    private void iniciarComparacion(ActionEvent event)  {
+    private void compare(ActionEvent event)  {
 
-        ObservableList<Note> filas = listView.getItems();
-        filas.forEach(item -> {
+        ObservableList<Note> items = listView.getItems();
+        items.forEach(item -> {
             FileService.updateNote(item); // SOBREESCRIBIMOS EL ARCHIVO CON LAS MODIFICACIONES HECHAS
 
         });
-        ObservableList<Note> filasSeleccionadas = listView.getSelectionModel().getSelectedItems();
+        ObservableList<Note> selectedRows = listView.getSelectionModel().getSelectedItems();
 
-        if (filasSeleccionadas.isEmpty()) {
+        if (selectedRows.isEmpty()) {
 
             AlertService noSelectedInfo = new AlertService(Alert.AlertType.INFORMATION, "Info", "\nNo hay filas seleccionadas. ", "");
 
@@ -203,46 +203,43 @@ public class NotesController implements Initializable {
 
         } else {
 
-            ArrayList<Note> albaranes = new ArrayList<>();
+            ArrayList<Note> notes = new ArrayList<>();
 
-            filasSeleccionadas.forEach(action -> {
+            selectedRows.forEach(action -> {
                 if (ValidatorService.noteValidator(action)) {
-                    albaranes.add(action);
+                    notes.add(action);
 
                 }
             });
 
             ComparatorService service = new ComparatorService();
 
-            service.noteCompare(albaranes);
+            service.noteCompare(notes);
 
-            int comparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() != null).count();
-            int noComparados = (int) filasSeleccionadas.stream().filter(predicate -> predicate.getBEST_AGENCY() == null).count();
-
-            Map<String, List<Note>> result = albaranes.stream().filter(predicate -> predicate.getBEST_AGENCY() != null)
+            Map<String, List<Note>> result = notes.stream().filter(predicate -> predicate.getBEST_AGENCY() != null)
                     .collect(Collectors.groupingBy(Note::getBEST_AGENCY));
 
-            boolean resultado = FileService.writeOutFiles(result);
+            boolean fileResult = FileService.writeOutFiles(result);
 
-            if (resultado && result.size() > 0) {
+            if (fileResult && result.size() > 0) {
 
                 try {
 
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/salidaComparacion/salida.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/comparator_output/output.fxml"));
 
                     Parent root1 = (Parent) fxmlLoader.load();
 
-                    SalidaController salidaController = fxmlLoader.getController();
+                    OutputController outputController = fxmlLoader.getController();
 
-                    salidaController.loadData(result);
+                    outputController.loadData(result);
 
-                    Stage stageAlbaranes = new Stage();
+                    Stage notesStage = new Stage();
 
-                    ConfigStage.configStage(stageAlbaranes, "Albaranes comparados", Modality.APPLICATION_MODAL);
+                    ConfigStage.configStage(notesStage, "Albaranes comparados", Modality.APPLICATION_MODAL);
 
-                    stageAlbaranes.setScene(new Scene(root1));
+                    notesStage.setScene(new Scene(root1));
 
-                    stageAlbaranes.show();
+                    notesStage.show();
 
                     ((Node) event.getSource()).getScene().getWindow().hide();
 
@@ -260,133 +257,133 @@ public class NotesController implements Initializable {
         }
     }
 
-    public class AlbaranCell extends ListCell<Note> {
+    public class NoteCell extends ListCell<Note> {
 
         @Override
-        public void updateItem(Note albaran, boolean empty) {
+        public void updateItem(Note note, boolean empty) {
 
-            super.updateItem(albaran, empty);
+            super.updateItem(note, empty);
 
-            if (albaran != null) {
+            if (note != null) {
 
-                CellListViewBase cell = new CellListViewBase(albaran.getRef());
+                CellListViewBase cell = new CellListViewBase(note.getRef());
 
-                cell.ref.setText(albaran.getRef());
+                cell.ref.setText(note.getRef());
 
-                cell.txtNombreDestino.setText(albaran.getDestinationName());
+                cell.txtDestinationName.setText(note.getDestinationName());
 
-                cell.txtPeso.setText(albaran.getWeight());
+                cell.txtWeight.setText(note.getWeight());
 
-                Zone zona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
+                Zone zone = NoteService.setNoteZone(note, cell.lbZone, listView);
 
-                albaran.setZone(zona);
+                note.setZone(zone);
 
-                if (albaran.getZone() != null) {
-                    cell.lbZona.setText(albaran.getZone().getName());
+                if (note.getZone() != null) {
+                    cell.lbZone.setText(note.getZone().getName());
 
                 }
 
-                cell.lbCP.setText(albaran.getDestinationPostalCode());
+                cell.lbPostalCode.setText(note.getDestinationPostalCode());
 
-                cell.txtPais.setText(albaran.getCountry());
+                cell.txtCountry.setText(note.getCountry());
 
-                cell.txtPais.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                cell.txtCountry.focusedProperty().addListener((observable, oldValue, newValue) -> {
 
                     if (!newValue) {
 
-                        albaran.setCountry(cell.txtPais.getText());
+                        note.setCountry(cell.txtCountry.getText());
 
-                        FileService.updateNote(albaran);
+                        FileService.updateNote(note);
 
-                        Zone nuevaZona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
+                        Zone newZone = NoteService.setNoteZone(note, cell.lbZone, listView);
 
-                        if (nuevaZona != null) {
+                        if (newZone != null) {
 
-                            albaran.setZone(nuevaZona);
+                            note.setZone(newZone);
 
-                            cell.lbZona.setText(albaran.getZone().getName());
+                            cell.lbZone.setText(note.getZone().getName());
                         }
                     }
 
                 });
 
-                cell.txtPoblacion.setText(albaran.getDestinationCity());
+                cell.txtCity.setText(note.getDestinationCity());
 
-                cell.txtBultos.setText("1");
+                cell.txtBundles.setText("1");
 
-                cell.txtBultos.focusedProperty().addListener((args, oldValue, newValue) -> {
+                cell.txtBundles.focusedProperty().addListener((args, oldValue, newValue) -> {
 
-                    if (!newValue && !cell.txtBultos.getText().isEmpty()) {
+                    if (!newValue && !cell.txtBundles.getText().isEmpty()) {
 
-                        if (ValidatorService.integerValidate(cell.txtBultos)) {
+                        if (ValidatorService.integerValidate(cell.txtBundles)) {
 
-                            albaran.setBundles(cell.txtBultos.getText());
-                            FileService.updateNote(albaran);
+                            note.setBundles(cell.txtBundles.getText());
+                            FileService.updateNote(note);
                         }
 
                     }
 
                 });
-                cell.txtPeso.focusedProperty().addListener((args, oldValue, newValue) -> {
+                cell.txtWeight.focusedProperty().addListener((args, oldValue, newValue) -> {
 
-                    if (!newValue && !cell.txtPeso.getText().isEmpty()) {
-                        if (ValidatorService.doubleValidate(cell.txtPeso)) {
-                            albaran.setWeight(cell.txtPeso.getText().trim());
-                            FileService.updateNote(albaran);
+                    if (!newValue && !cell.txtWeight.getText().isEmpty()) {
+                        if (ValidatorService.doubleValidate(cell.txtWeight)) {
+                            note.setWeight(cell.txtWeight.getText().trim());
+                            FileService.updateNote(note);
                         }
                     }
 
                 });
 
-                cell.btnEditar.setOnAction((ActionEvent event) -> {
+                cell.btnEdit.setOnAction((ActionEvent event) -> {
 
-                    showAlbaranForm(albaran);
+                    showNoteForm(note);
                 });
 
-                cell.chkAgencia.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                cell.chkAgency.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                     if (newValue) {
 
-                        cell.comboAgencia.setDisable(false);
+                        cell.comboAgency.setDisable(false);
 
-                        cell.comboAgencia.setItems(nombreAgencias);
+                        cell.comboAgency.setItems(agencyNames);
 
                     } else {
 
-                        cell.comboAgencia.setItems(null);
+                        cell.comboAgency.setItems(null);
 
-                        cell.comboAgencia.setDisable(true);
+                        cell.comboAgency.setDisable(true);
 
-                        Zone newZona = NoteService.setNoteZone(albaran, cell.lbZona, listView);
+                        Zone newZone = NoteService.setNoteZone(note, cell.lbZone, listView);
 
-                        albaran.setZone(newZona);
+                        note.setZone(newZone);
 
-                        cell.lbZona.setText(albaran.getZone().getName());
+                        cell.lbZone.setText(note.getZone().getName());
 
-                        cell.lbZona.setStyle(null);
+                        cell.lbZone.setStyle(null);
 
-                        albaran.setBEST_AGENCY(null);
+                        note.setBEST_AGENCY(null);
 
                     }
                 });
 
-                cell.comboAgencia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+                cell.comboAgency.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                         if (newValue != null) {
                             // FORZADO AGENCIA
-                            cell.lbZona.setText("Forzada a " + newValue);
+                            cell.lbZone.setText("Forzada a " + newValue);
 
-                            cell.lbZona.getStyleClass().clear();
+                            cell.lbZone.getStyleClass().clear();
 
-                            cell.lbZona.setStyle("-fx-text-fill: blue");
+                            cell.lbZone.setStyle("-fx-text-fill: blue");
 
-                            albaran.setBEST_AGENCY(newValue);
+                            note.setBEST_AGENCY(newValue);
 
                         } else {
                             // NO FORZADO AGENCIA
-                            NoteService.setNoteZone(albaran, cell.lbZona, listView);
+                            NoteService.setNoteZone(note, cell.lbZone, listView);
 
-                            albaran.setBEST_AGENCY(null);
+                            note.setBEST_AGENCY(null);
 
                         }
                     }
@@ -394,13 +391,13 @@ public class NotesController implements Initializable {
                 });
                 setGraphic(cell);
 
-                if (!ValidatorService.noteValidator(albaran)) {
+                if (!ValidatorService.noteValidator(note)) {
                     cell.getStyleClass().add("invalidRow");
                 } else {
                     cell.getStyleClass().clear();
 
                 }
-                /*    if (!cell.isValidCP() || !cell.isValidPais() || !cell.isValidPoblacion() || !cell.isValidRef()) {
+                /*    if (!cell.isValidCP() || !cell.isValidCountry() || !cell.isValidCity() || !cell.isValidRef()) {
                     cell.getStyleClass().add("invalidRow");
                 } else {
                     cell.getStyleClass().clear();
@@ -415,22 +412,22 @@ public class NotesController implements Initializable {
 
     }
 
-    private void showAlbaranForm(Note albaran) {
+    private void showNoteForm(Note note) {
         try {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("form/notesForm.fxml"));
 
-            Parent albaranRoot = (Parent) fxmlLoader.load();
+            Parent noteRoot = (Parent) fxmlLoader.load();
 
             Stage stageForm = new Stage();
 
-            ConfigStage.configStage(stageForm, "Albaran: " + albaran.getRef(), Modality.APPLICATION_MODAL);
+            ConfigStage.configStage(stageForm, "Albaran: " + note.getRef(), Modality.APPLICATION_MODAL);
 
-            NotesFormController albaranFormController = fxmlLoader.getController();
+            NotesFormController noteFormController = fxmlLoader.getController();
 
-            albaranFormController.transferAlbaran(albaran);
+            noteFormController.transferNote(note);
 
-            stageForm.setScene(new Scene(albaranRoot));
+            stageForm.setScene(new Scene(noteRoot));
 
             stageForm.show();
 
@@ -451,24 +448,24 @@ public class NotesController implements Initializable {
     public class CellListViewBase extends HBox {
 
         protected final Label ref;
-        protected final Label txtNombreDestino;
-        protected final Label lbZona;
-        protected final TextField txtPais;
-        protected final Label txtPoblacion;
-        protected final Label lbCP;
-        protected final CheckBox chkAgencia;
-        protected final ComboBox comboAgencia;
-        protected final TextField txtPeso;
-        protected final TextField txtBultos;
-        protected final Button btnEditar;
+        protected final Label txtDestinationName;
+        protected final Label lbZone;
+        protected final TextField txtCountry;
+        protected final Label txtCity;
+        protected final Label lbPostalCode;
+        protected final CheckBox chkAgency;
+        protected final ComboBox comboAgency;
+        protected final TextField txtWeight;
+        protected final TextField txtBundles;
+        protected final Button btnEdit;
 
         private boolean validRef;
         private boolean validCP;
-        private boolean validPais;
-        private boolean validPoblacion;
-        private boolean validNombre;
-        private boolean validPeso;
-        private boolean validBultos;
+        private boolean validCountry;
+        private boolean validCity;
+        private boolean validName;
+        private boolean validWeight;
+        private boolean validBundles;
 
         public boolean isValidRef() {
             return validRef;
@@ -478,12 +475,12 @@ public class NotesController implements Initializable {
             return validCP;
         }
 
-        public boolean isValidPais() {
-            return validPais;
+        public boolean isValidCountry() {
+            return validCountry;
         }
 
-        public boolean isValidPoblacion() {
-            return validPoblacion;
+        public boolean isValidCity() {
+            return validCity;
         }
 
         public CellListViewBase(String id) {
@@ -491,43 +488,43 @@ public class NotesController implements Initializable {
             setId(id);
 
             ref = new Label();
-            txtNombreDestino = new Label();
-            lbZona = new Label();
-            txtPais = new TextField();
-            txtPoblacion = new Label();
-            lbCP = new Label();
-            chkAgencia = new CheckBox();
-            comboAgencia = new ComboBox();
-            txtBultos = new TextField();
-            txtPeso = new TextField();
-            btnEditar = new Button();
+            txtDestinationName = new Label();
+            lbZone = new Label();
+            txtCountry = new TextField();
+            txtCity = new Label();
+            lbPostalCode = new Label();
+            chkAgency = new CheckBox();
+            comboAgency = new ComboBox();
+            txtBundles = new TextField();
+            txtWeight = new TextField();
+            btnEdit = new Button();
 
             validRef = true;
             validCP = true;
-            validPoblacion = true;
-            validPais = true;
-            validPeso = true;
-            validBultos = true;
-            validNombre = true;
+            validCity = true;
+            validCountry = true;
+            validWeight = true;
+            validBundles = true;
+            validName = true;
 
-            txtNombreDestino.textProperty().addListener(listener -> {
-                validNombre = !txtNombreDestino.getText().isEmpty();
+            txtDestinationName.textProperty().addListener(listener -> {
+                validName = !txtDestinationName.getText().isEmpty();
             });
 
-            txtPoblacion.textProperty().addListener(listener -> {
-                validPoblacion = !txtPoblacion.getText().isEmpty();
+            txtCity.textProperty().addListener(listener -> {
+                validCity = !txtCity.getText().isEmpty();
             });
             ref.textProperty().addListener(listener -> {
                 validRef = !ref.getText().isEmpty();
             });
-            lbCP.textProperty().addListener(listener -> {
-                validCP = !lbCP.getText().isEmpty();
+            lbPostalCode.textProperty().addListener(listener -> {
+                validCP = !lbPostalCode.getText().isEmpty();
 
             });
-            txtPais.textProperty().addListener(listener -> {
-                validPais = !txtPais.getText().isEmpty();
+            txtCountry.textProperty().addListener(listener -> {
+                validCountry = !txtCountry.getText().isEmpty();
 
-                if (!validPais || !validPoblacion || !validCP || !validRef || !validNombre) {
+                if (!validCountry || !validCity || !validCP || !validRef || !validName) {
                     this.getStyleClass().add("invalidRow");
                 } else {
                     this.getStyleClass().clear();
@@ -535,15 +532,15 @@ public class NotesController implements Initializable {
                 }
 
             });
-            txtPoblacion.textProperty().addListener(listener -> {
-                validPoblacion = !txtPoblacion.getText().isEmpty();
+            txtCity.textProperty().addListener(listener -> {
+                validCity = !txtCity.getText().isEmpty();
 
             });
-            txtPeso.textProperty().addListener(listener -> {
+            txtWeight.textProperty().addListener(listener -> {
                 double value = 0;
                 try {
-                    value = Double.parseDouble(txtPeso.getText().trim());
-                    validPeso = !Double.isNaN(value);
+                    value = Double.parseDouble(txtWeight.getText().trim());
+                    validWeight = !Double.isNaN(value);
 
                 } catch (NumberFormatException e) {
                  //   AlertExceptionService alert = new AlertExceptionService("NotesController", "No se ha podido parsear el peso", e);
@@ -552,8 +549,8 @@ public class NotesController implements Initializable {
                 }
 
             });
-            txtPoblacion.textProperty().addListener(listener -> {
-                validPoblacion = !txtPoblacion.getText().isEmpty();
+            txtCity.textProperty().addListener(listener -> {
+                validCity = !txtCity.getText().isEmpty();
 
             });
 
@@ -568,82 +565,82 @@ public class NotesController implements Initializable {
             ref.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
             HBox.setMargin(ref, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            txtNombreDestino.setPrefHeight(17.0);
-            txtNombreDestino.setPrefWidth(166.0);
-            txtNombreDestino.setText("Nombre Destino");
-            txtNombreDestino.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
-            HBox.setMargin(txtNombreDestino, new Insets(0.0, 0.0, 0.0, 10.0));
+            txtDestinationName.setPrefHeight(17.0);
+            txtDestinationName.setPrefWidth(166.0);
+            txtDestinationName.setText("Nombre Destino");
+            txtDestinationName.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
+            HBox.setMargin(txtDestinationName, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            lbZona.setId("lbZona");
-            lbZona.setPrefHeight(17.0);
-            lbZona.setPrefWidth(106.0);
-            lbZona.setText("Zona");
-            HBox.setMargin(lbZona, new Insets(0.0, 0.0, 0.0, 10.0));
+            lbZone.setId("lbZona");
+            lbZone.setPrefHeight(17.0);
+            lbZone.setPrefWidth(106.0);
+            lbZone.setText("Zona");
+            HBox.setMargin(lbZone, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            txtPais.setPrefHeight(25.0);
-            txtPais.setPrefWidth(110.0);
-            txtPais.setPromptText("Pais");
-            txtPais.setText("txtPais");
-            HBox.setMargin(txtPais, new Insets(0.0, 0.0, 0.0, 10.0));
+            txtCountry.setPrefHeight(25.0);
+            txtCountry.setPrefWidth(110.0);
+            txtCountry.setPromptText("Pais");
+            txtCountry.setText("txtPais");
+            HBox.setMargin(txtCountry, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            txtPoblacion.setLayoutX(143.0);
-            txtPoblacion.setLayoutY(19.0);
-            txtPoblacion.setPrefHeight(17.0);
-            txtPoblacion.setPrefWidth(136.0);
-            txtPoblacion.setText("Poblacion");
-            txtPoblacion.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
-            HBox.setMargin(txtPoblacion, new Insets(0.0, 0.0, 0.0, 10.0));
+            txtCity.setLayoutX(143.0);
+            txtCity.setLayoutY(19.0);
+            txtCity.setPrefHeight(17.0);
+            txtCity.setPrefWidth(136.0);
+            txtCity.setText("Poblacion");
+            txtCity.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
+            HBox.setMargin(txtCity, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            lbCP.setId("lbCP");
-            lbCP.setPrefHeight(17.0);
-            lbCP.setPrefWidth(55.0);
-            lbCP.setText("29003");
-            HBox.setMargin(lbCP, new Insets(0.0, 0.0, 0.0, 10.0));
+            lbPostalCode.setId("lbCP");
+            lbPostalCode.setPrefHeight(17.0);
+            lbPostalCode.setPrefWidth(55.0);
+            lbPostalCode.setText("29003");
+            HBox.setMargin(lbPostalCode, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            chkAgencia.setId("chkAgencia");
-            chkAgencia.setMnemonicParsing(false);
-            HBox.setMargin(chkAgencia, new Insets(0.0, 0.0, 0.0, 10.0));
+            chkAgency.setId("chkAgencia");
+            chkAgency.setMnemonicParsing(false);
+            HBox.setMargin(chkAgency, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            comboAgencia.setDisable(true);
-            comboAgencia.setId("comboAgencia");
-            comboAgencia.setPrefWidth(150.0);
-            comboAgencia.setPromptText("Forzar Agencia");
-            HBox.setMargin(comboAgencia, new Insets(0.0, 0.0, 0.0, 2.0));
+            comboAgency.setDisable(true);
+            comboAgency.setId("comboAgencia");
+            comboAgency.setPrefWidth(150.0);
+            comboAgency.setPromptText("Forzar Agencia");
+            HBox.setMargin(comboAgency, new Insets(0.0, 0.0, 0.0, 2.0));
 
-            txtPeso.setLayoutX(885.0);
-            txtPeso.setLayoutY(15.0);
-            txtPeso.setPrefHeight(25.0);
-            txtPeso.setPrefWidth(59.0);
-            txtPeso.setPromptText("Peso");
+            txtWeight.setLayoutX(885.0);
+            txtWeight.setLayoutY(15.0);
+            txtWeight.setPrefHeight(25.0);
+            txtWeight.setPrefWidth(59.0);
+            txtWeight.setPromptText("Peso");
 
-            txtBultos.setPrefHeight(25.0);
-            txtBultos.setPrefWidth(51.0);
-            txtBultos.setText("Bultos");
-            HBox.setMargin(txtBultos, new Insets(0.0, 0.0, 0.0, 10.0));
+            txtBundles.setPrefHeight(25.0);
+            txtBundles.setPrefWidth(51.0);
+            txtBundles.setText("Bultos");
+            HBox.setMargin(txtBundles, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            btnEditar.setAlignment(javafx.geometry.Pos.CENTER);
-            btnEditar.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
-            btnEditar.setMnemonicParsing(false);
-            btnEditar.setPrefHeight(26.0);
-            btnEditar.setPrefWidth(63.0);
-            btnEditar.setText("Editar");
-            btnEditar.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-            btnEditar.setFont(new Font(13.0));
-            HBox.setMargin(btnEditar, new Insets(0.0, 0.0, 0.0, 10.0));
+            btnEdit.setAlignment(javafx.geometry.Pos.CENTER);
+            btnEdit.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
+            btnEdit.setMnemonicParsing(false);
+            btnEdit.setPrefHeight(26.0);
+            btnEdit.setPrefWidth(63.0);
+            btnEdit.setText("Editar");
+            btnEdit.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+            btnEdit.setFont(new Font(13.0));
+            HBox.setMargin(btnEdit, new Insets(0.0, 0.0, 0.0, 10.0));
             setOpaqueInsets(new Insets(0.0));
             setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
 
             getChildren().add(ref);
-            getChildren().add(txtNombreDestino);
-            getChildren().add(lbZona);
-            getChildren().add(txtPais);
-            getChildren().add(txtPoblacion);
-            getChildren().add(lbCP);
-            getChildren().add(chkAgencia);
-            getChildren().add(comboAgencia);
-            getChildren().add(txtPeso);
-            getChildren().add(txtBultos);
-            getChildren().add(btnEditar);
+            getChildren().add(txtDestinationName);
+            getChildren().add(lbZone);
+            getChildren().add(txtCountry);
+            getChildren().add(txtCity);
+            getChildren().add(lbPostalCode);
+            getChildren().add(chkAgency);
+            getChildren().add(comboAgency);
+            getChildren().add(txtWeight);
+            getChildren().add(txtBundles);
+            getChildren().add(btnEdit);
         }
     }
 }

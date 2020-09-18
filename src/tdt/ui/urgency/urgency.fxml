@@ -20,12 +20,12 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="txtUrgencia" prefHeight="25.0" prefWidth="55.0">
+            <TextField fx:id="txtUrgency" prefHeight="25.0" prefWidth="55.0">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="btnUrgencia" mnemonicParsing="false" onAction="#saveUrgencia" prefHeight="25.0" prefWidth="93.0" text="Guardar">
+            <Button fx:id="btnUrgency" mnemonicParsing="false" onAction="#saveUrgency" prefHeight="25.0" prefWidth="93.0" text="Guardar">
                <HBox.margin>
                   <Insets left="15.0" />
                </HBox.margin>
