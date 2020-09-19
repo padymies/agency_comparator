@@ -21,6 +21,10 @@ import tdt.model.Note;
 import tdt.model.RateComparator;
 
 public class ComparatorService {
+    
+    private final int AGENCY_FORCED = 1;
+    
+    private final int AGENCY_EXCLUDED = -1;
 
     private IExclusionDao exclusionsDao;
 
@@ -145,10 +149,6 @@ public class ComparatorService {
 
                     Collections.sort(resultList, Comparator.comparing(item -> item.getPrice()));
 
-                    /*        resultadoList.forEach(data -> {
-                        System.out.println("Agency: " + data.getAgencyName() + " Precio: " + data.getPrice() + " Entrega: " + data.getDeliveryTime() + "\n");
-
-                    });*/
                     RateComparator first = resultList.get(0);
 
                     double urgencyPercent = configDao.getUrgencyPercent();
@@ -163,6 +163,7 @@ public class ComparatorService {
                             for (int i = 1; i < resultList.size(); i++) {
                                 if (resultList.get(i).getDeliveryTime() < first.getDeliveryTime()
                                         && resultList.get(i).getPrice() - first.getPrice() < urgencyPrice) {
+                                    
                                     note.setBEST_AGENCY(resultList.get(i).getAgencyName());
                                     break;
                                 }
@@ -190,8 +191,8 @@ public class ComparatorService {
 
         if (ex != null) {
             switch (ex.getInclusion_exclusion()) {
-                case 1:
-                    // Se tiene que mandar por esta agencia
+                case AGENCY_FORCED:
+                    
                     agenciesDao = new AgencyImpl();
 
                     Agency agency = agenciesDao.getAgency(ex.getAgencyId());
@@ -199,8 +200,8 @@ public class ComparatorService {
                     note.setBEST_AGENCY(agency.getName());
 
                     break;
-                case -1:
-                    // Se excluye esta agencia
+                case AGENCY_EXCLUDED:
+
                     list.forEach(item -> {
 
                         if (item.getAgencyId() == ex.getAgencyId()) {

@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
+import tdt.db.dao.IFileVariableDao;
 import tdt.model.FileVariable;
 import tdt.services.AlertExceptionService;
-import tdt.db.dao.IFileVariableDao;
 
 public class FileVariableImpl implements IFileVariableDao {
 
@@ -35,20 +35,18 @@ public class FileVariableImpl implements IFileVariableDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            // System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
-                String clave = result.getString("clave");
+                String key = result.getString("clave");
 
-                int inicio = result.getInt("inicio");
+                int start = result.getInt("inicio");
 
-                int fin = result.getInt("fin");
+                int end = result.getInt("fin");
 
-                list.put(clave, new FileVariable(clave, inicio, fin));
+                list.put(key, new FileVariable(key, start, end));
             }
 
-            // System.out.println("VARIABLES_ARCHIVO obtenidas");
 
         } catch (SQLException ex) {
 
@@ -90,20 +88,18 @@ public class FileVariableImpl implements IFileVariableDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            // System.out.println("Obtenifino VARIABLES_ARCHIVO ------------>" + sql);
 
             while (result.next()) {
 
-                String clave = result.getString("clave");
+                String key = result.getString("clave");
 
-                int inicio = result.getInt("inicio");
+                int start = result.getInt("inicio");
 
-                int fin = result.getInt("fin");
+                int end = result.getInt("fin");
 
-                list.add(new FileVariable(clave, inicio, fin));
+                list.add(new FileVariable(key, start, end));
             }
 
-            // System.out.println("VARIABLES_ARCHIVO obtenida");
 
         } catch (SQLException ex) {
 
@@ -144,11 +140,8 @@ public class FileVariableImpl implements IFileVariableDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Variable de archivo ---------------> " + sql);
-
                 stat.executeUpdate(sql);
 
-                // System.out.println("Actualizacion realizada !! ");
 
                 return true;
             }
@@ -174,14 +167,13 @@ public class FileVariableImpl implements IFileVariableDao {
     }
 
     @Override
-    public FileVariable getVariable(String clave) {
+    public FileVariable getVariable(String key) {
         Connection conn = null;
 
         Statement stat = null;
 
-        String sql = "SELECT inicio, fin FROM " + TABLE_NAME + " WHERE clave='" + clave +"'";
+        String sql = "SELECT inicio, fin FROM " + TABLE_NAME + " WHERE clave='" + key +"'";
 
-        // System.out.println(sql);
         FileVariable var = null;
         
         conn = DBConnection.getConnection();
@@ -192,18 +184,14 @@ public class FileVariableImpl implements IFileVariableDao {
 
             ResultSet result = stat.executeQuery(sql);
 
-            // System.out.println("Obtenifino VARIABLE ARCHIVO ------------>" + sql);
-
             while (result.next()) {
 
-                int inicio = result.getInt("inicio");
+                int start = result.getInt("inicio");
 
-                int fin = result.getInt("fin");
+                int end = result.getInt("fin");
 
-                var = new FileVariable(clave, inicio, fin);
+                var = new FileVariable(key, start, end);
             }
-
-            // System.out.println("VARIABLE_ARCHIVO obtenida");
 
         } catch (SQLException ex) {
 

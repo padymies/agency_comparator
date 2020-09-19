@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.ui;
 
 import java.net.URL;
@@ -16,11 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import tdt.services.ConfigStage;
 
-/**
- * FXML Controller class
- *
- * @author Usuario
- */
+
 public abstract class LogFormController implements Initializable {
 
     @FXML
@@ -28,9 +20,7 @@ public abstract class LogFormController implements Initializable {
     @FXML
     protected Button btnLog;
 
-    /**
-     * Initializes the controller class.
-     */
+  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

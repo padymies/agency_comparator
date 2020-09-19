@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
+import tdt.db.dao.IExclusionDao;
 import tdt.model.Exclusion;
 import tdt.services.AlertExceptionService;
-import tdt.db.dao.IExclusionDao;
 
 /**
  *
@@ -46,18 +46,17 @@ public class ExclusionsImpl implements IExclusionDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO EXCLUSIONES ------------>" + sql);
                 while (result.next()) {
 
                     int id = result.getInt("id_exclusion");
 
                     String cp = result.getString("cp");
 
-                    String nombreAgencia = result.getString("nombre");
+                    String agencyName = result.getString("nombre");
 
                     int inclusion_exclusion = result.getInt("inclusion_exclusion");
 
-                    list.add(new Exclusion(id, cp, nombreAgencia, inclusion_exclusion));
+                    list.add(new Exclusion(id, cp, agencyName, inclusion_exclusion));
                 }
             }
 
@@ -109,11 +108,11 @@ public class ExclusionsImpl implements IExclusionDao {
 
                     String cp = result.getString("cp");
 
-                    int idAgencia = result.getInt("id_agencia");
+                    int agencyId = result.getInt("id_agencia");
 
                     int inclusion_exclusion = result.getInt("inclusion_exclusion");
 
-                    exclusion = new Exclusion(id, cp, idAgencia, inclusion_exclusion);
+                    exclusion = new Exclusion(id, cp, agencyId, inclusion_exclusion);
                 }
 
             }
@@ -161,7 +160,6 @@ public class ExclusionsImpl implements IExclusionDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando exclusion -----------> " + sql);
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -170,11 +168,7 @@ public class ExclusionsImpl implements IExclusionDao {
 
                     id = result.getInt(1);
 
-                } else {
-                    // System.out.println("Error de inserción");
-                }
-
-                // System.out.println("Exclusion insertada !!");
+                } 
             }
         } catch (SQLException ex) {
 
@@ -217,11 +211,9 @@ public class ExclusionsImpl implements IExclusionDao {
             if (conn != null) {
 
                 stat = conn.createStatement();
-
-                // System.out.println("Actualizando exclusion---------------> " + sql);
+                
                 stat.executeUpdate(sql);
 
-                // System.out.println("Exclusion actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -267,10 +259,8 @@ public class ExclusionsImpl implements IExclusionDao {
 
                 stat.execute(sql);
 
-                // System.out.println("Eliminando exclusion-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Exclusion eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -316,16 +306,15 @@ public class ExclusionsImpl implements IExclusionDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("Recuperando exclusion----------> " + sql);
                 if (result.next()) {
 
                     int id = result.getInt("id_exclusion");
 
-                    int idAgencia = result.getInt("id_agencia");
+                    int agencyId = result.getInt("id_agencia");
 
                     int inclusion_exclusion = result.getInt("inclusion_exclusion");
 
-                    exclusion = new Exclusion(id, cp, idAgencia, inclusion_exclusion);
+                    exclusion = new Exclusion(id, cp, agencyId, inclusion_exclusion);
                 }
 
             }

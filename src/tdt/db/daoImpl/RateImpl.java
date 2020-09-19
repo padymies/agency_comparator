@@ -11,18 +11,18 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
-import tdt.model.AgencyZone;
-import tdt.model.RateComparator;
-import tdt.model.Rate;
-import tdt.services.AlertExceptionService;
 import tdt.db.dao.IRateDao;
+import tdt.model.AgencyZone;
+import tdt.model.Rate;
+import tdt.model.RateComparator;
+import tdt.services.AlertExceptionService;
 
 public class RateImpl implements IRateDao {
 
     private final String TABLE_NAME = "TARIFAS";
 
     @Override
-    public ObservableList<Rate> getRatesUI(int idAgencia, int idZona) {
+    public ObservableList<Rate> getRatesUI(int agencyId, int zoneId) {
         Connection conn = null;
 
         Statement stat = null;
@@ -41,16 +41,15 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO TARIFAS ------------>" + sql);
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
 
-                    int idAgenciaZona = result.getInt("id_agencia_zona");
+                    int agencyZoneId = result.getInt("id_agencia_zona");
 
-                    double precio = result.getDouble("precio");
+                    double price = result.getDouble("precio");
 
-                    list.add(new Rate(kg, idAgencia, idZona, idAgenciaZona, precio));
+                    list.add(new Rate(kg, agencyId, zoneId, agencyZoneId, price));
                 }
             }
 
@@ -88,7 +87,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean addRate(Rate tarifa) {
+    public boolean addRate(Rate rate) {
         Connection conn = null;
 
         Statement stat = null;
@@ -96,7 +95,7 @@ public class RateImpl implements IRateDao {
         boolean result = false;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (kg, id_agencia, id_zona, precio) VALUES("
-                + tarifa.getKg() + ", " + tarifa.getAgencyId() + ", " + tarifa.getZoneId() + ", " + tarifa.getPrice() + ")";
+                + rate.getKg() + ", " + rate.getAgencyId() + ", " + rate.getZoneId() + ", " + rate.getPrice() + ")";
         try {
 
             conn = DBConnection.getConnection();
@@ -105,12 +104,10 @@ public class RateImpl implements IRateDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando Rate-----------> " + sql);
                 stat.executeUpdate(sql);
 
                 result = true;
 
-                // System.out.println("Rate insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -135,7 +132,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean updateRate(Rate tarifa) {
+    public boolean updateRate(Rate rate) {
         Connection conn = null;
 
         Statement stat = null;
@@ -143,8 +140,8 @@ public class RateImpl implements IRateDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "precio= " + tarifa.getPrice()
-                + " WHERE kg = " + tarifa.getKg() + " AND id_zona = " + tarifa.getZoneId() + " AND id_agencia = " + tarifa.getAgencyId();
+                + "precio= " + rate.getPrice()
+                + " WHERE kg = " + rate.getKg() + " AND id_zona = " + rate.getZoneId() + " AND id_agencia = " + rate.getAgencyId();
         try {
 
             conn = DBConnection.getConnection();
@@ -153,10 +150,8 @@ public class RateImpl implements IRateDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Rate ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Rate actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -182,14 +177,14 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean deleteRatesFromAgency(int idZona, int idAgencia) {
+    public boolean deleteRatesFromAgency(int zoneId, int agencyId) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id_zona = " + idZona + " AND id_agencia = " + idAgencia;
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE id_zona = " + zoneId + " AND id_agencia = " + agencyId;
         try {
 
             conn = DBConnection.getConnection();
@@ -198,10 +193,8 @@ public class RateImpl implements IRateDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Borrando Rate ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Rate borrada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -240,7 +233,7 @@ public class RateImpl implements IRateDao {
                 + " WHERE tar.kg >=" + peso + " AND tar.id_zona=" + idZona
                 + " AND tar.id_agencia=" + idAgencia + " GROUP BY tar.id_agencia";
 
-        RateComparator resultado = null;
+        RateComparator rateResult = null;
 
         try {
 
@@ -252,32 +245,31 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO TARIFAS ------------>" + sql);
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
 
-                    String nombreAgencia = result.getString("nombre");
+                    String agencyName = result.getString("nombre");
 
-                    double precio = result.getDouble("precio");
+                    double price = result.getDouble("precio");
 
-                    int plazoEntrega = result.getInt("plazo_entrega");
+                    int deliveryTime = result.getInt("plazo_entrega");
 
-                    int bultos = result.getInt("bultos");
+                    int bundles = result.getInt("bultos");
 
-                    double recargo = result.getDouble("recargo_combustible");
+                    double surcharge = result.getDouble("recargo_combustible");
 
-                    double minimoReembolso = result.getDouble("minimo_reembolso");
+                    double minimum = result.getDouble("minimo_reembolso");
 
-                    boolean envioGrande = result.getBoolean("envio_grande");
+                    boolean bigShipment = result.getBoolean("envio_grande");
 
                     double comision = result.getDouble("comision");
 
-                    double incremento = result.getDouble("incremento");
+                    double increment = result.getDouble("incremento");
 
                     int maxKilos = result.getInt("max_kilos");
 
-                    resultado = new RateComparator(kg, nombreAgencia, idAgencia, idZona, precio, plazoEntrega, bultos, recargo, minimoReembolso, envioGrande, comision, incremento, maxKilos);
+                    rateResult = new RateComparator(kg, agencyName, idAgencia, idZona, price, deliveryTime, bundles, surcharge, minimum, bigShipment, comision, increment, maxKilos);
                 }
             }
 
@@ -301,18 +293,18 @@ public class RateImpl implements IRateDao {
                 Logger.getLogger(RateImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return resultado;
+        return rateResult;
     }
 
     @Override
-    public ObservableList<AgencyZone> getAgenciesByZone(int idZona) {
+    public ObservableList<AgencyZone> getAgenciesByZone(int zoneId) {
 
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = "SELECT az.id_agencia, az.incremento, az.plazo_entrega, az.max_kilos, a.nombre, a.bultos, a.envio_grande, a.comision  "
-                + "FROM agencias_zonas az LEFT JOIN  agencias a USING(id_agencia) WHERE az.id_zona=" + idZona;
+                + "FROM agencias_zonas az LEFT JOIN  agencias a USING(id_agencia) WHERE az.id_zona=" + zoneId;
 
         ObservableList<AgencyZone> list = FXCollections.observableArrayList();
 
@@ -326,27 +318,25 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO AGENCIAS POR ZONA ------------>" + sql);
                 while (result.next()) {
 
-//                    int idAgenciaZona = result.getInt("id_agencia_zona");
-                    int idAgencia = result.getInt("id_agencia");
+                    int agencyId = result.getInt("id_agencia");
 
-                    double incremento = result.getDouble("incremento");
+                    double increment = result.getDouble("incremento");
 
-                    int plazoEntrega = result.getInt("plazo_entrega");
+                    int deliveryTime = result.getInt("plazo_entrega");
 
                     int maxKilos = result.getInt("max_kilos");
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    int bultos = result.getInt("bultos");
+                    int bundles = result.getInt("bultos");
 
-                    boolean envioGrande = result.getBoolean("envio_grande");
+                    boolean bigShipment = result.getBoolean("envio_grande");
 
                     double comision = result.getDouble("comision");
 
-                    list.add(new AgencyZone(idAgencia, idZona, incremento, plazoEntrega, maxKilos, nombre, bultos, envioGrande, comision));
+                    list.add(new AgencyZone(agencyId, zoneId, increment, deliveryTime, maxKilos, name, bundles, bigShipment, comision));
                 }
             }
 
@@ -393,14 +383,13 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO TARIFA POR ZONA Y AGENCIA ------------>" + sql);
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
 
-                    double precio = result.getDouble("precio");
+                    double price = result.getDouble("precio");
 
-                    list.add(new Rate(kg, idAgencia, idZona, precio));
+                    list.add(new Rate(kg, idAgencia, idZona, price));
                 }
             }
 
@@ -428,14 +417,14 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean addZoneAgency(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
+    public boolean addZoneAgency(int agencyId, int zoneId, double increment, int deliveryTime, int maxKilos) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
         String sql = "INSERT INTO agencias_zonas (id_agencia, id_zona, incremento, plazo_entrega, max_kilos) VALUES("
-                + idAgencia + ", " + idZona + ", " + incremento + ", " + plazoEntrega + ", " + maxKilos + ")";
+                + agencyId + ", " + zoneId + ", " + increment + ", " + deliveryTime + ", " + maxKilos + ")";
 
         try {
 
@@ -445,12 +434,10 @@ public class RateImpl implements IRateDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando Agencia-Zona -----------> " + sql);
                 stat.executeUpdate(sql);
 
                 result = true;
 
-                // System.out.println("Agencia-Zona insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -475,15 +462,15 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean updateZoneAgency(int idAgencia, int idZona, double incremento, int plazoEntrega, int maxKilos) {
+    public boolean updateZoneAgency(int agencyId, int zoneId, double increment, int deliveryTime, int maxKilos) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "UPDATE agencias_zonas SET incremento = " + incremento + ", plazo_entrega=" + plazoEntrega + ", max_kilos= " + maxKilos
-                + " WHERE  id_agencia = " + idAgencia + " and id_zona = " + idZona;
+        String sql = "UPDATE agencias_zonas SET incremento = " + increment + ", plazo_entrega=" + deliveryTime + ", max_kilos= " + maxKilos
+                + " WHERE  id_agencia = " + agencyId + " and id_zona = " + zoneId;
 
         try {
 
@@ -493,12 +480,10 @@ public class RateImpl implements IRateDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Agencia-Zona -----------> " + sql);
                 stat.executeUpdate(sql);
 
                 result = true;
 
-                // System.out.println("Agencia-Zona actualizada !!");
             }
         } catch (SQLException ex) {
 
@@ -523,7 +508,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean deleteZoneAgency(int idAgencia, int idZona) {
+    public boolean deleteZoneAgency(int agencyId, int zoneId) {
 
         Connection conn = null;
 
@@ -531,7 +516,7 @@ public class RateImpl implements IRateDao {
 
         boolean result = false;
 
-        String sql = "DELETE FROM agencias_zonas WHERE id_agencia=" + idAgencia + " AND id_zona=" + idZona;
+        String sql = "DELETE FROM agencias_zonas WHERE id_agencia=" + agencyId + " AND id_zona=" + zoneId;
 
         try {
 
@@ -543,10 +528,8 @@ public class RateImpl implements IRateDao {
 
                 stat.execute(sql);
 
-                // System.out.println("Eliminando agencia de zona-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Agencia eliminada de la zona !!");
             }
         } catch (SQLException ex) {
 
@@ -572,7 +555,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public int getMaxKilo(int idAgencia, int idZona) {
+    public int getMaxKilo(int agencyId, int zoneId) {
         Connection conn = null;
 
         Statement stat = null;
@@ -580,7 +563,7 @@ public class RateImpl implements IRateDao {
         int kg = 0;
 
         String sql = "SELECT MAX(kg) as max FROM tarifas t JOIN agencias_zonas z ON (z.id_agencia=t.id_agencia AND t.id_zona=z.id_zona) "
-                + "WHERE t.id_agencia =" + idAgencia + " AND t.id_zona=" + idZona;
+                + "WHERE t.id_agencia =" + agencyId + " AND t.id_zona=" + zoneId;
 
         try {
 
@@ -592,7 +575,6 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Maximo kilo ------------>" + sql);
                 while (result.next()) {
 
                     kg = result.getInt("max");
@@ -624,14 +606,14 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public ObservableList<String> getAgenciesNameByZone(String nombreZona) {
+    public ObservableList<String> getAgenciesNameByZone(String zoneName) {
         Connection conn = null;
 
         Statement stat = null;
 
         String sql = "SELECT a.nombre "
                 + "FROM agencias_zonas az LEFT JOIN  agencias a USING(id_agencia) "
-                + "LEFT JOIN zonas z USING(id_zona) WHERE z.nombre_zona='" + nombreZona + "'";
+                + "LEFT JOIN zonas z USING(id_zona) WHERE z.nombre_zona='" + zoneName + "'";
 
         ObservableList<String> list = FXCollections.observableArrayList();
 
@@ -645,12 +627,11 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO NOMBRE AGENCIAS POR ZONA ------------>" + sql);
                 while (result.next()) {
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    list.add(nombre);
+                    list.add(name);
                 }
             }
 
@@ -678,7 +659,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public ObservableList<Rate> copyRate(String nombreAgencia, String nombreZona) {
+    public ObservableList<Rate> copyRate(String agencyName, String zoneName) {
         Connection conn = null;
 
         Statement stat = null;
@@ -686,7 +667,7 @@ public class RateImpl implements IRateDao {
         String sql = "SELECT kg, precio FROM tarifas tar LEFT JOIN agencias a USING (id_agencia) LEFT JOIN  agencias_zonas az "
                 + "ON (tar.id_agencia = az.id_agencia AND tar.id_zona = az.id_zona) "
                 + "LEFT JOIN zonas z on tar.id_zona = z.id_zona "
-                + "WHERE z.nombre_zona='" + nombreZona + "' AND a.nombre='" + nombreAgencia + "'";
+                + "WHERE z.nombre_zona='" + zoneName + "' AND a.nombre='" + agencyName + "'";
 
         ObservableList<Rate> list = FXCollections.observableArrayList();
 
@@ -700,7 +681,6 @@ public class RateImpl implements IRateDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO  tarifas para Importar ------------>" + sql);
                 while (result.next()) {
 
                     int kg = result.getInt("kg");
@@ -734,7 +714,7 @@ public class RateImpl implements IRateDao {
     }
 
     @Override
-    public boolean pasteRate(int idZona, int idAgencia, ObservableList<Rate> values) {
+    public boolean pasteRate(int zoneId, int agencyId, ObservableList<Rate> values) {
         Connection conn = null;
 
         PreparedStatement ps = null;
@@ -751,12 +731,11 @@ public class RateImpl implements IRateDao {
 
                 ps = conn.prepareStatement(sql);
 
-                // System.out.println("Insertando Agencia-Zona -----------> " + sql);
                 for (Rate tar : values) {
 
                     ps.setInt(1, tar.getKg());
-                    ps.setInt(2, idZona);
-                    ps.setInt(3, idAgencia);
+                    ps.setInt(2, zoneId);
+                    ps.setInt(3, agencyId);
                     ps.setDouble(4, tar.getPrice());
                     ps.addBatch();
                 }
@@ -764,8 +743,6 @@ public class RateImpl implements IRateDao {
                 ps.executeBatch();
 
                 result = true;
-
-                // System.out.println("Agencia-Zona insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -808,10 +785,8 @@ public class RateImpl implements IRateDao {
 
                 stat.execute(sql);
 
-                // System.out.println("Eliminando agencia de zona-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Agencia eliminada de la zona !!");
             }
         } catch (SQLException ex) {
 

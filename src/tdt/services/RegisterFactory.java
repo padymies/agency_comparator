@@ -22,7 +22,6 @@ public class RegisterFactory {
         list = variableDao.hashMapFileVariable();
 
         try {
-            // ==== SE RESTA 1 A CADA VALOR PORQUE EL CLIENTE EMPIEZA A CONTAR EN 1 Y NO EN 0 COMO UN ARRAY ==== //
             String cliente = data.substring(list.get("CLIENTE").getStart() - 1, list.get("CLIENTE").getEnd() - 1).trim();
             String departamento = data.substring(list.get("DEPARTAMENTO").getStart() - 1, list.get("DEPARTAMENTO").getEnd() - 1).trim();
             String ref = data.substring(list.get("REF").getStart() - 1, list.get("REF").getEnd() - 1).trim();

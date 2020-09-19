@@ -24,7 +24,7 @@ public class NoteService {
         String postalCode = null;
         
         if (note.getDestinationPostalCode() != null && note.getDestinationPostalCode().length() >= 2) {
-           // cp = albaran.getDestinationPostalCode().substring(0, 2);
+
             postalCode = note.getDestinationPostalCode();
 
         }

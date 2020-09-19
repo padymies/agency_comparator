@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tdt.db.daoImpl;
 
 import java.sql.Connection;
@@ -14,14 +9,10 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tdt.db.DBConnection;
+import tdt.db.dao.ICityDao;
 import tdt.model.City;
 import tdt.services.AlertExceptionService;
-import tdt.db.dao.ICityDao;
 
-/**
- *
- * @author Usuario
- */
 public class CityImpl implements ICityDao {
 
     private final String TABLE_NAME = "provincias";
@@ -46,7 +37,6 @@ public class CityImpl implements ICityDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Provincias ------------>" + sql);
                 while (result.next()) {
 
                     int id = result.getInt("id_provincia");
@@ -101,7 +91,6 @@ public class CityImpl implements ICityDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO City ------------>" + sql);
                 while (result.next()) {
 
                     String nombre = result.getString("nombre");
@@ -154,10 +143,8 @@ public class CityImpl implements ICityDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando City ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("City actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -184,7 +171,7 @@ public class CityImpl implements ICityDao {
     }
 
     @Override
-    public int addCity(City provincia) {
+    public int addCity(City city) {
         Connection conn = null;
 
         Statement stat = null;
@@ -192,7 +179,7 @@ public class CityImpl implements ICityDao {
         int id = -1;
 
         String sql = "INSERT INTO " + TABLE_NAME + " (nombre, codigo) VALUES('"
-                + provincia.getName() + "', '" + provincia.getCode() + "')";
+                + city.getName() + "', '" + city.getCode() + "')";
 
         try {
 
@@ -202,7 +189,6 @@ public class CityImpl implements ICityDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando City -----------> " + sql);
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -211,14 +197,10 @@ public class CityImpl implements ICityDao {
 
                     id = result.getInt(1);
 
-                    String sqlProvincias_zonas = "INSERT INTO zonas_provincias (id_zona, id_provincia) VALUES(" + null + ", '" + id + "')";
+                    String sqlCityZone = "INSERT INTO zonas_provincias (id_zona, id_provincia) VALUES(" + null + ", '" + id + "')";
 
-                    stat.executeUpdate(sqlProvincias_zonas);
-                } else {
-                    // System.out.println("Error de inserción");
+                    stat.executeUpdate(sqlCityZone);
                 }
-
-                // System.out.println("City insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -243,14 +225,14 @@ public class CityImpl implements ICityDao {
     }
 
     @Override
-    public boolean deleteCity(int provinciaId) {
+    public boolean deleteCity(int cityId) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE `id_provincia`=" + provinciaId;
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE `id_provincia`=" + cityId;
 
         try {
 
@@ -262,10 +244,8 @@ public class CityImpl implements ICityDao {
 
                 stat.execute(sql);
 
-                // System.out.println("Eliminando provincia-----------------> " + sql);
                 result = true;
 
-                // System.out.println("City eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -291,14 +271,14 @@ public class CityImpl implements ICityDao {
     }
 
     @Override
-    public ObservableList<City> getCitiesByZone(int idZona) {
+    public ObservableList<City> getCitiesByZone(int zoneId) {
         Connection conn = null;
 
         Statement stat = null;
 
-        String sql = " SELECT p.nombre, p.codigo FROM " + TABLE_NAME + " p JOIN zonas_provincias z USING (id_provincia) WHERE z.id_zona=" + idZona;
+        String sql = " SELECT p.nombre, p.codigo FROM " + TABLE_NAME + " p JOIN zonas_provincias z USING (id_provincia) WHERE z.id_zona=" + zoneId;
 
-        ObservableList<City> lista = FXCollections.observableArrayList();
+        ObservableList<City> list = FXCollections.observableArrayList();
 
         try {
 
@@ -310,16 +290,15 @@ public class CityImpl implements ICityDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Provincias de Zona------------>" + sql);
                 while (result.next()) {
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    String codigo = result.getString("codigo");
+                    String code = result.getString("codigo");
 
-                    City p = new City(nombre, codigo);
+                    City city = new City(name, code);
 
-                    lista.add(p);
+                    list.add(city);
                 }
             }
 
@@ -343,7 +322,7 @@ public class CityImpl implements ICityDao {
                 Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lista;
+        return list;
     }
 
     @Override
@@ -355,7 +334,7 @@ public class CityImpl implements ICityDao {
 
         String sql = " SELECT nombre, codigo FROM " + TABLE_NAME + " WHERE id_provincia NOT IN (SELECT id_provincia FROM zonas_provincias)";
 
-        ObservableList<City> lista = FXCollections.observableArrayList();
+        ObservableList<City> list = FXCollections.observableArrayList();
 
         try {
 
@@ -367,16 +346,15 @@ public class CityImpl implements ICityDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Provincias sin Zona------------>" + sql);
                 while (result.next()) {
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    String codigo = result.getString("codigo");
+                    String code = result.getString("codigo");
 
-                    City p = new City(nombre, codigo);
+                    City p = new City(name, code);
 
-                    lista.add(p);
+                    list.add(p);
                 }
             }
 
@@ -400,7 +378,7 @@ public class CityImpl implements ICityDao {
                 Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lista;
+        return list;
     }
 
     @Override
@@ -411,7 +389,7 @@ public class CityImpl implements ICityDao {
 
         String sql = "SELECT p.id_provincia, p.nombre, p.codigo, z.id_zona, zo.nombre_zona FROM " + TABLE_NAME + " p LEFT JOIN zonas_provincias z USING (id_provincia) LEFT JOIN zonas zo USING (id_zona)";
 
-        ObservableList<City> lista = FXCollections.observableArrayList();
+        ObservableList<City> list = FXCollections.observableArrayList();
 
         try {
 
@@ -426,19 +404,19 @@ public class CityImpl implements ICityDao {
                 // System.out.println("OBTENIENDO Provincias------------>" + sql);
                 while (result.next()) {
 
-                    int idProvincia = result.getInt("id_provincia");
+                    int cityId = result.getInt("id_provincia");
 
-                    String nombre = result.getString("nombre");
+                    String name = result.getString("nombre");
 
-                    String codigo = result.getString("codigo");
+                    String code = result.getString("codigo");
 
-                    int idZona = result.getInt("id_zona");
+                    int zoneId = result.getInt("id_zona");
 
-                    String nombreZona = result.getString("nombre_zona");
+                    String zoneName = result.getString("nombre_zona");
 
-                    City p = new City(idProvincia, nombre, codigo, idZona, nombreZona);
+                    City p = new City(cityId, name, code, zoneId, zoneName);
 
-                    lista.add(p);
+                    list.add(p);
                 }
             }
 
@@ -462,19 +440,19 @@ public class CityImpl implements ICityDao {
                 Logger.getLogger(CityImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lista;
+        return list;
     }
 
     @Override
-    public boolean updateZoneCity(int id_provincia, String nombre_zona) {
+    public boolean updateZoneCity(int cityId, String zoneName) {
         Connection conn = null;
 
         Statement stat = null;
 
         boolean result = false;
 
-        String sql = "UPDATE zonas_provincias zp SET zp.id_zona= (SELECT id_zona FROM zonas z WHERE z.nombre_zona='" + nombre_zona
-                + "') WHERE zp.id_provincia=" + id_provincia;
+        String sql = "UPDATE zonas_provincias zp SET zp.id_zona= (SELECT id_zona FROM zonas z WHERE z.nombre_zona='" + zoneName
+                + "') WHERE zp.id_provincia=" + cityId;
         try {
 
             conn = DBConnection.getConnection();
@@ -483,16 +461,13 @@ public class CityImpl implements ICityDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando Zona-City ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Zona-City actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
 
-            
-        AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido actualizar la provincias-zona", ex);
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido actualizar la provincias-zona", ex);
 
             alert.showAndWait();
 

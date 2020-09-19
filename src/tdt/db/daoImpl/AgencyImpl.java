@@ -38,7 +38,6 @@ public class AgencyImpl implements IAgencyDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO AGENCIAS ------------>" + sql);
                 while (result.next()) {
 
                     int id = result.getInt("id_agencia");
@@ -61,7 +60,6 @@ public class AgencyImpl implements IAgencyDao {
 
         } catch (SQLException ex) {
 
-            // System.out.println("Error recuperando Agencias");
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener las agencias", ex);
 
             alert.showAndWait();
@@ -104,7 +102,6 @@ public class AgencyImpl implements IAgencyDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("Recuperando agencia----------> " + sql);
                 result.next();
 
                 int id = result.getInt("id_agencia");
@@ -124,7 +121,6 @@ public class AgencyImpl implements IAgencyDao {
                 agency = new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision);
             }
 
-            // System.out.println("Agency recuperada !!");
         } catch (SQLException ex) {
 
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la agencia", ex);
@@ -167,7 +163,6 @@ public class AgencyImpl implements IAgencyDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Insertando agencia -----------> " + sql);
                 stat.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
                 ResultSet result = stat.getGeneratedKeys();
@@ -176,11 +171,8 @@ public class AgencyImpl implements IAgencyDao {
 
                     id = result.getInt(1);
 
-                } else {
-                    // System.out.println("Error de inserción");
                 }
 
-                // System.out.println("Agency insertada !!");
             }
         } catch (SQLException ex) {
 
@@ -228,10 +220,8 @@ public class AgencyImpl implements IAgencyDao {
 
                 stat = conn.createStatement();
 
-                // System.out.println("Actualizando agencia ---------------> " + sql);
                 stat.executeUpdate(sql);
 
-                // System.out.println("Agency actualizada !!");
                 result = true;
             }
         } catch (SQLException ex) {
@@ -278,10 +268,8 @@ public class AgencyImpl implements IAgencyDao {
 
                 stat.execute(sql);
 
-                // System.out.println("Eliminando agencia-----------------> " + sql);
                 result = true;
 
-                // System.out.println("Agency eliminada !!");
             }
         } catch (SQLException ex) {
 
@@ -326,7 +314,6 @@ public class AgencyImpl implements IAgencyDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO NOMBRE DE AGENCIAS ------------>" + sql);
                 while (result.next()) {
 
                     String name = result.getString("nombre");

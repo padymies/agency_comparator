@@ -7,10 +7,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Usuario
- */
 public class AlertService extends Alert {
 
     public AlertService(AlertType alertType, String title, String message, String detail) {

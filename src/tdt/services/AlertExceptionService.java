@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tdt.services;
 
 import java.io.PrintWriter;
@@ -14,10 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-/**
- *
- * @author Usuario
- */
+
 public class AlertExceptionService extends Alert{
 
     public AlertExceptionService(String header, String text, Exception ex) {
