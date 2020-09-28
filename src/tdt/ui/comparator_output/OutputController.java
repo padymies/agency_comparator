@@ -17,8 +17,11 @@ public class OutputController implements Initializable {
     @FXML
     private Accordion accordion;
 
+    private List<Note> unprocessedNotes;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+       
         // TODO
     }
 
@@ -36,5 +39,12 @@ public class OutputController implements Initializable {
             accordion.getPanes().add(pane);
         }
     }
+    
+    public void setUnprocessedNotes(List<Note> unprocessedNotes) {
+        this.unprocessedNotes = unprocessedNotes;
+    }
+
+    
+    
 
 }

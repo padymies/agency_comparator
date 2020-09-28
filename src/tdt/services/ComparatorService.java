@@ -21,9 +21,9 @@ import tdt.model.Note;
 import tdt.model.RateComparator;
 
 public class ComparatorService {
-    
+
     private final int AGENCY_FORCED = 1;
-    
+
     private final int AGENCY_EXCLUDED = -1;
 
     private IExclusionDao exclusionsDao;
@@ -66,11 +66,15 @@ public class ComparatorService {
                         int maxKilos = rateDao.getMaxKilo(agencyZone.getAgencyId(), agencyZone.getZoneId());
 
                         double weight = -1;
+                        
                         try {
 
                             weight = Math.ceil(Double.parseDouble(note.getWeight()));
+                            
                         } catch (NumberFormatException e) {
+                            
                             AlertExceptionService weightAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
+                            
                             weightAlert.showAndWait();
                         }
 
@@ -163,7 +167,7 @@ public class ComparatorService {
                             for (int i = 1; i < resultList.size(); i++) {
                                 if (resultList.get(i).getDeliveryTime() < first.getDeliveryTime()
                                         && resultList.get(i).getPrice() - first.getPrice() < urgencyPrice) {
-                                    
+
                                     note.setBEST_AGENCY(resultList.get(i).getAgencyName());
                                     break;
                                 }
@@ -192,7 +196,7 @@ public class ComparatorService {
         if (ex != null) {
             switch (ex.getInclusion_exclusion()) {
                 case AGENCY_FORCED:
-                    
+
                     agenciesDao = new AgencyImpl();
 
                     Agency agency = agenciesDao.getAgency(ex.getAgencyId());
@@ -202,14 +206,17 @@ public class ComparatorService {
                     break;
                 case AGENCY_EXCLUDED:
 
-                    list.forEach(item -> {
+                    if (list != null) {
 
-                        if (item.getAgencyId() == ex.getAgencyId()) {
+                        list.forEach(item -> {
 
-                            list.remove(item);
+                            if (item.getAgencyId() == ex.getAgencyId()) {
 
-                        }
-                    });
+                                list.remove(item);
+
+                            }
+                        });
+                    }
                     break;
                 default:
                     System.out.println("No se puede enviar por ninguna agencia => " + ex.getInclusion_exclusion());

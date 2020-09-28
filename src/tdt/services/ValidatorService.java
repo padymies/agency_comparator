@@ -12,7 +12,7 @@ public class ValidatorService {
 
         boolean result = true;
 
-        if (!control.getText().matches("[+-]?\\d*\\.?\\d+")) {
+        if (!control.getText().matches("[+-]?\\d*\\.?\\d+") || control.getText().isEmpty()) {
 
             control.getStyleClass().add("invalid");
 
@@ -30,7 +30,7 @@ public class ValidatorService {
 
         boolean result = true;
 
-        if (!control.getText().matches("^\\d+$")) {
+        if (!control.getText().matches("^\\d+$") || control.getText().isEmpty()) {
 
             control.getStyleClass().add("invalid");
 
@@ -61,7 +61,7 @@ public class ValidatorService {
         boolean result = note.getZone() != null && !note.getDestinationCity().isEmpty() && !note.getCountry().isEmpty() && !note.getDestinationName().isEmpty()
                 && !note.getRef().isEmpty() && !note.getDestinationAddress().isEmpty() && !note.getEmail().isEmpty() && !note.getDestinationPostalCode().isEmpty()
                 && !note.getDestinationPhone().isEmpty() && !note.getWeight().isEmpty();
-
+        System.out.println("result =======================>" + result);
         return result;
     }
 }

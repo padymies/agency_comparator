@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -186,7 +185,7 @@ public class NotesController implements Initializable {
     }
 
     @FXML
-    private void compare(ActionEvent event)  {
+    private void compare(ActionEvent event) {
 
         ObservableList<Note> items = listView.getItems();
         items.forEach(item -> {
@@ -214,44 +213,54 @@ public class NotesController implements Initializable {
 
             ComparatorService service = new ComparatorService();
 
-            service.noteCompare(notes);
+            if (notes.size() > 0) {
 
-            Map<String, List<Note>> result = notes.stream().filter(predicate -> predicate.getBEST_AGENCY() != null)
-                    .collect(Collectors.groupingBy(Note::getBEST_AGENCY));
+                service.noteCompare(notes);
 
-            boolean fileResult = FileService.writeOutFiles(result);
+                Map<String, List<Note>> result = notes.stream().filter(predicate -> predicate.getBEST_AGENCY() != null)
+                        .collect(Collectors.groupingBy(Note::getBEST_AGENCY));
 
-            if (fileResult && result.size() > 0) {
+                boolean fileResult = FileService.writeOutFiles(result);
 
-                try {
+                if (fileResult && result.size() > 0) {
 
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/comparator_output/output.fxml"));
+                    try {
 
-                    Parent root1 = (Parent) fxmlLoader.load();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tdt/ui/comparator_output/output.fxml"));
 
-                    OutputController outputController = fxmlLoader.getController();
+                        Parent root1 = (Parent) fxmlLoader.load();
 
-                    outputController.loadData(result);
+                        OutputController outputController = fxmlLoader.getController();
 
-                    Stage notesStage = new Stage();
+                        outputController.loadData(result);
 
-                    ConfigStage.configStage(notesStage, "Albaranes comparados", Modality.APPLICATION_MODAL);
+                        ObservableList<Note> unprocessedNotes = listView.getItems().filtered(note -> note.getBEST_AGENCY() == null);
 
-                    notesStage.setScene(new Scene(root1));
+                        outputController.setUnprocessedNotes(unprocessedNotes);
 
-                    notesStage.show();
+                        Stage notesStage = new Stage();
 
-                    ((Node) event.getSource()).getScene().getWindow().hide();
+                        ConfigStage.configStage(notesStage, "Albaranes comparados", Modality.APPLICATION_MODAL);
 
-                } catch (IOException e) {
-                    AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
+                        notesStage.setScene(new Scene(root1));
 
-                    alert.showAndWait();
+                        notesStage.show();
+
+                        trannsferList(unprocessedNotes);
+
+                    } catch (IOException e) {
+                        AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
+
+                        alert.showAndWait();
+                    }
+
+                } else {
+                    AlertService a = new AlertService(Alert.AlertType.ERROR, "DEBUG", "Error en Fileservice.writeOutFiles", "");
+                    a.showAndWait();
                 }
-
             } else {
-                AlertService a = new AlertService(Alert.AlertType.ERROR, "DEBUG", "Error en Fileservice.writeOutFiles", "");
-                a.showAndWait();
+                AlertService errorNoteAlert = new AlertService(Alert.AlertType.ERROR, "Error", "Error en albaranes seleccionados", "");
+                errorNoteAlert.showAndWait();
             }
 
         }
@@ -302,35 +311,51 @@ public class NotesController implements Initializable {
                             note.setZone(newZone);
 
                             cell.lbZone.setText(note.getZone().getName());
+
                         }
                     }
 
                 });
 
+                cell.lbZone.textProperty().addListener(new ChangeListener<Object>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+
+                        updateState(cell);
+                    }
+                });
+
                 cell.txtCity.setText(note.getDestinationCity());
 
-                cell.txtBundles.setText("1");
+                if (note.getBundles().equals("0")) {
+                    cell.txtBundles.setText("1");
+                    note.setBundles("1");
+                } else {
+                    cell.txtBundles.setText(note.getBundles().trim());
+                }
 
                 cell.txtBundles.focusedProperty().addListener((args, oldValue, newValue) -> {
 
-                    if (!newValue && !cell.txtBundles.getText().isEmpty()) {
+                    if (!newValue) {
 
                         if (ValidatorService.integerValidate(cell.txtBundles)) {
 
                             note.setBundles(cell.txtBundles.getText());
                             FileService.updateNote(note);
                         }
+                        updateState(cell);
 
                     }
 
                 });
                 cell.txtWeight.focusedProperty().addListener((args, oldValue, newValue) -> {
 
-                    if (!newValue && !cell.txtWeight.getText().isEmpty()) {
+                    if (!newValue) {
                         if (ValidatorService.doubleValidate(cell.txtWeight)) {
                             note.setWeight(cell.txtWeight.getText().trim());
                             FileService.updateNote(note);
                         }
+                        updateState(cell);
                     }
 
                 });
@@ -379,6 +404,8 @@ public class NotesController implements Initializable {
 
                             note.setBEST_AGENCY(newValue);
 
+                            updateState(cell);
+
                         } else {
                             // NO FORZADO AGENCIA
                             NoteService.setNoteZone(note, cell.lbZone, listView);
@@ -392,9 +419,11 @@ public class NotesController implements Initializable {
                 setGraphic(cell);
 
                 if (!ValidatorService.noteValidator(note)) {
-                    cell.getStyleClass().add("invalidRow");
+                    //cell.getStyleClass().add("invalidRow");
+                    // cell.setInvalidState(); 
                 } else {
-                    cell.getStyleClass().clear();
+                    // cell.setValidState();
+                    //  cell.getStyleClass().clear();
 
                 }
                 /*    if (!cell.isValidCP() || !cell.isValidCountry() || !cell.isValidCity() || !cell.isValidRef()) {
@@ -404,12 +433,26 @@ public class NotesController implements Initializable {
 
                 }
                  */
+                updateState(cell);
+
             } else {
                 setGraphic(null); // ESTO ES IMPORTANTE PARA ACTUALIZAR LA LISTA. SINO, NUNCA SE ELIMINAN LAS FILAS QUE TENGAN QUE BORRARSE
             }
 
         }
 
+        private void updateState(CellListViewBase cell) {
+            if (!cell.lbZone.getText().equals("No se ha encontrado una Zona")
+                    && ValidatorService.doubleValidate(cell.txtWeight)
+                    && ValidatorService.integerValidate(cell.txtBundles)) {
+                cell.state.setText("OK");
+                cell.state.setStyle("-fx-text-fill:green");
+
+            } else {
+                cell.state.setText(" X");
+                cell.state.setStyle("-fx-text-fill:red");
+            }
+        }
     }
 
     private void showNoteForm(Note note) {
@@ -459,6 +502,8 @@ public class NotesController implements Initializable {
         protected final TextField txtBundles;
         protected final Button btnEdit;
 
+        protected final Label state;
+
         private boolean validRef;
         private boolean validCP;
         private boolean validCountry;
@@ -498,6 +543,7 @@ public class NotesController implements Initializable {
             txtBundles = new TextField();
             txtWeight = new TextField();
             btnEdit = new Button();
+            state = new Label();
 
             validRef = true;
             validCP = true;
@@ -543,9 +589,9 @@ public class NotesController implements Initializable {
                     validWeight = !Double.isNaN(value);
 
                 } catch (NumberFormatException e) {
-                 //   AlertExceptionService alert = new AlertExceptionService("NotesController", "No se ha podido parsear el peso", e);
+                    //   AlertExceptionService alert = new AlertExceptionService("NotesController", "No se ha podido parsear el peso", e);
 
-                   // alert.showAndWait();
+                    // alert.showAndWait();
                 }
 
             });
@@ -556,7 +602,7 @@ public class NotesController implements Initializable {
 
             setAlignment(javafx.geometry.Pos.CENTER_LEFT);
             setPrefHeight(35.0);
-            setPrefWidth(1070.0);
+            setPrefWidth(1100.0);
 
             ref.setPrefHeight(25.0);
             ref.setPrefWidth(91.0);
@@ -573,12 +619,12 @@ public class NotesController implements Initializable {
 
             lbZone.setId("lbZona");
             lbZone.setPrefHeight(17.0);
-            lbZone.setPrefWidth(106.0);
+            lbZone.setPrefWidth(176.0);
             lbZone.setText("Zona");
             HBox.setMargin(lbZone, new Insets(0.0, 0.0, 0.0, 10.0));
 
             txtCountry.setPrefHeight(25.0);
-            txtCountry.setPrefWidth(110.0);
+            txtCountry.setPrefWidth(100.0);
             txtCountry.setPromptText("Pais");
             txtCountry.setText("txtPais");
             HBox.setMargin(txtCountry, new Insets(0.0, 0.0, 0.0, 10.0));
@@ -630,6 +676,11 @@ public class NotesController implements Initializable {
             setOpaqueInsets(new Insets(0.0));
             setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
 
+            state.setId("state");
+            state.setPrefHeight(17.0);
+            state.setPrefWidth(35.0);
+            HBox.setMargin(state, new Insets(0.0, 0.0, 0.0, 25.0));
+
             getChildren().add(ref);
             getChildren().add(txtDestinationName);
             getChildren().add(lbZone);
@@ -641,6 +692,9 @@ public class NotesController implements Initializable {
             getChildren().add(txtWeight);
             getChildren().add(txtBundles);
             getChildren().add(btnEdit);
+            getChildren().add(state);
         }
+
     }
+
 }
