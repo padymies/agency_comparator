@@ -12,6 +12,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tdt.db.dao.IFileVariableDao;
 import tdt.db.daoImpl.FileVariableImpl;
 import tdt.model.FileVariable;
@@ -95,6 +97,7 @@ public class FileService {
         BufferedWriter out = null;
 
         try {
+            tempFile.createNewFile();
 
             out = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(tempFile), "ISO-8859-1"));
@@ -142,8 +145,9 @@ public class FileService {
 
                     tempFile.renameTo(file);
 
-                    FileService.file = tempFile;
+                    tempFile = file;
 
+                    System.out.println(file.getName());
                 }
 
             } catch (IOException ex) {
@@ -203,11 +207,11 @@ public class FileService {
 
                 for (Note line : notes) {
                     try {
-                        
+
                         String newLine = RegisterFactory.generateNoteRegister(line);
 
                         out.write(newLine + "\n");
-                        
+
                     } catch (IOException ex) {
                         AlertExceptionService alertWrite = new AlertExceptionService("Escritura de archivo", "No se ha podido escribir el archivo de salida", ex);
 
@@ -244,6 +248,41 @@ public class FileService {
                 }
             }
         }
+        return result;
+    }
+
+    public static boolean overrideFile(List<Note> notes) {
+        boolean result = false;
+
+        BufferedWriter bw = null;
+
+        try {
+            bw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file, false), "ISO-8859-1"));
+
+            for (Note line : notes) {
+
+                String newLine = RegisterFactory.generateNoteRegister(line);
+
+                bw.write(newLine + "\n");
+
+            }
+            
+            result = true;
+            
+        } catch (IOException ex) {
+            Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+
         return result;
     }
 

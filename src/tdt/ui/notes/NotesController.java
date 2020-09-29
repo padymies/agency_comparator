@@ -193,7 +193,9 @@ public class NotesController implements Initializable {
 
         });
         ObservableList<Note> selectedRows = listView.getSelectionModel().getSelectedItems();
-
+        
+        int selectedCount = selectedRows.size();
+        
         if (selectedRows.isEmpty()) {
 
             AlertService noSelectedInfo = new AlertService(Alert.AlertType.INFORMATION, "Info", "\nNo hay filas seleccionadas. ", "");
@@ -245,9 +247,19 @@ public class NotesController implements Initializable {
                         notesStage.setScene(new Scene(root1));
 
                         notesStage.show();
-
+                        
                         trannsferList(unprocessedNotes);
+                        
+                        boolean overridedFile = FileService.overrideFile(unprocessedNotes);
 
+                        
+                        System.out.println("Unselected ===> " + unprocessedNotes.size());
+                        if (overridedFile) {
+                            AlertService alertInfo = new AlertService(Alert.AlertType.INFORMATION, "Actualización de archivo", "Se ha modificado el archivo de entrada: ",
+                                "Se han procesado " + (selectedCount - unprocessedNotes.size()) + " albaranes\n\n"
+                                        + "Quedan sin procesar " + unprocessedNotes.size() + " albaranes"  );
+                            alertInfo.showAndWait();
+                        }
                     } catch (IOException e) {
                         AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
 
@@ -418,21 +430,6 @@ public class NotesController implements Initializable {
                 });
                 setGraphic(cell);
 
-                if (!ValidatorService.noteValidator(note)) {
-                    //cell.getStyleClass().add("invalidRow");
-                    // cell.setInvalidState(); 
-                } else {
-                    // cell.setValidState();
-                    //  cell.getStyleClass().clear();
-
-                }
-                /*    if (!cell.isValidCP() || !cell.isValidCountry() || !cell.isValidCity() || !cell.isValidRef()) {
-                    cell.getStyleClass().add("invalidRow");
-                } else {
-                    cell.getStyleClass().clear();
-
-                }
-                 */
                 updateState(cell);
 
             } else {

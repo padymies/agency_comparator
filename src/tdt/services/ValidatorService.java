@@ -61,7 +61,6 @@ public class ValidatorService {
         boolean result = note.getZone() != null && !note.getDestinationCity().isEmpty() && !note.getCountry().isEmpty() && !note.getDestinationName().isEmpty()
                 && !note.getRef().isEmpty() && !note.getDestinationAddress().isEmpty() && !note.getEmail().isEmpty() && !note.getDestinationPostalCode().isEmpty()
                 && !note.getDestinationPhone().isEmpty() && !note.getWeight().isEmpty();
-        System.out.println("result =======================>" + result);
         return result;
     }
 }

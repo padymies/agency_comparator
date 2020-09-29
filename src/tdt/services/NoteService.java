@@ -23,7 +23,7 @@ public class NoteService {
 
         String postalCode = null;
         
-        if (note.getDestinationPostalCode() != null && note.getDestinationPostalCode().length() >= 2) {
+        if (!note.getDestinationPostalCode().isEmpty() && note.getDestinationPostalCode().length() >= 2) {
 
             postalCode = note.getDestinationPostalCode();
 
@@ -37,9 +37,12 @@ public class NoteService {
 
             zone = zoneDao.getZoneByCity(postalCode);
             
-            if(zone == null) {
+            if(zone == null && !note.getDestinationPostalCode().isEmpty()) {
+                
                 postalCode = note.getDestinationPostalCode().substring(0, 2);
+                
                 zone = zoneDao.getZoneByCity(postalCode);
+            
             }
             
         } else {
