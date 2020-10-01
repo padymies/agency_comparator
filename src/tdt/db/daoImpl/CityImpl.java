@@ -401,7 +401,6 @@ public class CityImpl implements ICityDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("OBTENIENDO Provincias------------>" + sql);
                 while (result.next()) {
 
                     int cityId = result.getInt("id_provincia");

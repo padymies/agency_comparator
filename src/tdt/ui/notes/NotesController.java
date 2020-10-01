@@ -178,16 +178,14 @@ public class NotesController implements Initializable {
         if (notes.size() > 0) {
 
             noNotesText.setVisible(false);
-            
+
             listView.setVisible(true);
 
-            
             listView.setCellFactory((ListView<Note> param) -> new NoteCell());
 
             filteredList = new FilteredList<>(notes, data -> true);
 
             listView.setItems(filteredList);
-            
 
         } else {
             listView.setVisible(false);
@@ -205,9 +203,9 @@ public class NotesController implements Initializable {
 
         });
         ObservableList<Note> selectedRows = listView.getSelectionModel().getSelectedItems();
-        
+
         int selectedCount = selectedRows.size();
-        
+
         if (selectedRows.isEmpty()) {
 
             AlertService noSelectedInfo = new AlertService(Alert.AlertType.INFORMATION, "Info", "\nNo hay filas seleccionadas. ", "");
@@ -259,26 +257,18 @@ public class NotesController implements Initializable {
                         notesStage.setScene(new Scene(root1));
 
                         notesStage.show();
-                        
+
                         trannsferList(unprocessedNotes);
-                        
-                        boolean overridedFile = FileService.overrideFile(unprocessedNotes);
-                        
-                        if (overridedFile) {
-                            AlertService alertInfo = new AlertService(Alert.AlertType.INFORMATION, "Actualización de archivo", "Se ha modificado el archivo de entrada: ",
-                                "Se han procesado " + (selectedCount) + " albaranes\n\n"
-                                        + "Quedan sin procesar " + unprocessedNotes.size() + " albaranes"  );
-                            alertInfo.showAndWait();
-                        }
+
+                        FileService.overrideFile(unprocessedNotes);
+
+                       
                     } catch (IOException e) {
                         AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
 
                         alert.showAndWait();
                     }
 
-                } else {
-                    AlertService a = new AlertService(Alert.AlertType.ERROR, "DEBUG", "Error en Fileservice.writeOutFiles", "");
-                    a.showAndWait();
                 }
             } else {
                 AlertService errorNoteAlert = new AlertService(Alert.AlertType.ERROR, "Error", "Error en albaranes seleccionados", "");

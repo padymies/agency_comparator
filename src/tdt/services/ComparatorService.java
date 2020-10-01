@@ -21,6 +21,8 @@ import tdt.model.Note;
 import tdt.model.RateComparator;
 
 public class ComparatorService {
+    
+    private LoggerService logger;
 
     private final int AGENCY_FORCED = 1;
 
@@ -37,6 +39,9 @@ public class ComparatorService {
     private IAppConfig configDao;
 
     public ComparatorService() {
+        
+        logger = new LoggerService("output");
+        
         rateDao = new RateImpl();
 
         zoneDao = new ZoneImpl();
@@ -94,9 +99,15 @@ public class ComparatorService {
 
                                         result.setPrice(result.getPrice() + (weight - maxKilos * agencyZone.getIncrease()));
 
+                                    } else {
+                                        logger.writeLog("info", "REF: "+ note.getRef() + " ============ NO HAY TARIFA PARA EL PESO  " +  weight + " EN LA ZONA "
+                                    + note.getZone().getName() + " PARA LA AGENCIA "+  agencyZone.getAgencyName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
                                     }
                                 }
                             }
+                        } else {
+                            logger.writeLog("info", "REF: "+ note.getRef() + "============ NO HAY TARIFAS PARA LA AGENCIA  " + agencyZone.getAgencyName() + " EN LA ZONA "
+                                    + note.getZone().getName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
                         }
 
                         if (result != null) {
@@ -107,8 +118,7 @@ public class ComparatorService {
 
                     }
                 } else {
-                    // NO HAY AGENCIA PARA ESTA ZONA EN LA BD
-                    System.out.println("No hay agencia en la base de datos para esta zona");
+                    logger.writeLog("info", "REF: "+ note.getRef() +  " ============ NO HAY AGENCIAS PARA LA ZONA:  " + note.getZone().getName() + " ============\n Acción: Revise la Zona\n", null);
                 }
                 // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
@@ -222,7 +232,8 @@ public class ComparatorService {
                     }
                     break;
                 default:
-                    System.out.println("No se puede enviar por ninguna agencia => " + ex.getInclusion_exclusion());
+                    logger.writeLog("info", "REF: "+ note.getRef() + " ============ EXCLUSIONES: El código postal " +ex.getPostalCode() + ""
+                            + " No se puede enviar por ninguna agencia ============\n Acción: Revise las exclusiones\n", null);
                     break;
             }
         }

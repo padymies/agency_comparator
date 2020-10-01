@@ -1,7 +1,6 @@
 package tdt.ui;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -85,13 +84,13 @@ public class AppController implements Initializable {
     private ImageView disableImg;
 
     private ImageView backGroundImg;
-
+    
     @FXML
     private AnchorPane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
         ConfigStage.setIcon(btnFileChooser, "file.png", 22);
 
         enableIcon = new Image("file:resources/img/enable.png");
@@ -131,7 +130,8 @@ public class AppController implements Initializable {
 
             agenciesStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Agencias", e);
 
             alert.showAndWait();
@@ -197,7 +197,7 @@ public class AppController implements Initializable {
 
             notesStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Albaranes", e);
 
             alert.showAndWait();
@@ -221,7 +221,7 @@ public class AppController implements Initializable {
 
             stageMapFIle.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Variables de archivo", e);
 
             alert.showAndWait();
@@ -246,7 +246,8 @@ public class AppController implements Initializable {
 
             stageMapFIle.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Tarifas", e);
 
             alert.showAndWait();
@@ -269,7 +270,8 @@ public class AppController implements Initializable {
 
             postalStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Códigos postales", e);
 
             alert.showAndWait();
@@ -292,7 +294,8 @@ public class AppController implements Initializable {
 
             citiesStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Provincias", e);
 
             alert.showAndWait();
@@ -315,7 +318,8 @@ public class AppController implements Initializable {
 
             exclusionStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Excepciones", e);
 
             alert.showAndWait();
@@ -339,7 +343,8 @@ public class AppController implements Initializable {
 
             urgencyStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Porcentaje de urgencia", e);
 
             alert.showAndWait();
@@ -386,7 +391,8 @@ public class AppController implements Initializable {
 
             loginStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+           
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de inicio de sesión", e);
 
             alert.showAndWait();

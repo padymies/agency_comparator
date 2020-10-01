@@ -103,7 +103,6 @@ public class ExclusionsImpl implements IExclusionDao {
 
                 ResultSet result = stat.executeQuery(sql);
 
-                // System.out.println("Recuperando exclusion----------> " + sql);
                 if (result.next()) {
 
                     String cp = result.getString("cp");
@@ -117,7 +116,6 @@ public class ExclusionsImpl implements IExclusionDao {
 
             }
 
-            // System.out.println("Exclusion recuperada !!");
         } catch (SQLException ex) {
 
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la exclusion", ex);
@@ -319,7 +317,6 @@ public class ExclusionsImpl implements IExclusionDao {
 
             }
 
-            // System.out.println("Exclusion recuperada !!");
         } catch (SQLException ex) {
 
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido obtener la exclusion", ex);

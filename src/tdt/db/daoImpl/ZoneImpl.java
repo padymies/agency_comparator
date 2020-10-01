@@ -157,9 +157,7 @@ public class ZoneImpl implements IZoneDao {
 
                     id = result.getInt(1);
 
-                } else {
-                    System.out.println("Error de inserción zona");
-                }
+                } 
 
             }
         } catch (SQLException ex) {

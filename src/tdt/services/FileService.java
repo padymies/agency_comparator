@@ -151,7 +151,6 @@ public class FileService {
 
                     tempFile = file;
 
-                    System.out.println(file.getName());
                 }
 
             } catch (IOException ex) {

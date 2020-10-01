@@ -28,9 +28,9 @@ public class DBConnection {
     private static PropertyService props;
 
     public static AppController app;
-
+    
     public static Connection getConnection() {
-
+        
         props = new PropertyService();
 
         Object ip = props.getProps("tdt.ip");
@@ -40,7 +40,6 @@ public class DBConnection {
             IP_ADDRESS = ip.toString();
 
         } else {
-
             AlertService alert = new AlertService(Alert.AlertType.ERROR, "ERROR DE CONEXIÓN",
                     "No se ha encontrado una dirección ip para conectar a la base de datos", "");
 
@@ -55,6 +54,7 @@ public class DBConnection {
             conn = DriverManager.getConnection(DB_URL + IP_ADDRESS + ":" + PORT + "/" + DATABASE_NAME + TIMEZOME, USERNAME, PASSWORD);
 
         } catch (SQLException ex) {
+            
             AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se ha podido establecer la conexión a la base de datos", ex);
 
             alert.showAndWait();
