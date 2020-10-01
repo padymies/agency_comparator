@@ -34,6 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -77,6 +78,8 @@ public class NotesController implements Initializable {
     private Label lbFilter;
     @FXML
     private CheckBox chkSelectAll;
+    @FXML
+    private Text noNotesText;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -174,12 +177,21 @@ public class NotesController implements Initializable {
 
         if (notes.size() > 0) {
 
+            noNotesText.setVisible(false);
+            
+            listView.setVisible(true);
+
+            
             listView.setCellFactory((ListView<Note> param) -> new NoteCell());
 
             filteredList = new FilteredList<>(notes, data -> true);
 
             listView.setItems(filteredList);
+            
 
+        } else {
+            listView.setVisible(false);
+            noNotesText.setVisible(true);
         }
 
     }
@@ -251,12 +263,10 @@ public class NotesController implements Initializable {
                         trannsferList(unprocessedNotes);
                         
                         boolean overridedFile = FileService.overrideFile(unprocessedNotes);
-
                         
-                        System.out.println("Unselected ===> " + unprocessedNotes.size());
                         if (overridedFile) {
                             AlertService alertInfo = new AlertService(Alert.AlertType.INFORMATION, "Actualización de archivo", "Se ha modificado el archivo de entrada: ",
-                                "Se han procesado " + (selectedCount - unprocessedNotes.size()) + " albaranes\n\n"
+                                "Se han procesado " + (selectedCount) + " albaranes\n\n"
                                         + "Quedan sin procesar " + unprocessedNotes.size() + " albaranes"  );
                             alertInfo.showAndWait();
                         }

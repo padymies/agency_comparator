@@ -169,19 +169,11 @@ public class AppController implements Initializable {
                     notesList.add(reg);
 
                 } else {
-
-                    System.out.println("ERROR EN FORMATO DE FICHERO: " + file.getName());
-
                     break;
                 }
             }
 
-            if (notesList.size() > 0) {
-
                 showNotes(notesList);
-
-            }
-
         }
     }
 

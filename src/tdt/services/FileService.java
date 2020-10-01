@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -61,7 +63,9 @@ public class FileService {
 
         } finally {
             try {
-                is.close();
+                if (is != null) {
+                    is.close();
+                }
                 if (fr != null) {
                     fr.close();
                 }
@@ -162,7 +166,10 @@ public class FileService {
     }
 
     public static boolean writeOutFiles(Map<String, List<Note>> resultNotes) {
+
         boolean result = true;
+
+        boolean append = true;
 
         for (String key : resultNotes.keySet()) {
 
@@ -179,19 +186,37 @@ public class FileService {
                 desktopPath = System.getProperty("user.home") + "\\Desktop";
 
             } catch (Exception e) {
+
                 AlertExceptionService a = new AlertExceptionService("DEBUG", "Error obteniendo path de archivos", e);
+
                 a.showAndWait();
             }
 
-            File newFile = null;
+            File outputFile = null;
 
             if (desktopPath != null) {
 
-                new File(desktopPath, key.toUpperCase()).mkdir();
+                String folderName = key;
 
-                newFile = new File(desktopPath + "\\" + key.toUpperCase(), "Listado de facturas.txt");
+                if (folderName.equals("Correo express")) {
+
+                    folderName = "CorreoExpress";
+                } else {
+                    folderName = folderName.toUpperCase();
+                }
+
+                new File(desktopPath, folderName).mkdir(); // Create folder
+
+                boolean existFile = new File(desktopPath + "\\" + folderName + "\\Listado de facturas.txt").exists(); // Check if exists the file
+
+                outputFile = new File(desktopPath + "\\" + folderName, "Listado de facturas.txt"); // Get or create file
+
+                if (existFile && !isTodayFile(outputFile.lastModified())) { // Override file if there is a file and it is from past day
+                    append = false;
+                }
+
             } else {
-                AlertExceptionService alertPath = new AlertExceptionService("Escritura de archivo", "No se ha podido obtener la ruta de archivos: " + desktopPath.toString(), null);
+                AlertExceptionService alertPath = new AlertExceptionService("Escritura de archivo", "No se ha podido obtener la ruta de archivos: " + desktopPath, null);
 
                 alertPath.showAndWait();
             }
@@ -201,9 +226,9 @@ public class FileService {
             try {
 
                 out = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(newFile), "ISO-8859-1"));
+                        new FileOutputStream(outputFile, append), "ISO-8859-1"));
 
-                br = new BufferedReader(new InputStreamReader(new FileInputStream(newFile), "ISO-8859-1"));
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "ISO-8859-1"));
 
                 for (Note line : notes) {
                     try {
@@ -221,7 +246,7 @@ public class FileService {
 
             } catch (IOException e) {
 
-                AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + newFile.getName(), e);
+                AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + outputFile.getName(), e);
 
                 alert.showAndWait();
 
@@ -241,7 +266,7 @@ public class FileService {
 
                 } catch (IOException ex) {
 
-                    AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + newFile.getName(), ex);
+                    AlertExceptionService alert = new AlertExceptionService("Escritura de archivo", "No se ha podido guardar el archivo de salida" + outputFile.getName(), ex);
 
                     alert.showAndWait();
 
@@ -267,9 +292,9 @@ public class FileService {
                 bw.write(newLine + "\n");
 
             }
-            
+
             result = true;
-            
+
         } catch (IOException ex) {
             Logger.getLogger(FileService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -284,6 +309,19 @@ public class FileService {
         }
 
         return result;
+    }
+
+    private static boolean isTodayFile(long time) {
+
+        Calendar currentCalendar = Calendar.getInstance();
+
+        Calendar fileCalendar = Calendar.getInstance();
+
+        currentCalendar.setTime(new Date());
+
+        fileCalendar.setTime(new Date(time));
+
+        return currentCalendar.get(Calendar.DAY_OF_YEAR) == fileCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
 }

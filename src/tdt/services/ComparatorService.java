@@ -106,6 +106,9 @@ public class ComparatorService {
                         }
 
                     }
+                } else {
+                    // NO HAY AGENCIA PARA ESTA ZONA EN LA BD
+                    System.out.println("No hay agencia en la base de datos para esta zona");
                 }
                 // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
