@@ -304,15 +304,12 @@ public class TabContentController implements Initializable {
 
                     rates = rateDao.getRateByAgencyZone(newValue.getZoneId(), newValue.getAgencyId());
 
-//                    ObservableList<Tarifa> tarifasSinDuplicados = quitarPreciosDuplicados(tarifas);
                     columnKg.setCellValueFactory(new PropertyValueFactory<Rate, Integer>("kg"));
 
                     columnPrice.setCellValueFactory(new PropertyValueFactory<Rate, Double>("price"));
 
                     btnImport.setDisable(false);
 
-                    // TODO: QUITAR ESTO: era una prueba para no repetir tarifas con mismo precio y distinto kg
-//                    rateTable.setItems(tarifasSinDuplicados);
                     rateTable.setItems(rates);
 
                 } else {
@@ -382,6 +379,34 @@ public class TabContentController implements Initializable {
                 btnNewAgency.setDisable(false);
             }
 
+        });
+        
+        txtZoneName.focusedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(!newValue) {
+                        zone.setName(txtZoneName.getText().trim());
+                    }
+            }
+            
+        });
+        txtDescription.focusedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(!newValue) {
+                        zone.setDescription(txtDescription.getText().trim());
+                    }
+            }
+            
+        });
+        txtCountry.focusedProperty().addListener(new ChangeListener<Boolean>(){
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(!newValue) {
+                        zone.setCountry(txtCountry.getText().trim());
+                    }
+            }
+            
         });
 
     }
