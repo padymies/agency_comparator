@@ -12,12 +12,15 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tdt.db.dao.IFileVariableDao;
+import tdt.db.dao.IsoDao;
 import tdt.db.daoImpl.FileVariableImpl;
+import tdt.db.daoImpl.IsoImpl;
 import tdt.model.FileVariable;
 import tdt.model.Note;
 
@@ -229,10 +232,13 @@ public class FileService {
 
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(outputFile), "ISO-8859-1"));
 
-                for (Note line : notes) {
+                for (Note note : notes) {
+                    
+                    parseCountryToISO(note);
+                    
                     try {
 
-                        String newLine = RegisterFactory.generateNoteRegister(line);
+                        String newLine = RegisterFactory.generateNoteRegister(note);
 
                         out.write(newLine + "\n");
 
@@ -323,4 +329,19 @@ public class FileService {
         return currentCalendar.get(Calendar.DAY_OF_YEAR) == fileCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
+    
+   private static void parseCountryToISO(Note note) {
+       IsoDao isoDao = new IsoImpl();
+       
+       HashMap<String,String> isos = isoDao.getIsos();
+       
+       String country = note.getCountry();
+       
+       String isoCountry = isos.get(country.toUpperCase());
+       
+       if (isoCountry != null) {
+           note.setCountry(isoCountry);
+       }
+       
+   }
 }
