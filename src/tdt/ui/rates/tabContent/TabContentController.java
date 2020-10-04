@@ -1,4 +1,3 @@
-
 package tdt.ui.rates.tabContent;
 
 import java.io.IOException;
@@ -275,6 +274,8 @@ public class TabContentController implements Initializable {
         ConfigStage.setIcon(btnNewAgency, "check.png", 12);
         ConfigStage.setIcon(btnCancelNew, "cancel.png", 12);
 
+        txtCities.setEditable(false);
+        
         listaAgencyZone.forEach(agencyZone -> {
             zoneList.setCellFactory(new Callback<ListView<AgencyZone>, ListCell<AgencyZone>>() {
 
@@ -380,33 +381,33 @@ public class TabContentController implements Initializable {
             }
 
         });
-        
-        txtZoneName.focusedProperty().addListener(new ChangeListener<Boolean>(){
+
+        txtZoneName.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(!newValue) {
-                        zone.setName(txtZoneName.getText().trim());
-                    }
+                if (!newValue && zone != null) {
+                    zone.setName(txtZoneName.getText().trim());
+                }
             }
-            
+
         });
-        txtDescription.focusedProperty().addListener(new ChangeListener<Boolean>(){
+        txtDescription.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(!newValue) {
-                        zone.setDescription(txtDescription.getText().trim());
-                    }
+                if (!newValue && zone != null) {
+                    zone.setDescription(txtDescription.getText().trim());
+                }
             }
-            
+
         });
-        txtCountry.focusedProperty().addListener(new ChangeListener<Boolean>(){
+        txtCountry.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(!newValue) {
-                        zone.setCountry(txtCountry.getText().trim());
-                    }
+                if (!newValue && zone != null) {
+                    zone.setCountry(txtCountry.getText().trim());
+                }
             }
-            
+
         });
 
     }
@@ -437,7 +438,7 @@ public class TabContentController implements Initializable {
 
                     zoneDao.deleteZone(zone.getZoneId());
 
-                    AlertService deleteZoneAlert= new AlertService((Alert.AlertType.INFORMATION), "Zona eliminada", "Se ha borrado la zona: " + zone.getName(), "");
+                    AlertService deleteZoneAlert = new AlertService((Alert.AlertType.INFORMATION), "Zona eliminada", "Se ha borrado la zona: " + zone.getName(), "");
 
                     deleteZoneAlert.showAndWait();
 
@@ -549,39 +550,45 @@ public class TabContentController implements Initializable {
 
             AgencyZone selected = zoneList.getSelectionModel().getSelectedItem();
 
-            final int KgComparator = kg;
+            if (selected != null) {
+                final int KgComparator = kg;
 
-            int size = rateTable.getItems().filtered(rate -> rate.getKg() == KgComparator).size();
+                int size = rateTable.getItems().filtered(rate -> rate.getKg() == KgComparator).size();
 
-            Rate newRate = new Rate(kg, selected.getAgencyId(), selected.getZoneId(), price);
+                Rate newRate = new Rate(kg, selected.getAgencyId(), selected.getZoneId(), price);
 
-            if (size == 0) { // INSERCION
+                if (size == 0) { // INSERCION
 
-                boolean result = rateDao.addRate(newRate);
+                    boolean result = rateDao.addRate(newRate);
 
-                if (result) {
-                    rateTable.getItems().add(newRate);
+                    if (result) {
+                        rateTable.getItems().add(newRate);
 
+                    }
+
+                } else { // ACTUALIZACION
+                    boolean result = rateDao.updateRate(newRate);
+
+                    if (result) {
+
+                        Rate rate = rateTable.getItems().filtered(item -> item.getKg() == KgComparator).get(0);
+
+                        int index = rateTable.getItems().indexOf(rate);
+
+                        rateTable.getItems().remove(rate);
+
+                        rateTable.getItems().add(index, newRate);
+
+                        rateTable.refresh();
+
+                    }
                 }
+            } else {
+                AlertService alert = new AlertService((Alert.AlertType.WARNING), "Añadir Tarifa", "No hay agencia seleccionada",
+                        "Seleccione una agencia para poder modificar sus tarifas");
 
-            } else { // ACTUALIZACION
-                boolean result = rateDao.updateRate(newRate);
-
-                if (result) {
-
-                    Rate rate = rateTable.getItems().filtered(item -> item.getKg() == KgComparator).get(0);
-
-                    int index = rateTable.getItems().indexOf(rate);
-
-                    rateTable.getItems().remove(rate);
-
-                    rateTable.getItems().add(index, newRate);
-
-                    rateTable.refresh();
-
-                }
+                alert.showAndWait();
             }
-
         }
 
     }
@@ -843,6 +850,7 @@ public class TabContentController implements Initializable {
             if (agencyZone != null && !empty) {
 
                 listItemAgencyBase cell = new listItemAgencyBase(agencyZone.getAgencyId(), agencyZone.getZoneId()) {
+
                     @Override
                     protected void deleteItemAgency(ActionEvent actionEvent) {
                         AlertService alert = new AlertService(Alert.AlertType.CONFIRMATION, "Borrado de Agencia-Zona", "Seguro que quiere eliminar la Agencia " + agencyZone.getAgencyName() + " para esta zona?", "");
@@ -926,7 +934,6 @@ public class TabContentController implements Initializable {
 
                             boolean result = rateDao.updateZoneAgency(agencyZone.getAgencyId(), agencyZone.getZoneId(), increment, deliveryTime, maxKilos);
 
-                           
                         }
 
                     }

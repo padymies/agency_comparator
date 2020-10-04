@@ -83,15 +83,13 @@ public class AgenciesController implements Initializable {
 
         ConfigStage.setIcon(addButton, "add.png", 12);
         ConfigStage.setIcon(deleteButton, "delete.png", 12);
-      
-        
+
         ObservableList<String> cmbList = FXCollections.observableArrayList();
 
         cmbList.add("Sí");
 
         cmbList.add("No");
 
-        
         cmbBigShipment.setItems(cmbList);
 
         cmbBigShipment.getSelectionModel().select("No");
@@ -161,7 +159,9 @@ public class AgenciesController implements Initializable {
 
         ObservableList<String> agenciesName = agencyDao.getAgencyNames();
 
-        if (!agenciesName.contains(name)) {
+        boolean isRepeatName = !agenciesName.stream().noneMatch(predicate -> predicate.toUpperCase().equals(name.toUpperCase()));
+
+        if (!isRepeatName) {
 
             int bundle = 0;
 
@@ -240,7 +240,7 @@ public class AgenciesController implements Initializable {
 
         Agency selectedAgency = table.getSelectionModel().getSelectedItem();
 
-        AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de agencia", "Seguro que quiere eliminar la Agencia " + selectedAgency.getName() +"?",
+        AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de agencia", "Seguro que quiere eliminar la Agencia " + selectedAgency.getName() + "?",
                 "");
 
         ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);

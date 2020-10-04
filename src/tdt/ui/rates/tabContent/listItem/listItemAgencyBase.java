@@ -155,6 +155,12 @@ public abstract class listItemAgencyBase extends AnchorPane {
         btnEdit.setOnAction(event -> {
             editItemAgency(event);
         });
+
+        txtIncrement.setDisable(true);
+
+        txtDeliveryTime.setDisable(true);
+
+        txtMaxKilos.setDisable(true);
     }
 
     protected abstract void deleteItemAgency(ActionEvent actionEvent);

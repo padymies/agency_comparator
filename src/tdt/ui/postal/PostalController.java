@@ -42,12 +42,14 @@ public class PostalController implements Initializable {
     @FXML
     private Button btnDelete;
 
+    private ObservableList<City> cityList;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         cityDao = new CityImpl();
 
-        ObservableList<City> cityList = cityDao.getCities();
+        cityList = cityDao.getCities();
 
         city.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -60,18 +62,18 @@ public class PostalController implements Initializable {
 
     @FXML
     private void addCity(ActionEvent event) {
-        
+
         if (!txtPostalCode.getText().isEmpty() && !txtCity.getText().isEmpty()) {
             City p = new City(txtCity.getText().trim(), txtPostalCode.getText().trim());
-           
+
             int result = cityDao.addCity(p);
-            if(result != -1) {
+            if (result != -1) {
                 citiesTable.getItems().add(p);
             }
         } else {
-             AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal", "Se deben rellenar los dos campos",
+            AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal", "Se deben rellenar los dos campos",
                     "");
-             alert.showAndWait();
+            alert.showAndWait();
         }
     }
 
@@ -81,7 +83,8 @@ public class PostalController implements Initializable {
         City selected = citiesTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             // Eliminar
-            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "Seguro que quiere eliminar el codigo postal " + selected.getCode() + "?",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal",
+                    "Seguro que quiere eliminar el codigo postal " + selected.getName() + ": " + selected.getCode() + "?",
                     "");
 
             ButtonType okButton = new ButtonType("Sí", ButtonBar.ButtonData.YES);
@@ -95,22 +98,22 @@ public class PostalController implements Initializable {
                 if (type == okButton) {
 
                     boolean result = cityDao.deleteCity(selected.getId());
-                    
-                    if(result) {
-                    citiesTable.getItems().remove(selected);
-                        
+
+                    if (result) {
+                        citiesTable.getItems().remove(selected);
+
                     }
-                    
+
                 } else {
                     alert.close();
                 }
             });
         } else {
             // Mostrar alerta
-             AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "No se ha seleccionado un código postal para eliminar",
+            AlertService alert = new AlertService((Alert.AlertType.CONFIRMATION), "Borrado de codigo postal", "No se ha seleccionado un código postal para eliminar",
                     "");
-             
-             alert.showAndWait();
+
+            alert.showAndWait();
         }
     }
 

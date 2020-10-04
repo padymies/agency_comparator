@@ -43,7 +43,7 @@ public class CitiesController implements Initializable {
         cityDao = new CityImpl();
 
         zoneNames = zoneDao.getZoneNames();
-        
+
         zoneNames.add(0, "Sin zona");
 
         cityList = cityDao.getZoneCities();
@@ -52,13 +52,13 @@ public class CitiesController implements Initializable {
 
         postalCode.setCellValueFactory(new PropertyValueFactory("code"));
 
-    zone.setCellValueFactory(new PropertyValueFactory("zoneName"));
-        
+        zone.setCellValueFactory(new PropertyValueFactory("zoneName"));
+
         StringConverter<String> converter = new StringConverter<String>() {
             @Override
             public String toString(String object) {
-               
-               return object == null ? "Sin zona" : object;
+
+                return object == null ? "Sin zona" : object;
             }
 
             @Override
@@ -68,8 +68,7 @@ public class CitiesController implements Initializable {
         };
 
         zone.setCellFactory(ComboBoxTableCell.forTableColumn(converter, zoneNames));
-        
-        
+
         zone.setOnEditCommit((value) -> {
 
             City prov = (City) value.getRowValue();
