@@ -71,4 +71,9 @@ public class Exclusion {
         this.agencyName = agencyName;
     }
 
+    @Override
+    public String toString() {
+        return "Exclusion{" + "id=" + id + ", postalCode=" + postalCode + ", agencyId=" + agencyId + ", inclusion_exclusion=" + inclusion_exclusion + ", agencyName=" + agencyName + '}';
+    }
+
 }
