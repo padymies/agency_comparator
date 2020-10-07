@@ -58,7 +58,7 @@ public class ValidatorService {
     }
 
     public static boolean noteValidator(Note note) {
-        boolean result = note.getZone() != null && !note.getDestinationCity().isEmpty() && !note.getCountry().isEmpty() && !note.getDestinationName().isEmpty()
+        boolean result = (note.getZone() != null || note.getBEST_AGENCY() != null) && !note.getDestinationCity().isEmpty() && !note.getCountry().isEmpty() && !note.getDestinationName().isEmpty()
                 && !note.getRef().isEmpty() && !note.getDestinationAddress().isEmpty() && !note.getEmail().isEmpty() && !note.getDestinationPostalCode().isEmpty()
                 && !note.getDestinationPhone().isEmpty() && !note.getWeight().isEmpty();
         return result;
