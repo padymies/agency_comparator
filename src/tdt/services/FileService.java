@@ -200,9 +200,9 @@ public class FileService {
 
                 String folderName = key;
 
-                if (folderName.equals("Correo express")) {
+                if (folderName.equals("Correos express")) {
 
-                    folderName = "CorreoExpress";
+                    folderName = "CorreosExpress";
                 } else {
                     folderName = folderName.toUpperCase();
                 }
