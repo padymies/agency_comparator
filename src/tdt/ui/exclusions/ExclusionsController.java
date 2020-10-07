@@ -65,7 +65,7 @@ public class ExclusionsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         ConfigStage.setIcon(btnAdd, "add.png", 12);
-        
+
         ConfigStage.setIcon(btnDelete, "delete.png", 12);
 
         agencyDao = new AgencyImpl();
@@ -124,6 +124,11 @@ public class ExclusionsController implements Initializable {
         cmbAction.setItems(options);
 
         cmbAgency.setItems(agencyNames);
+
+        cmbAgency.getItems().add(0, "N/A");
+
+        tableEx.setEditable(false);
+
     }
 
     private StringConverter accionConverter() {
@@ -191,28 +196,57 @@ public class ExclusionsController implements Initializable {
 
     @FXML
     private void addExclusion(ActionEvent event) {
+
+        ObservableList<Exclusion> exclusions = exclusionsDao.getExclusions();
+
         if (!txtCP.getText().isEmpty() && !cmbAction.getSelectionModel().isEmpty()
                 && (cmbAction.getSelectionModel().isSelected(2) || !cmbAgency.getSelectionModel().isEmpty())) {
 
             String cp = txtCP.getText().trim();
 
+            boolean existName = !exclusions.stream().noneMatch(exclusion -> exclusion.getPostalCode().equals(cp));
+
             String agency = cmbAgency.getValue();
 
             int action = cmbAction.getValue();
 
-            Exclusion exclusion = new Exclusion(cp, agency, action);
+            if (!existName) {
 
-            int result = exclusionsDao.addExclusion(exclusion);
+                if (agency.equals("N/A") && action != 0) {
 
-            if (result != -1) {
-                tableEx.getItems().add(exclusion);
+                    AlertService alertEmptyAgency = new AlertService(Alert.AlertType.ERROR, "Creación de Exclusiones", "Debe seleccionar la agencia", "");
+                    alertEmptyAgency.show();
+
+                } else if (!agency.equals("N/A") && action == 0) {
+
+                    AlertService alertNoSend = new AlertService(Alert.AlertType.ERROR, "Creación de Exclusiones", "Debe seleccionar sin agencia: N/A", "");
+                    alertNoSend.show();
+
+                } else {
+
+                    Exclusion exclusion = new Exclusion(cp, agency, action);
+
+                    int result = exclusionsDao.addExclusion(exclusion);
+
+                    if (result != -1) {
+                        tableEx.getItems().add(exclusion);
+                    }
+                    cmbAction.setValue(null);
+                    cmbAgency.setValue(null);
+                    txtCP.clear();
+                }
+            } else {
+                AlertService alertRepeatName = new AlertService(Alert.AlertType.ERROR, "Creación de Exclusiones", "No se ha podido crear "
+                        + "la exclusión.", "\n No puede haber un codigo postal duplicado.");
+                alertRepeatName.show();
+
             }
-
         } else {
             AlertService alert = new AlertService(Alert.AlertType.ERROR, "Creación de Exclusiones", "No se ha podido crear "
                     + "una nueva exclusión.", "\n Debe rellenar los campos: \n\n-Código postal.\n\n-Agencia. (si la acción es 'Código postal sin envío permitido', no es necesario).\n\n-Acción. ");
             alert.showAndWait();
         }
+        
     }
 
     @FXML

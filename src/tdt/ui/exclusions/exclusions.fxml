@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="503.0" prefWidth="705.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.exclusions.ExclusionsController">
+<AnchorPane id="AnchorPane" prefHeight="503.0" prefWidth="705.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.exclusions.ExclusionsController">
     <stylesheets>
         <URL value="@exclusions.css" />
     </stylesheets>
