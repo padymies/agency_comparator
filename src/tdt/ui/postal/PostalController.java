@@ -69,7 +69,10 @@ public class PostalController implements Initializable {
             int result = cityDao.addCity(p);
             if (result != -1) {
                 citiesTable.getItems().add(p);
+                txtCity.clear();
+                txtPostalCode.clear();
             }
+            
         } else {
             AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal", "Se deben rellenar los dos campos",
                     "");
