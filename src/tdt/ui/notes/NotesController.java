@@ -262,7 +262,6 @@ public class NotesController implements Initializable {
 
                         FileService.overrideFile(unprocessedNotes);
 
-                       
                     } catch (IOException e) {
                         AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Resultado", e);
 
@@ -270,10 +269,8 @@ public class NotesController implements Initializable {
                     }
 
                 }
-            } else {
-                AlertService errorNoteAlert = new AlertService(Alert.AlertType.ERROR, "Error", "Error en albaranes seleccionados", "");
-                errorNoteAlert.showAndWait();
-            }
+                chkSelectAll.setSelected(false);
+            } 
 
         }
     }
@@ -394,8 +391,9 @@ public class NotesController implements Initializable {
 
                         note.setZone(newZone);
 
+                        if (newZone != null) {
                         cell.lbZone.setText(note.getZone().getName());
-
+                        }
                         cell.lbZone.setStyle(null);
 
                         note.setBEST_AGENCY(null);
