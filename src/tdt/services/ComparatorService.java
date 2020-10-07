@@ -56,11 +56,11 @@ public class ComparatorService {
 
         for (Note note : notes) {
 
-            ObservableList<AgencyZone> agenciesList = rateDao.getAgenciesByZone(note.getZone().getZoneId());
+            if (note.getBEST_AGENCY() == null) {
+                ObservableList<AgencyZone> agenciesList = rateDao.getAgenciesByZone(note.getZone().getZoneId());
 
-            if (!hasExclusions(note, agenciesList)) {
-                // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
-                if (note.getBEST_AGENCY() == null) {
+                if (!hasExclusions(note, agenciesList)) {
+                    // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
 
                     ArrayList<RateComparator> resultList = new ArrayList<>();
 
