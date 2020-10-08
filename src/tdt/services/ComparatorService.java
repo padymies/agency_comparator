@@ -68,47 +68,7 @@ public class ComparatorService {
                         for (AgencyZone agencyZone : agenciesList) {
 
                             // Kilo mayor de la tarifa de la agencia_zona
-                            int maxKilos = rateDao.getMaxKilo(agencyZone.getAgencyId(), agencyZone.getZoneId());
-
-                            double weight = -1;
-
-                            try {
-
-                                weight = Math.ceil(Double.parseDouble(note.getWeight()));
-
-                            } catch (NumberFormatException e) {
-
-                                AlertExceptionService weightAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
-
-                                weightAlert.showAndWait();
-                            }
-
-                            RateComparator result = null;
-
-                            if (maxKilos > 0) {
-                                // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
-                                if (weight != -1 && (agencyZone.getMaxKilos() == 0 || agencyZone.getMaxKilos() >= weight)) {
-                                    if (maxKilos >= weight) {
-
-                                        result = rateDao.ratesNotesCompare(weight, note.getZone().getZoneId(), agencyZone.getAgencyId());
-
-                                    } else {
-                                        if (agencyZone.getIncrease() > 0) { // SE APLICA INCREMENTO SI TIENE
-
-                                            result = rateDao.ratesNotesCompare(maxKilos, note.getZone().getZoneId(), agencyZone.getAgencyId());
-
-                                            result.setPrice(result.getPrice() + (weight - maxKilos * agencyZone.getIncrease()));
-
-                                        } else {
-                                            logger.writeLog("info", "REF: " + note.getRef() + " ============ NO HAY TARIFA PARA EL PESO  " + weight + " EN LA ZONA "
-                                                    + note.getZone().getName() + " PARA LA AGENCIA " + agencyZone.getAgencyName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
-                                        }
-                                    }
-                                }
-                            } else {
-                                logger.writeLog("info", "REF: " + note.getRef() + "============ NO HAY TARIFAS PARA LA AGENCIA  " + agencyZone.getAgencyName() + " EN LA ZONA "
-                                        + note.getZone().getName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
-                            }
+                            RateComparator result = checkKilos(agencyZone, note);
 
                             if (result != null) {
 
@@ -122,47 +82,11 @@ public class ComparatorService {
                     }
                     // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
+                    resultList = checkBundles(resultList, note);
+
                     if (resultList.size() > 0) {
 
-                        resultList.forEach(item -> {
-
-                            if (item.getSurchargeFuel() > 0) {
-
-                                double percent = item.getSurchargeFuel() * item.getPrice() / 100;
-
-                                item.setPrice(item.getPrice() + percent);
-                            }
-
-                            if (note.getRefund() != null) {
-
-                                double refundPrice = 0;
-
-                                double comisionPrice = 0;
-
-                                if (item.getMinimumRefund() > 0) {
-                                    refundPrice = item.getPrice() + item.getMinimumRefund();
-
-                                }
-
-                                if (item.getComision() > 0) {
-
-                                    double percent = item.getPrice() * item.getComision() / 100;
-
-                                    comisionPrice = item.getPrice() + percent;
-                                }
-
-                                if (comisionPrice > 0 && comisionPrice >= refundPrice) {
-                                    item.setPrice(comisionPrice);
-                                }
-
-                                if (refundPrice > 0 && refundPrice > comisionPrice) {
-                                    item.setPrice(refundPrice);
-
-                                }
-
-                            }
-
-                        });
+                        resultList = checkPrice(resultList, note);
 
                         Collections.sort(resultList, Comparator.comparing(item -> item.getPrice()));
 
@@ -192,6 +116,8 @@ public class ComparatorService {
                             note.setBEST_AGENCY(first.getAgencyName());
                         }
 
+                    } else {
+                        // Albaran no se ha podido comparar
                     }
 
                 }
@@ -247,6 +173,109 @@ public class ComparatorService {
         }
 
         return result;
+    }
+
+    private RateComparator checkKilos(AgencyZone agencyZone, Note note) {
+        RateComparator result = null;
+
+        int maxKilos = rateDao.getMaxKilo(agencyZone.getAgencyId(), agencyZone.getZoneId());
+
+        double weight = -1;
+
+        try {
+
+            weight = Math.ceil(Double.parseDouble(note.getWeight()));
+
+        } catch (NumberFormatException e) {
+
+            AlertExceptionService weightAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
+
+            weightAlert.showAndWait();
+        }
+
+        if (maxKilos > 0) {
+            // ================ 2- SE COMPRUEBA QUE NO SOBREPASE EL MAXIMO DE KILOS ==============//
+            if (weight != -1 && (agencyZone.getMaxKilos() == 0 || agencyZone.getMaxKilos() >= weight)) {
+                if (maxKilos >= weight) {
+
+                    result = rateDao.ratesNotesCompare(weight, note.getZone().getZoneId(), agencyZone.getAgencyId());
+
+                } else {
+                    if (agencyZone.getIncrease() > 0) { // SE APLICA INCREMENTO SI TIENE
+
+                        result = rateDao.ratesNotesCompare(maxKilos, note.getZone().getZoneId(), agencyZone.getAgencyId());
+
+                        result.setPrice(result.getPrice() + (weight - maxKilos * agencyZone.getIncrease()));
+
+                    } else {
+                        logger.writeLog("info", "REF: " + note.getRef() + " ============ NO HAY TARIFA PARA EL PESO  " + weight + " EN LA ZONA "
+                                + note.getZone().getName() + " PARA LA AGENCIA " + agencyZone.getAgencyName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
+                    }
+                }
+            }
+        } else {
+            logger.writeLog("info", "REF: " + note.getRef() + "============ NO HAY TARIFAS PARA LA AGENCIA  " + agencyZone.getAgencyName() + " EN LA ZONA "
+                    + note.getZone().getName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
+        }
+
+        return result;
+    }
+
+    private ArrayList<RateComparator> checkBundles(ArrayList<RateComparator> list, Note note) {
+        ArrayList<RateComparator> result = new ArrayList<>();
+
+        if (list.size() > 0) {
+
+            list.forEach(item -> {
+                if (item.getBundles() >= Integer.parseInt(note.getBundles())) {
+                    result.add(item);
+                }
+            });
+        }
+        return result;
+    }
+
+    private ArrayList<RateComparator> checkPrice(ArrayList<RateComparator> list, Note note) {
+        list.forEach(item -> {
+
+            if (item.getSurchargeFuel() > 0) {
+
+                double percent = item.getSurchargeFuel() * item.getPrice() / 100;
+
+                item.setPrice(item.getPrice() + percent);
+            }
+
+            if (note.getRefund() != null) {
+
+                double refundPrice = 0;
+
+                double comisionPrice = 0;
+
+                if (item.getMinimumRefund() > 0) {
+                    refundPrice = item.getPrice() + item.getMinimumRefund();
+
+                }
+
+                if (item.getComision() > 0) {
+
+                    double percent = item.getPrice() * item.getComision() / 100;
+
+                    comisionPrice = item.getPrice() + percent;
+                }
+
+                if (comisionPrice > 0 && comisionPrice >= refundPrice) {
+                    item.setPrice(comisionPrice);
+                }
+
+                if (refundPrice > 0 && refundPrice > comisionPrice) {
+                    item.setPrice(refundPrice);
+
+                }
+
+            }
+
+        });
+        return list;
     }
 
 }
