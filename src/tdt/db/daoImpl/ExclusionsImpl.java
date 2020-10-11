@@ -199,8 +199,8 @@ public class ExclusionsImpl implements IExclusionDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "cp='" + exclusion.getPostalCode() + "', id_agencia= " + exclusion.getAgencyId()
-                + ", inclusion_exclusion=" + exclusion.getInclusion_exclusion()
+                + "cp='" + exclusion.getPostalCode() + "', id_agencia= (SELECT id_agencia FROM agencias a WHERE a.nombre='"
+                + exclusion.getAgencyName() + "'), inclusion_exclusion=" + exclusion.getInclusion_exclusion()
                 + " WHERE id_exclusion=" + exclusion.getId();
         try {
 

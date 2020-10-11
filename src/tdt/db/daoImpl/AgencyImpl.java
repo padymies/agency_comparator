@@ -206,12 +206,12 @@ public class AgencyImpl implements IAgencyDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "`name`='" + agencia.getName() + "', `bultos`=" + agencia.getBundles()
-                + ", `recargo_combustible`=" + agencia.getSurchargeFuel()
-                + ", `minimo_reembolso`=" + agencia.getMinimumRefund()
-                + ", `envio_grande`=" + agencia.isBigShipment()
-                + ", `comision`=" + agencia.getComision()
-                + "', WHERE `id_agencia`=" + agencia.getAgencyId();
+                + "nombre='" + agencia.getName() + "', bultos=" + agencia.getBundles()
+                + ", recargo_combustible=" + agencia.getSurchargeFuel()
+                + ", minimo_reembolso=" + agencia.getMinimumRefund()
+                + ", envio_grande=" + agencia.isBigShipment()
+                + ", comision=" + agencia.getComision()
+                + " WHERE id_agencia=" + agencia.getAgencyId();
         try {
 
             conn = DBConnection.getConnection();
