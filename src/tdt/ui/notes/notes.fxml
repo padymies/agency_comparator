@@ -16,16 +16,16 @@
 
 <AnchorPane prefHeight="570.0" prefWidth="1178.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.notes.NotesController">
    <children>
-      <AnchorPane layoutY="67.0" prefHeight="503.0" prefWidth="1226.0">
+      <AnchorPane layoutY="67.0" prefHeight="503.0" prefWidth="1246.0">
                <stylesheets>
               <URL value="@note.css" />
           </stylesheets>
          <children>
-            <ScrollPane hbarPolicy="NEVER" layoutX="17.0" layoutY="50.0" prefHeight="381.0" prefWidth="1209.0" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="NEVER" layoutX="17.0" layoutY="50.0" prefHeight="381.0" prefWidth="1229.0" vbarPolicy="NEVER">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="1215.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="1235.0">
                      <children>
-                        <ListView id="listView" fx:id="listView" layoutX="-14.0" layoutY="-5.0" prefHeight="434.0" prefWidth="1215.0" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
+                        <ListView id="listView" fx:id="listView" layoutX="-14.0" layoutY="-5.0" prefHeight="434.0" prefWidth="1235.0" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                            <padding>
                               <Insets bottom="15.0" top="15.0" />
                            </padding>
@@ -40,14 +40,14 @@
               </content>
             </ScrollPane>
             <Label layoutX="40.0" layoutY="14.0" text="Referencia" />
-            <Label layoutX="139.0" layoutY="14.0" text="Nombre del Cliente" />
-            <Label layoutX="311.0" layoutY="14.0" text="Zona" />
-            <Label layoutX="601.0" layoutY="14.0" text="Poblacion" />
-            <Label layoutX="976.0" layoutY="14.0" text="Peso" />
-            <Label layoutX="745.0" layoutY="14.0" text="C.P." />
-            <Label layoutX="830.0" layoutY="14.0" text="Agencia" />
-            <Label layoutX="495.0" layoutY="14.0" text="País" />
-            <HBox alignment="CENTER" layoutX="-3.0" layoutY="430.0" prefHeight="73.0" prefWidth="1226.0">
+            <Label layoutX="134.0" layoutY="14.0" text="Nombre del Cliente" />
+            <Label layoutX="302.0" layoutY="14.0" text="Zona" />
+            <Label layoutX="581.0" layoutY="14.0" text="Poblacion" />
+            <Label layoutX="945.0" layoutY="14.0" text="Peso" />
+            <Label layoutX="721.0" layoutY="14.0" text="C.P." />
+            <Label layoutX="801.0" layoutY="14.0" text="Agencia" />
+            <Label layoutX="480.0" layoutY="14.0" text="País" />
+            <HBox alignment="CENTER" layoutX="-3.0" layoutY="430.0" prefHeight="73.0" prefWidth="1246.0">
                <children>
                   <Button fx:id="btnComparator" mnemonicParsing="false" onAction="#compare" prefHeight="34.0" prefWidth="169.0" text="Comparar Albaranes">
                      <font>
@@ -56,10 +56,11 @@
                   </Button>
                </children>
             </HBox>
-            <Label layoutX="1044.0" layoutY="14.0" text="Bultos" />
+            <Label layoutX="1006.0" layoutY="14.0" text="Bultos" />
+            <Label layoutX="1068.0" layoutY="5.0" prefHeight="51.0" prefWidth="64.0" text="Mercancía voluminosa" wrapText="true" />
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1100.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1120.0">
          <children>
             <Label fx:id="lbFilter" text="Filtro">
                <HBox.margin>
@@ -84,6 +85,6 @@
             </CheckBox>
          </children>
       </HBox>
-      <Separator layoutX="20.0" layoutY="57.0" prefHeight="6.0" prefWidth="1191.0" />
+      <Separator layoutX="20.0" layoutY="57.0" prefHeight="6.0" prefWidth="1211.0" />
    </children>
 </AnchorPane>

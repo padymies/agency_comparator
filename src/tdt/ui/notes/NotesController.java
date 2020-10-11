@@ -270,7 +270,7 @@ public class NotesController implements Initializable {
 
                 }
                 chkSelectAll.setSelected(false);
-            } 
+            }
 
         }
     }
@@ -392,11 +392,21 @@ public class NotesController implements Initializable {
                         note.setZone(newZone);
 
                         if (newZone != null) {
-                        cell.lbZone.setText(note.getZone().getName());
+                            cell.lbZone.setText(note.getZone().getName());
                         }
                         cell.lbZone.setStyle(null);
 
                         note.setBEST_AGENCY(null);
+
+                    }
+                });
+
+                cell.checkBigShipment.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (newValue) {
+                        note.setBigShipment(true);
+                    } else {
+                        note.setBigShipment(false);
+                        System.out.println("No new Value");
 
                     }
                 });
@@ -495,6 +505,7 @@ public class NotesController implements Initializable {
         protected final ComboBox comboAgency;
         protected final TextField txtWeight;
         protected final TextField txtBundles;
+        protected final CheckBox checkBigShipment;
         protected final Button btnEdit;
 
         protected final Label state;
@@ -537,6 +548,7 @@ public class NotesController implements Initializable {
             comboAgency = new ComboBox();
             txtBundles = new TextField();
             txtWeight = new TextField();
+            checkBigShipment = new CheckBox();
             btnEdit = new Button();
             state = new Label();
 
@@ -612,7 +624,6 @@ public class NotesController implements Initializable {
             txtDestinationName.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
             HBox.setMargin(txtDestinationName, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            lbZone.setId("lbZona");
             lbZone.setPrefHeight(17.0);
             lbZone.setPrefWidth(176.0);
             lbZone.setText("Zona");
@@ -632,18 +643,15 @@ public class NotesController implements Initializable {
             txtCity.setTextOverrun(javafx.scene.control.OverrunStyle.CLIP);
             HBox.setMargin(txtCity, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            lbPostalCode.setId("lbCP");
             lbPostalCode.setPrefHeight(17.0);
             lbPostalCode.setPrefWidth(55.0);
             lbPostalCode.setText("29003");
             HBox.setMargin(lbPostalCode, new Insets(0.0, 0.0, 0.0, 10.0));
 
-            chkAgency.setId("chkAgencia");
             chkAgency.setMnemonicParsing(false);
             HBox.setMargin(chkAgency, new Insets(0.0, 0.0, 0.0, 10.0));
 
             comboAgency.setDisable(true);
-            comboAgency.setId("comboAgencia");
             comboAgency.setPrefWidth(150.0);
             comboAgency.setPromptText("Forzar Agencia");
             HBox.setMargin(comboAgency, new Insets(0.0, 0.0, 0.0, 2.0));
@@ -659,6 +667,9 @@ public class NotesController implements Initializable {
             txtBundles.setText("Bultos");
             HBox.setMargin(txtBundles, new Insets(0.0, 0.0, 0.0, 10.0));
 
+            checkBigShipment.setPrefWidth(15.0);
+            HBox.setMargin(checkBigShipment, new Insets(0.0, 0.0, 0.0, 15.0));
+
             btnEdit.setAlignment(javafx.geometry.Pos.CENTER);
             btnEdit.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
             btnEdit.setMnemonicParsing(false);
@@ -667,14 +678,13 @@ public class NotesController implements Initializable {
             btnEdit.setText("Editar");
             btnEdit.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
             btnEdit.setFont(new Font(13.0));
-            HBox.setMargin(btnEdit, new Insets(0.0, 0.0, 0.0, 10.0));
+            HBox.setMargin(btnEdit, new Insets(0.0, 0.0, 0.0, 50.0));
             setOpaqueInsets(new Insets(0.0));
             setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
 
-            state.setId("state");
             state.setPrefHeight(17.0);
             state.setPrefWidth(35.0);
-            HBox.setMargin(state, new Insets(0.0, 0.0, 0.0, 25.0));
+            HBox.setMargin(state, new Insets(0.0, 0.0, 0.0, 15.0));
 
             getChildren().add(ref);
             getChildren().add(txtDestinationName);
@@ -686,6 +696,7 @@ public class NotesController implements Initializable {
             getChildren().add(comboAgency);
             getChildren().add(txtWeight);
             getChildren().add(txtBundles);
+            getChildren().add(checkBigShipment);
             getChildren().add(btnEdit);
             getChildren().add(state);
         }

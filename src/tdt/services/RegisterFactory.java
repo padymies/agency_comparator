@@ -135,7 +135,7 @@ public class RegisterFactory {
         Field[] fields = Note.class.getDeclaredFields();
 
         for (int i = 0; i < fields.length - 1; i++) {
-            if (!fields[i].getName().equals("zone") && !fields[i].getName().equals("newRef") && !fields[i].getName().equals("BEST_AGENCY")) {
+            if (!fields[i].getName().equals("zone") && !fields[i].getName().equals("newRef") && !fields[i].getName().equals("BEST_AGENCY") && !fields[i].getName().equals("bigShipment")) {
 
                 int widthField = (list.get(fields[i].getName()).getEnd()) - (list.get(fields[i].getName()).getStart()) - dataList[i].length();
 

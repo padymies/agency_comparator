@@ -3,6 +3,7 @@ package tdt.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import tdt.db.dao.IAgencyDao;
@@ -57,18 +58,18 @@ public class ComparatorService {
         for (Note note : notes) {
 
             if (note.getBEST_AGENCY() == null) {
+                
                 ObservableList<AgencyZone> agenciesList = rateDao.getAgenciesByZone(note.getZone().getZoneId());
 
-                if (!hasExclusions(note, agenciesList)) {
-                    // ================= 1- SE COMPRUEBA QUE NO ESTÉ FORZADA LA AGENCIA ====================//
+                if (!hasExclusions(note, agenciesList)) { // Check exclusions
 
                     ArrayList<RateComparator> resultList = new ArrayList<>();
 
-                    if (agenciesList.size() > 0) { // Prueba 
+                    if (agenciesList.size() > 0) {
                         for (AgencyZone agencyZone : agenciesList) {
 
                             // Kilo mayor de la tarifa de la agencia_zona
-                            RateComparator result = checkKilos(agencyZone, note);
+                            RateComparator result = checkKilos(agencyZone, note); // Check kilos y volumen
 
                             if (result != null) {
 
@@ -82,42 +83,25 @@ public class ComparatorService {
                     }
                     // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
-                    resultList = checkBundles(resultList, note);
+                    resultList = checkBundles(resultList, note); // Check bundles
 
                     if (resultList.size() > 0) {
 
-                        resultList = checkPrice(resultList, note);
+                        resultList = checkPrice(resultList, note); //Check Price
 
-                        Collections.sort(resultList, Comparator.comparing(item -> item.getPrice()));
+                        Collections.sort(resultList, Comparator.comparing(item -> item.getPrice())); // Get first
 
                         RateComparator first = resultList.get(0);
 
-                        double urgencyPercent = configDao.getUrgencyPercent();
-
-                        double urgencyPrice = 0;
-
-                        urgencyPrice = first.getPrice() + (first.getPrice() * urgencyPercent / 100);
-
-                        if (urgencyPrice > 0) {
-
-                            if (first.getDeliveryTime() > 1) {
-                                for (int i = 1; i < resultList.size(); i++) {
-                                    if (resultList.get(i).getDeliveryTime() < first.getDeliveryTime()
-                                            && resultList.get(i).getPrice() - first.getPrice() < urgencyPrice) {
-
-                                        note.setBEST_AGENCY(resultList.get(i).getAgencyName());
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
+                        checkUrgencyPercent(first, resultList, note); // Check Urgency percent
+                        
                         if (note.getBEST_AGENCY() == null) {
+                            
                             note.setBEST_AGENCY(first.getAgencyName());
+                            
+                            System.out.println("Mejor Agencia: " + first.getAgencyName() + "\n");
                         }
 
-                    } else {
-                        // Albaran no se ha podido comparar
                     }
 
                 }
@@ -135,6 +119,17 @@ public class ComparatorService {
         Exclusion ex = exclusionsDao.getExclusionByPostalCode(note.getDestinationPostalCode());
 
         if (ex != null) {
+
+            if (Integer.valueOf(ex.getAgencyId()) == null && ex.getInclusion_exclusion() != 0) {
+                System.out.println("false");
+                return false;
+            }
+
+            if (Integer.valueOf(ex.getAgencyId()) != null && ex.getInclusion_exclusion() == 0) {
+                System.out.println("false");
+                return false;
+            }
+
             switch (ex.getInclusion_exclusion()) {
                 case AGENCY_FORCED:
 
@@ -148,17 +143,17 @@ public class ComparatorService {
                 case AGENCY_EXCLUDED:
 
                     if (list != null) {
-
-                        list.forEach(item -> {
-
-                            if (item.getAgencyId() == ex.getAgencyId()) {
-
-                                list.remove(item);
-
+                        Iterator<AgencyZone> i = list.iterator();
+                        while (i.hasNext()) {
+                            AgencyZone agencyZone = i.next();
+                            if (agencyZone.getAgencyId() == ex.getAgencyId()) {
+                                i.remove();
                             }
-                        });
+                        }
+
                     }
                     break;
+
                 default:
                     logger.writeLog("info", "REF: " + note.getRef() + " ============ EXCLUSIONES: El código postal " + ex.getPostalCode() + ""
                             + " No se puede enviar por ninguna agencia ============\n Acción: Revise las exclusiones\n", null);
@@ -176,6 +171,10 @@ public class ComparatorService {
     }
 
     private RateComparator checkKilos(AgencyZone agencyZone, Note note) {
+        
+        if (note.isBigShipment() && !agencyZone.isBigShipment()) {
+            return null;
+        }
         RateComparator result = null;
 
         int maxKilos = rateDao.getMaxKilo(agencyZone.getAgencyId(), agencyZone.getZoneId());
@@ -232,20 +231,47 @@ public class ComparatorService {
                 }
             });
         }
+        if (result.size() == 0) {
+            logger.writeLog("info", "REF: " + note.getRef() + " ============  No se puede enviar por ninguna agencia ============\n Acción: Revise los bultos \n", null);
+            AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "El albaran con REF: " + note.getRef() + " no se puede enviar por ninguna agencia", "Revise los bultos");
+            alert.show();
+        }
         return result;
+    }
+
+    private void checkUrgencyPercent(RateComparator first, ArrayList<RateComparator> list, Note note) {
+        double urgencyPercent = configDao.getUrgencyPercent();
+
+        double urgencyPrice = 0;
+
+        urgencyPrice = first.getPrice() + (first.getPrice() * urgencyPercent / 100);
+
+        if (urgencyPrice > 0) {
+
+            if (first.getDeliveryTime() > 1) {
+                for (int i = 1; i < list.size(); i++) {
+                    if (list.get(i).getDeliveryTime() < first.getDeliveryTime()
+                            && list.get(i).getPrice() - first.getPrice() < urgencyPrice) {
+
+                        note.setBEST_AGENCY(list.get(i).getAgencyName());
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private ArrayList<RateComparator> checkPrice(ArrayList<RateComparator> list, Note note) {
         list.forEach(item -> {
 
-            if (item.getSurchargeFuel() > 0) {
+            if (item.getSurchargeFuel() > 0) { //Check surcharge fuel
 
                 double percent = item.getSurchargeFuel() * item.getPrice() / 100;
 
                 item.setPrice(item.getPrice() + percent);
             }
 
-            if (note.getRefund() != null) {
+            if (note.getRefund() != null) {// Check refund and Comision
 
                 double refundPrice = 0;
 
@@ -273,9 +299,14 @@ public class ComparatorService {
                 }
 
             }
+            System.out.println("Agencia: " + item.getAgencyName() + " Precio: " + item.getPrice());
 
         });
         return list;
+    }
+    
+    private void checkBigShipment() {
+        
     }
 
 }

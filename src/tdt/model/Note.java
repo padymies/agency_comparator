@@ -47,6 +47,8 @@ public class Note {
     private String BEST_AGENCY;
     
     private String newRef;
+    
+    private boolean bigShipment;
 
     public String getNewRef() {
         return newRef;
@@ -55,6 +57,15 @@ public class Note {
     public void setNewRef(String newRef) {
         this.newRef = newRef;
     }
+
+    public boolean isBigShipment() {
+        return bigShipment;
+    }
+
+    public void setBigShipment(boolean bigShipment) {
+        this.bigShipment = bigShipment;
+    }
+    
     
     
     
