@@ -20,13 +20,17 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import tdt.db.dao.IAgencyDao;
 import tdt.db.daoImpl.AgencyImpl;
 import tdt.model.Agency;
@@ -42,13 +46,13 @@ public class AgenciesController implements Initializable {
     @FXML
     private TableColumn<Agency, String> name;
     @FXML
-    private TableColumn<?, ?> bundles;
+    private TableColumn<Agency, Integer> bundles;
     @FXML
-    private TableColumn<?, ?> surcharge_fuel;
+    private TableColumn<Agency, Double> surcharge_fuel;
     @FXML
-    private TableColumn<?, ?> minimum_refund;
+    private TableColumn<Agency, Double> minimum_refund;
     @FXML
-    private TableColumn<?, ?> comision;
+    private TableColumn<Agency, Double> comision;
     @FXML
     private TableColumn<Agency, String> big_shipment;
     @FXML
@@ -106,13 +110,126 @@ public class AgenciesController implements Initializable {
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+        name.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        name.setOnEditCommit(value -> {
+
+            if (!value.getNewValue().trim().isEmpty()) {
+                Agency agency = value.getRowValue();
+                agency.setName(value.getNewValue());
+                agencyDao.updateAgency(agency);
+            }
+
+        });
+
         bundles.setCellValueFactory(new PropertyValueFactory<>("bundles"));
+
+        bundles.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                return object.toString();
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                int newValue = 0;
+                try {
+                    newValue = Integer.parseInt(string);
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
+                return newValue;
+            }
+        }));
+
+        bundles.setOnEditCommit(value -> {
+
+            Agency agency = value.getRowValue();
+            agency.setBundles(value.getNewValue());
+            agencyDao.updateAgency(agency);
+        });
 
         surcharge_fuel.setCellValueFactory(new PropertyValueFactory<>("surchargeFuel"));
 
+        surcharge_fuel.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Double>() {
+            @Override
+            public String toString(Double object) {
+                return object.toString();
+            }
+
+            @Override
+            public Double fromString(String value) {
+                double newValue = 0;
+                try {
+                    newValue = Double.parseDouble(value);
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
+                return newValue;
+            }
+        }));
+
+        surcharge_fuel.setOnEditCommit(value -> {
+
+            Agency agency = value.getRowValue();
+            agency.setSurchargeFuel(value.getNewValue());
+            agencyDao.updateAgency(agency);
+        });
+
         minimum_refund.setCellValueFactory(new PropertyValueFactory<>("minimumRefund"));
 
+        minimum_refund.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Double>() {
+            @Override
+            public String toString(Double object) {
+                return object.toString();
+            }
+
+            @Override
+            public Double fromString(String value) {
+                double newValue = 0;
+                try {
+                    newValue = Double.parseDouble(value);
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
+                return newValue;
+            }
+        }));
+
+        minimum_refund.setOnEditCommit(value -> {
+
+            Agency agency = value.getRowValue();
+            agency.setMinimumRefund(value.getNewValue());
+            agencyDao.updateAgency(agency);
+        });
+
         comision.setCellValueFactory(new PropertyValueFactory<>("comision"));
+
+        comision.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Double>() {
+            @Override
+            public String toString(Double object) {
+                return object.toString();
+            }
+
+            @Override
+            public Double fromString(String value) {
+                double newValue = 0;
+                try {
+                    newValue = Double.parseDouble(value);
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                }
+                return newValue;
+            }
+        }));
+
+        comision.setOnEditCommit(value -> {
+
+            Agency agency = value.getRowValue();
+            agency.setComision(value.getNewValue());
+            agencyDao.updateAgency(agency);
+
+        });
 
         big_shipment.setCellValueFactory(param -> {
 
@@ -127,6 +244,34 @@ public class AgenciesController implements Initializable {
 
         });
 
+        ObservableList<String> comboList = FXCollections.observableArrayList();
+
+        comboList.add("Sí");
+        comboList.add("No");
+
+        big_shipment.setCellFactory(t -> new ComboBoxTableCell(comboList) {
+            @Override
+            public void startEdit() {
+                super.startEdit();
+            }
+        });
+
+        big_shipment.setOnEditCommit(
+                new EventHandler<CellEditEvent<Agency, String>>() {
+            @Override
+            public void handle(CellEditEvent<Agency, String> t) {
+                Agency ag = t.getRowValue();
+                if (t.getNewValue().equals("Sí")) {
+                    ag.setBigShipment(true);
+                } else {
+                    ag.setBigShipment(false);
+                }
+                agencyDao.updateAgency(ag);
+            }
+
+        });
+        big_shipment.setEditable(true);
+
         hBox.setPadding(new Insets(10, 10, 10, 10));
 
         hBox.setSpacing(10);
@@ -137,6 +282,8 @@ public class AgenciesController implements Initializable {
         selectionModel.setSelectionMode(SelectionMode.SINGLE);
 
         table.setItems(list);
+
+        table.setEditable(true);
 
         MenuItem delete = new MenuItem("Borrar fila");
 

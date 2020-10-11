@@ -2,6 +2,7 @@ package tdt.ui.exclusions;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
 import tdt.db.dao.IAgencyDao;
@@ -32,12 +34,18 @@ import tdt.services.ConfigStage;
 
 public class ExclusionsController implements Initializable {
 
+    final String INCLUSION = "Forzar envío por esta agencia";
+
+    final String EXCLUSION = "Excluir esta agencia";
+
+    final String NO_SEND = "Código postal sin envío permitido";
+
     @FXML
     private TableColumn<Exclusion, String> postalCode;
     @FXML
     private TableColumn<Exclusion, String> agency;
     @FXML
-    private TableColumn<Exclusion, Integer> action;
+    private TableColumn<Exclusion, String> action;
     @FXML
     private TableView<Exclusion> tableEx;
 
@@ -78,9 +86,54 @@ public class ExclusionsController implements Initializable {
 
         postalCode.setCellValueFactory(new PropertyValueFactory("postalCode"));
 
-        agency.setCellValueFactory(new PropertyValueFactory("agencyName"));
+        postalCode.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        action.setCellValueFactory(new PropertyValueFactory("inclusion_exclusion"));
+        postalCode.setOnEditCommit(value -> {
+            if (!value.getNewValue().trim().isEmpty()) {
+                Exclusion ex = value.getRowValue();
+
+                ex.setPostalCode(value.getNewValue());
+                exclusionsDao.updateExclusions(ex);
+            }
+
+        });
+
+        agency.setCellValueFactory(param -> {
+
+            Exclusion ex = param.getValue();
+
+            return new SimpleStringProperty(ex.getAgencyName());
+        });
+
+        ObservableList<String> comboList = FXCollections.observableArrayList();
+        comboList.add("N/A");
+        agencyNames.forEach(name -> {
+            comboList.add(name);
+        });
+
+        agency.setCellFactory(t -> new ComboBoxTableCell(comboList) {
+            @Override
+            public void startEdit() {
+                super.startEdit();
+            }
+        });
+
+        agency.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<Exclusion, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Exclusion, String> t) {
+                Exclusion ex = t.getRowValue();
+                //      if (ex.getInclusion_exclusion() == 0) {
+                //        ex.setAgencyName("N/A");
+                //      tableEx.refresh();
+                //} else {
+                ex.setAgencyName(t.getNewValue());
+                //}
+                exclusionsDao.updateExclusions(ex);
+            }
+
+        });
+        agency.setEditable(true);
 
         ObservableList<Integer> options = FXCollections.observableArrayList();
 
@@ -92,7 +145,47 @@ public class ExclusionsController implements Initializable {
 
         agency.setCellFactory(ComboBoxTableCell.forTableColumn(agencyConverter(), agencyNames));
 
-        action.setCellFactory(ComboBoxTableCell.forTableColumn(accionConverter(), options));
+        action.setCellValueFactory(param -> {
+
+            Exclusion ex = param.getValue();
+
+            switch (ex.getInclusion_exclusion()) {
+                case 1:
+                    return new SimpleStringProperty(INCLUSION);
+                case -1:
+                    return new SimpleStringProperty(EXCLUSION);
+                default:
+                    return new SimpleStringProperty(NO_SEND);
+
+            }
+
+        });
+
+          ObservableList<String> actionList = FXCollections.observableArrayList();
+
+        actionList.add(INCLUSION);
+        actionList.add(EXCLUSION);
+        actionList.add(NO_SEND);
+
+        action.setCellFactory(t -> new ComboBoxTableCell(actionList) {
+            @Override
+            public void startEdit() {
+                super.startEdit();
+            }
+        });
+
+        action.setOnEditCommit(value -> {
+            Exclusion exclusion = value.getRowValue();
+            int result = 0;
+            if (value.getNewValue().equalsIgnoreCase(INCLUSION)) {
+                result = 1;
+            } else if (value.getNewValue().equalsIgnoreCase(EXCLUSION)) {
+                result = -1;
+            }
+            exclusion.setInclusion_exclusion(result);
+
+            exclusionsDao.updateExclusions(exclusion);
+        });
 
         MenuItem delete = new MenuItem("Borrar fila");
 
@@ -127,17 +220,9 @@ public class ExclusionsController implements Initializable {
 
         cmbAgency.getItems().add(0, "N/A");
 
-        tableEx.setEditable(false);
-
     }
 
     private StringConverter accionConverter() {
-
-        final String INCLUSION = "Forzar envío por esta agencia";
-
-        final String EXCLUSION = "Excluir esta agencia";
-
-        final String NO_SEND = "Código postal sin envío permitido";
 
         return new StringConverter<Integer>() {
             @Override
@@ -246,7 +331,7 @@ public class ExclusionsController implements Initializable {
                     + "una nueva exclusión.", "\n Debe rellenar los campos: \n\n-Código postal.\n\n-Agencia. (si la acción es 'Código postal sin envío permitido', no es necesario).\n\n-Acción. ");
             alert.showAndWait();
         }
-        
+
     }
 
     @FXML
