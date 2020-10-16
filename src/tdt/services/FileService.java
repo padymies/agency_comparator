@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tdt.db.dao.IAgencyDao;
 import tdt.db.dao.IFileVariableDao;
 import tdt.db.dao.IsoDao;
+import tdt.db.daoImpl.AgencyImpl;
 import tdt.db.daoImpl.FileVariableImpl;
 import tdt.db.daoImpl.IsoImpl;
 import tdt.model.FileVariable;
@@ -29,6 +31,7 @@ public class FileService {
     private static File file;
 
     private static IFileVariableDao variableDao;
+    private static IAgencyDao agencyDao;
 
     public static ArrayList<String> extractRegisters(File file) {
 
@@ -168,6 +171,8 @@ public class FileService {
     }
 
     public static boolean writeOutFiles(Map<String, List<Note>> resultNotes) {
+        
+        agencyDao = new AgencyImpl();
 
         boolean result = true;
 
@@ -182,6 +187,8 @@ public class FileService {
             BufferedReader br = null;
 
             FileReader fr = null;
+            
+            
 
             try {
 
@@ -198,13 +205,12 @@ public class FileService {
 
             if (desktopPath != null) {
 
-                String folderName = key;
+                String folderName = agencyDao.getFolderByAgencyName(key.toString());
 
-                if (folderName.equals("Correos express")) {
-
-                    folderName = "CorreosExpress";
-                } else {
-                    folderName = folderName.toUpperCase();
+                if (folderName == null || folderName.isEmpty()) {
+                    
+                    folderName = key;
+                 
                 }
 
                 new File(desktopPath, folderName).mkdir(); // Create folder
