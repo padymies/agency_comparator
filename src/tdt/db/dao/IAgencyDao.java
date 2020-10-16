@@ -19,6 +19,8 @@ public interface IAgencyDao {
 
     public boolean deleteAgency(int agenciaId);
     
+    public String getFolderByAgencyName(String agencyName);
+    
   
 
 }

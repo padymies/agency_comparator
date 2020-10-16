@@ -81,6 +81,10 @@ public class AgenciesController implements Initializable {
     private ArrayList<Agency> selections;
 
     private IAgencyDao agencyDao;
+    @FXML
+    private TableColumn<Agency, String> folder;
+    @FXML
+    private TextField inputFolder;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -271,6 +275,21 @@ public class AgenciesController implements Initializable {
 
         });
         big_shipment.setEditable(true);
+        
+        folder.setCellValueFactory(new PropertyValueFactory<>("folderName"));
+        
+        folder.setCellFactory(TextFieldTableCell.forTableColumn());
+        
+        folder.setOnEditCommit(value -> {
+            
+        if(!value.getNewValue().trim().isEmpty()) {
+            Agency agency = value.getRowValue();
+                agency.setFolderName(value.getNewValue());
+                agencyDao.updateAgency(agency);
+        }
+        
+        
+        });
 
         hBox.setPadding(new Insets(10, 10, 10, 10));
 
@@ -317,6 +336,8 @@ public class AgenciesController implements Initializable {
             double minimum = 0;
 
             double comision = 0;
+            
+            String folder = "";
 
             try {
                 if (!inputBundles.getText().isEmpty()) {
@@ -335,6 +356,12 @@ public class AgenciesController implements Initializable {
                     comision = Double.parseDouble(inputComision.getText().trim());
 
                 }
+                
+                  if (!inputFolder.getText().isEmpty()) {
+                    folder = inputFolder.getText().trim();
+
+                }
+                
                 String selected = cmbBigShipment.getSelectionModel().getSelectedItem();
 
                 boolean bigShipment = false;
@@ -344,7 +371,7 @@ public class AgenciesController implements Initializable {
                     bigShipment = true;
                 }
 
-                Agency agency = new Agency(name, bundle, surcharge, minimum, bigShipment, comision);
+                Agency agency = new Agency(name, bundle, surcharge, minimum, bigShipment, comision, folder);
 
                 int agencyId = agencyDao.addAgency(agency);
 
@@ -359,6 +386,7 @@ public class AgenciesController implements Initializable {
                     inputSurcharge.clear();
                     inputMinimum.clear();
                     inputComision.clear();
+                    inputFolder.clear();
                 } else {
 
                     AlertService alert = new AlertService((Alert.AlertType.ERROR), "Creación de agencia", "No se ha podido crear la agencia \n",
@@ -369,7 +397,7 @@ public class AgenciesController implements Initializable {
 
             } catch (NumberFormatException e) {
                 AlertService alert = new AlertService((Alert.AlertType.ERROR), "Creación de agencia", "No se ha podido crear la agencia \n",
-                        "- Los bultos debe ser un número entero\n- El recargo combustibloe, mínimo reembolso y la comisión deben ser un número entero o decimal.");
+                        "- Los bultos debe ser un número entero\n- El recargo combustibloe, mínimo reembolso y la comisión deben ser un número entero o decimal\n- El nombre de la carpeta de salida no puede estar vacía.");
 
                 alert.showAndWait();
             }

@@ -54,7 +54,9 @@ public class AgencyImpl implements IAgencyDao {
 
                     boolean bigShipment = result.getBoolean("envio_grande");
 
-                    list.add(new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision));
+                    String folder = result.getString("folder");
+                    
+                    list.add(new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision, folder));
                 }
             }
 
@@ -117,8 +119,10 @@ public class AgencyImpl implements IAgencyDao {
                 double comision = result.getDouble("comision");
 
                 boolean bigShipment = result.getBoolean("envio_grande");
+                
+                String folder = result.getString("folder");
 
-                agency = new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision);
+                agency = new Agency(id, name, bundles, surchargeFuel, minimumRefund, bigShipment, comision, folder);
             }
 
         } catch (SQLException ex) {
@@ -152,9 +156,9 @@ public class AgencyImpl implements IAgencyDao {
 
         int id = -1;
 
-        String sql = "INSERT INTO " + TABLE_NAME + " (nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision) VALUES('"
+        String sql = "INSERT INTO " + TABLE_NAME + " (nombre, bultos, recargo_combustible, minimo_reembolso, envio_grande, comision, folder) VALUES('"
                 + agency.getName() + "', " + agency.getBundles() + ", " + agency.getSurchargeFuel()
-                + ", " + agency.getMinimumRefund() + ", " + agency.isBigShipment() + ", " + agency.getComision() + ")";
+                + ", " + agency.getMinimumRefund() + ", " + agency.isBigShipment() + ", " + agency.getComision() + ", '" + agency.getFolderName() + "')";
         try {
 
             conn = DBConnection.getConnection();
@@ -197,7 +201,7 @@ public class AgencyImpl implements IAgencyDao {
     }
 
     @Override
-    public boolean updateAgency(Agency agencia) {
+    public boolean updateAgency(Agency agency) {
 
         Connection conn = null;
 
@@ -206,12 +210,13 @@ public class AgencyImpl implements IAgencyDao {
         boolean result = false;
 
         String sql = "UPDATE " + TABLE_NAME + "  SET "
-                + "nombre='" + agencia.getName() + "', bultos=" + agencia.getBundles()
-                + ", recargo_combustible=" + agencia.getSurchargeFuel()
-                + ", minimo_reembolso=" + agencia.getMinimumRefund()
-                + ", envio_grande=" + agencia.isBigShipment()
-                + ", comision=" + agencia.getComision()
-                + " WHERE id_agencia=" + agencia.getAgencyId();
+                + "nombre='" + agency.getName() + "', bultos=" + agency.getBundles()
+                + ", recargo_combustible=" + agency.getSurchargeFuel()
+                + ", minimo_reembolso=" + agency.getMinimumRefund()
+                + ", envio_grande=" + agency.isBigShipment()
+                + ", comision=" + agency.getComision()
+                + ", folder='" + agency.getFolderName()
+                + "' WHERE id_agencia=" + agency.getAgencyId();
         try {
 
             conn = DBConnection.getConnection();
@@ -344,5 +349,55 @@ public class AgencyImpl implements IAgencyDao {
         }
         return list;
     }
+
+    @Override
+    public String getFolderByAgencyName(String agencyName) {
+          Connection conn = null;
+
+        Statement stat = null;
+
+        String sql = " SELECT folder FROM " + TABLE_NAME + " WHERE nombre='" + agencyName + "'";
+        
+        String folder= "";
+
+        try {
+
+            conn = DBConnection.getConnection();
+
+            if (conn != null) {
+
+                stat = conn.createStatement();
+
+                ResultSet result = stat.executeQuery(sql);
+
+                while (result.next()) {
+
+                     folder = result.getString("folder");
+                }
+            }
+
+        } catch (SQLException ex) {
+
+            AlertExceptionService alert = new AlertExceptionService("Conexión a base de datos", "No se han podido obtener el nombre de la carpeta", ex);
+
+            alert.showAndWait();
+
+        } finally {
+
+            try {
+                if (stat != null) {
+                    stat.close();
+                }
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AgencyImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return folder;
+    }
+    
 
 }

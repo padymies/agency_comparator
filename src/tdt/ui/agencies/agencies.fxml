@@ -11,35 +11,37 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="962.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.agencies.AgenciesController">
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="1187.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt.ui.agencies.AgenciesController">
     <stylesheets>
         <URL value="@agencies.css" />
     </stylesheets>
    <children>
-      <VBox id="vBox" fx:id="vBox" prefHeight="427.0" prefWidth="962.0">
+      <VBox id="vBox" fx:id="vBox" prefHeight="427.0" prefWidth="1188.0">
          <children>
-            <TableView id="table" fx:id="table" prefHeight="439.0" prefWidth="449.0">
+            <TableView id="table" fx:id="table" prefHeight="427.0" prefWidth="1140.0">
               <columns>
                 <TableColumn id="name" fx:id="name" prefWidth="303.0" text="Nombre" />
                   <TableColumn fx:id="bundles" minWidth="0.0" prefWidth="101.0" text="Bultos" />
                   <TableColumn fx:id="surcharge_fuel" prefWidth="140.0" text="Rec. Combustible" />
                   <TableColumn fx:id="minimum_refund" prefWidth="145.0" text="Min. Reembolso" />
-                  <TableColumn fx:id="comision" prefWidth="122.0" text="Comision" />
-                  <TableColumn fx:id="big_shipment" prefWidth="150.0" text="Envio Grande" />
+                  <TableColumn fx:id="comision" prefWidth="109.60009765625" text="Comision" />
+                  <TableColumn fx:id="big_shipment" prefWidth="123.99993896484375" text="Envio Grande" />
+                  <TableColumn fx:id="folder" prefWidth="264.266845703125" text="Nombre de carpeta " />
               </columns>
             </TableView>
          </children>
       </VBox>
-      <AnchorPane layoutY="425.0" prefHeight="45.0" prefWidth="962.0">
+      <AnchorPane layoutY="425.0" prefHeight="46.0" prefWidth="1186.0">
          <children>
-            <HBox id="hBox" fx:id="hBox" prefHeight="45.0" prefWidth="962.0" spacing="10.0">
+            <HBox id="hBox" fx:id="hBox" prefHeight="46.0" prefWidth="1187.0" spacing="10.0">
                <children>
-                  <TextField id="inputName" fx:id="inputName" prefHeight="25.0" prefWidth="256.0" promptText="Nombre" HBox.hgrow="ALWAYS" />
+                  <TextField id="inputName" fx:id="inputName" prefHeight="26.0" prefWidth="175.0" promptText="Nombre" HBox.hgrow="ALWAYS" />
                   <TextField id="inputBundles" fx:id="inputBundles" prefHeight="25.0" prefWidth="81.0" promptText="Bultos" />
-                  <TextField id="inputSurcharge" fx:id="inputSurcharge" prefHeight="25.0" prefWidth="141.0" promptText="Rec. combustible" />
+                  <TextField id="inputSurcharge" fx:id="inputSurcharge" prefHeight="26.0" prefWidth="116.0" promptText="Rec. combustible" />
                   <TextField id="inputMinimum" fx:id="inputMinimum" prefHeight="25.0" prefWidth="137.0" promptText="Min. reembolso" />
-                  <TextField id="inputComision" fx:id="inputComision" layoutX="398.0" layoutY="20.0" prefHeight="25.0" prefWidth="112.0" promptText="Comision" />
-                  <ComboBox fx:id="cmbBigShipment" prefHeight="25.0" prefWidth="99.0" />
+                  <TextField id="inputComision" fx:id="inputComision" layoutX="398.0" layoutY="20.0" prefHeight="26.0" prefWidth="86.0" promptText="Comision" />
+                  <TextField id="inputComision" fx:id="inputFolder" layoutX="687.0" layoutY="20.0" prefHeight="26.0" prefWidth="197.0" promptText="Nombre carpeta" />
+                  <ComboBox fx:id="cmbBigShipment" prefHeight="26.0" prefWidth="90.0" />
                   <Button id="addButton" fx:id="addButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="Añadir" />
                   <Button id="deleteButton" fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Borrar" />
                </children>
