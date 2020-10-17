@@ -123,7 +123,7 @@ public class NotesFormController implements Initializable {
 
         _long.setText(note.getLong().trim());
 
-        bundles.setText("1");
+        bundles.setText(note.getBundles().trim());
     }
 
     @FXML

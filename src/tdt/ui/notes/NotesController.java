@@ -177,6 +177,7 @@ public class NotesController implements Initializable {
 
         if (notes.size() > 0) {
 
+            parseCountryFailure(notes);
             noNotesText.setVisible(false);
 
             listView.setVisible(true);
@@ -192,6 +193,20 @@ public class NotesController implements Initializable {
             noNotesText.setVisible(true);
         }
 
+    }
+
+    private void parseCountryFailure(ObservableList<Note> notes) {
+
+        final String SPAIN_CODE = "724";
+        
+        notes.forEach(note -> {
+            if (note.getCountry().equals(SPAIN_CODE)) {
+                note.setCountry("España");
+                FileService.updateNote(note);
+            }
+        });
+        
+        
     }
 
     @FXML
