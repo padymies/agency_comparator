@@ -58,7 +58,9 @@ public class ComparatorService {
         for (Note note : notes) {
 
             if (note.getBEST_AGENCY() == null) {
-                
+
+                logger.writeLog("info", "Comparando albaran " + note.getRef() + "...", null);
+
                 ObservableList<AgencyZone> agenciesList = rateDao.getAgenciesByZone(note.getZone().getZoneId());
 
                 if (!hasExclusions(note, agenciesList)) { // Check exclusions
@@ -78,34 +80,46 @@ public class ComparatorService {
                             }
 
                         }
+
+                        resultList = checkBundles(resultList, note); // Check bundles
+
+                        if (resultList.size() > 0) {
+
+                            if (note.isBigShipment()) {
+
+                                checkBigShipment(resultList, note);
+
+                            }
+                            if (resultList.size() > 0) {
+
+                                resultList = checkPrice(resultList, note); //Check Price
+
+                                Collections.sort(resultList, Comparator.comparing(item -> item.getPrice())); // Get first
+
+                                RateComparator first = resultList.get(0);
+
+                                checkUrgencyPercent(first, resultList, note); // Check Urgency percent
+
+                                if (note.getBEST_AGENCY() == null) {
+
+                                    note.setBEST_AGENCY(first.getAgencyName());
+                                    
+                                    logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
+                                }
+
+                            }
+                        }
                     } else {
-                        logger.writeLog("info", "REF: " + note.getRef() + " ============ NO HAY AGENCIAS PARA LA ZONA:  " + note.getZone().getName() + " ============\n Acción: Revise la Zona\n", null);
+                        logger.writeLog("warning", "No hay agencias registradas para la zona:  " + note.getZone().getName() + ". Acción: Revise las agencias de la Zona", null);
                     }
                     // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
-                    resultList = checkBundles(resultList, note); // Check bundles
-
-                    if (resultList.size() > 0) {
-
-                        resultList = checkPrice(resultList, note); //Check Price
-
-                        Collections.sort(resultList, Comparator.comparing(item -> item.getPrice())); // Get first
-
-                        RateComparator first = resultList.get(0);
-
-                        checkUrgencyPercent(first, resultList, note); // Check Urgency percent
-                        
-                        if (note.getBEST_AGENCY() == null) {
-                            
-                            note.setBEST_AGENCY(first.getAgencyName());
-                            
-                            System.out.println("Mejor Agencia: " + first.getAgencyName() + "\n");
-                        }
-
-                    }
-
                 }
+            } else {
+                logger.writeLog("info", "Forzando agencia..." + note.getBEST_AGENCY(), null);
+                logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
             }
+            logger.writeLog("info", "FIN DE LA COMPARACIÓN ", null);
         }
 
     }
@@ -121,12 +135,12 @@ public class ComparatorService {
         if (ex != null) {
 
             if (Integer.valueOf(ex.getAgencyId()) == null && ex.getInclusion_exclusion() != 0) {
-                System.out.println("false");
+
                 return false;
             }
 
             if (Integer.valueOf(ex.getAgencyId()) != null && ex.getInclusion_exclusion() == 0) {
-                System.out.println("false");
+
                 return false;
             }
 
@@ -138,6 +152,10 @@ public class ComparatorService {
                     Agency agency = agenciesDao.getAgency(ex.getAgencyId());
 
                     note.setBEST_AGENCY(agency.getName());
+                    
+                    logger.writeLog("info", "Aplicando exclusión...", null);
+                    logger.writeLog("info", "Forzando agencia " + note.getBEST_AGENCY() + "...", null);
+                    logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
 
                     break;
                 case AGENCY_EXCLUDED:
@@ -147,6 +165,10 @@ public class ComparatorService {
                         while (i.hasNext()) {
                             AgencyZone agencyZone = i.next();
                             if (agencyZone.getAgencyId() == ex.getAgencyId()) {
+                                
+                                logger.writeLog("info", "Aplicando exclusión...", null);
+                                logger.writeLog("info", "La agencia " + ex.getAgencyName() + " ha sido excluida", null);
+                                
                                 i.remove();
                             }
                         }
@@ -155,8 +177,10 @@ public class ComparatorService {
                     break;
 
                 default:
-                    logger.writeLog("info", "REF: " + note.getRef() + " ============ EXCLUSIONES: El código postal " + ex.getPostalCode() + ""
-                            + " No se puede enviar por ninguna agencia ============\n Acción: Revise las exclusiones\n", null);
+                    
+                    logger.writeLog("info", "Aplicando exclusión...", null);
+                    logger.writeLog("info", "No se puede enviar por ninguna agencia. Acción: Revise las exclusiones", null);
+                    
                     AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "Aviso de exclusión:\n"
                             + "Referencia:  " + note.getRef() + "\nCP  " + note.getDestinationPostalCode() + "", "\n"
                             + "El código postal está excluido");
@@ -171,10 +195,7 @@ public class ComparatorService {
     }
 
     private RateComparator checkKilos(AgencyZone agencyZone, Note note) {
-        
-        if (note.isBigShipment() && !agencyZone.isBigShipment()) {
-            return null;
-        }
+
         RateComparator result = null;
 
         int maxKilos = rateDao.getMaxKilo(agencyZone.getAgencyId(), agencyZone.getZoneId());
@@ -187,9 +208,10 @@ public class ComparatorService {
 
         } catch (NumberFormatException e) {
 
+            logger.writeLog("severe", "No se ha podido parsear el peso con valor: " + weight, e);
             AlertExceptionService weightAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
 
-            weightAlert.showAndWait();
+            weightAlert.show();
         }
 
         if (maxKilos > 0) {
@@ -203,18 +225,26 @@ public class ComparatorService {
                     if (agencyZone.getIncrease() > 0) { // SE APLICA INCREMENTO SI TIENE
 
                         result = rateDao.ratesNotesCompare(maxKilos, note.getZone().getZoneId(), agencyZone.getAgencyId());
-
-                        result.setPrice(result.getPrice() + (weight - maxKilos * agencyZone.getIncrease()));
+                        double increment = (weight - maxKilos * agencyZone.getIncrease());
+                        double newPrice = result.getPrice() + increment;
+                        
+                        logger.writeLog("info", "Aplicando incremento de precio...", null);
+                        logger.writeLog("info", "Se ha aplicado un incremento por kilos en la agencia " + result.getAgencyName(), null);
+                        logger.writeLog("info", "-Precio inicial: " + result.getPrice() + "€", null);
+                        logger.writeLog("info", "-Incremento " + increment + "€", null);
+                        logger.writeLog("info", "-Precio final: " + newPrice + "€", null);
+                        
+                        result.setPrice(result.getPrice() + increment);
 
                     } else {
-                        logger.writeLog("info", "REF: " + note.getRef() + " ============ NO HAY TARIFA PARA EL PESO  " + weight + " EN LA ZONA "
-                                + note.getZone().getName() + " PARA LA AGENCIA " + agencyZone.getAgencyName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
+                        logger.writeLog("warning", "No hay registrada tarifa para los kilos " + weight + " en la zona "
+                                + note.getZone().getName() + " para la agencia" + agencyZone.getAgencyName() + ". Acción: Revise las tarifas de la zona", null);
                     }
                 }
             }
         } else {
-            logger.writeLog("info", "REF: " + note.getRef() + "============ NO HAY TARIFAS PARA LA AGENCIA  " + agencyZone.getAgencyName() + " EN LA ZONA "
-                    + note.getZone().getName() + " ============\n Acción: Revise las tarifas de la zona\n", null);
+            logger.writeLog("warning", "No hay registrada tarifas para la agencia " + agencyZone.getAgencyName() + "en la zona "
+                    + note.getZone().getName() + ". Acción: Revise las tarifas de la zona", null);
         }
 
         return result;
@@ -232,7 +262,8 @@ public class ComparatorService {
             });
         }
         if (result.size() == 0) {
-            logger.writeLog("info", "REF: " + note.getRef() + " ============  No se puede enviar por ninguna agencia ============\n Acción: Revise los bultos \n", null);
+            logger.writeLog("warning", "No se ha encontrado agencia. Acción: Revise los bultos", null);
+            
             AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "El albaran con REF: " + note.getRef() + " no se puede enviar por ninguna agencia", "Revise los bultos");
             alert.show();
         }
@@ -254,6 +285,12 @@ public class ComparatorService {
                             && list.get(i).getPrice() - first.getPrice() < urgencyPrice) {
 
                         note.setBEST_AGENCY(list.get(i).getAgencyName());
+                        
+                        logger.writeLog("info", "Aplicando porcentaje de urgencia...", null);
+                        logger.writeLog("info", "Se ha aplicado el porcentaje de urgencia:", null);
+                        logger.writeLog("info", "-Mejor precio: " + first.getPrice() + "€", null);
+                        logger.writeLog("info", "-Precio elegido: " + list.get(i).getPrice() + "€", null);
+                        
                         break;
                     }
                 }
@@ -262,51 +299,89 @@ public class ComparatorService {
     }
 
     private ArrayList<RateComparator> checkPrice(ArrayList<RateComparator> list, Note note) {
+        
+        logger.writeLog("info", "Comprobando precio...", null);
+        
         list.forEach(item -> {
 
             if (item.getSurchargeFuel() > 0) { //Check surcharge fuel
 
                 double percent = item.getSurchargeFuel() * item.getPrice() / 100;
+                double newPrice = item.getPrice() + percent;
+              
+                logger.writeLog("info", "Aplicando incremento...", null);
+                logger.writeLog("info", "Se ha aplicado un incremento por RECARGO DE COMBUSTIBLE a la agencia " + item.getAgencyName() , null);
+                logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
+                logger.writeLog("info", "-Incremento: " + percent, null);
+                logger.writeLog("info", "-Nuevo precio: " + newPrice+ "€", null);
+               
+                item.setPrice(newPrice);
 
-                item.setPrice(item.getPrice() + percent);
             }
 
-            if (note.getRefund() != null) {// Check refund and Comision
+            if (!note.getRefund().isEmpty()) {// Check refund and Comision
 
-                double refundPrice = 0;
+                double minRefundPrice = 0;
 
                 double comisionPrice = 0;
 
                 if (item.getMinimumRefund() > 0) {
-                    refundPrice = item.getPrice() + item.getMinimumRefund();
+                    minRefundPrice = item.getPrice() + item.getMinimumRefund();
 
                 }
-
+                double percent = 0;
                 if (item.getComision() > 0) {
 
-                    double percent = item.getPrice() * item.getComision() / 100;
+                    percent = item.getPrice() * item.getComision() / 100;
 
                     comisionPrice = item.getPrice() + percent;
+
                 }
 
-                if (comisionPrice > 0 && comisionPrice >= refundPrice) {
+                if (comisionPrice > 0 && comisionPrice >= minRefundPrice) {
+                    
+                    logger.writeLog("info", "Aplicando incremento...", null);
+                    logger.writeLog("info", "Se ha aplicado un incremento por COMISIÖN a la agencia " + item.getAgencyName(), null);
+                    logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
+                    logger.writeLog("info", "-Incremento: " + percent +"€", null);
+                    logger.writeLog("info", "-Nuevo precio: " + comisionPrice + "€", null);
+                    
                     item.setPrice(comisionPrice);
                 }
 
-                if (refundPrice > 0 && refundPrice > comisionPrice) {
-                    item.setPrice(refundPrice);
-
+                if (minRefundPrice > 0 && minRefundPrice > comisionPrice) {
+                  
+                    logger.writeLog("info", "Se ha aplicado un incremento por MINIMO REEMBOLSO a la agencia " + item.getAgencyName(), null);
+                    logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
+                    logger.writeLog("info", "-Incremento: " + item.getMinimumRefund() + "€", null);
+                    logger.writeLog("info", "-Nuevo precio: " + minRefundPrice + "€", null);
+                    
+                    item.setPrice(minRefundPrice);
                 }
 
             }
-            System.out.println("Agencia: " + item.getAgencyName() + " Precio: " + item.getPrice());
 
         });
+
         return list;
     }
-    
-    private void checkBigShipment() {
-        
+
+    private void checkBigShipment(ArrayList<RateComparator> list, Note note) {
+        Iterator<RateComparator> i = list.iterator();
+        while (i.hasNext()) {
+            RateComparator item = i.next();
+            if (!item.isBigShipment()) {
+                i.remove();
+            }
+        }
+        if (list.size() == 0) {
+          
+            logger.writeLog("warning", "No se puede enviar por ninguna agencia. Acción: Revise los las agencias con envío voluminoso", null);
+            
+            AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "El albaran con REF: " + note.getRef() + " no se puede enviar por ninguna agencia", "Revise las"
+                    + " agencias con envío voluminoso");
+            alert.show();
+        }
     }
 
 }
