@@ -1,9 +1,13 @@
 package tdt.services;
 
+import java.math.BigDecimal;
+import tdt.services.logger.LoggerService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import tdt.db.dao.IAgencyDao;
@@ -19,6 +23,7 @@ import tdt.db.daoImpl.ZoneImpl;
 import tdt.model.Agency;
 import tdt.model.AgencyZone;
 import tdt.model.Exclusion;
+import tdt.model.LogModel;
 import tdt.model.Note;
 import tdt.model.RateComparator;
 
@@ -40,7 +45,11 @@ public class ComparatorService {
 
     private IAppConfig configDao;
 
+    private ArrayList<LogModel> logList;
+
     public ComparatorService() {
+
+        logList = new ArrayList();
 
         logger = new LoggerService("output");
 
@@ -58,8 +67,8 @@ public class ComparatorService {
         for (Note note : notes) {
 
             if (note.getBEST_AGENCY() == null) {
-
-                logger.writeLog("info", "Comparando albaran " + note.getRef() + "...", null);
+                logList.add(new LogModel(Level.INFO, "Comparando albaran " + note.getRef()));
+//                logger.writeLog("info", "Comparando albaran " + note.getRef() , null);
 
                 ObservableList<AgencyZone> agenciesList = rateDao.getAgenciesByZone(note.getZone().getZoneId());
 
@@ -103,25 +112,30 @@ public class ComparatorService {
                                 if (note.getBEST_AGENCY() == null) {
 
                                     note.setBEST_AGENCY(first.getAgencyName());
-                                    
-                                    logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
+                                    logList.add(new LogModel(Level.INFO, "<strong> Agencia seleccionada: " + note.getBEST_AGENCY().toUpperCase() + "</strong>"));
+                                    //  logger.writeLog("info", , null);
                                 }
 
                             }
                         }
                     } else {
-                        logger.writeLog("warning", "No hay agencias registradas para la zona:  " + note.getZone().getName() + ". Acción: Revise las agencias de la Zona", null);
+                        logList.add(new LogModel(Level.WARNING, "No hay agencias registradas para la zona:  " + note.getZone().getName().toUpperCase() + " ( Revise las agencias de la Zona )"));
+                        // logger.writeLog("warning", "No hay agencias registradas para la zona:  " + note.getZone().getName().toUpperCase() + " ( Revise las agencias de la Zona )", null);
                     }
                     // ================ 3-COMPROBAMOS EL RESTO DE VARIABLES PARA DETERMINAR EL PRECIO FINAL ================//
 
                 }
             } else {
-                logger.writeLog("info", "Forzando agencia..." + note.getBEST_AGENCY(), null);
-                logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
+                logList.add(new LogModel(Level.INFO, "Forzando agencia ..." + note.getBEST_AGENCY().toUpperCase()));
+                logList.add(new LogModel(Level.INFO, "<strong>Agencia seleccionada: " + note.getBEST_AGENCY().toUpperCase() + "</strong>"));
             }
-            logger.writeLog("info", "FIN DE LA COMPARACIÓN ", null);
+            logList.add(new LogModel(Level.INFO, "FIN DE LA COMPARACIÓN "));
         }
-
+        logger.writeResultLog(logList);
+        
+        AlertService endAlert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "HA FINALIZADO LA COMPARACIÓN DE ALBARANES", "");
+        endAlert.show();
+        
     }
 
     private boolean hasExclusions(Note note, ObservableList<AgencyZone> list) {
@@ -152,10 +166,10 @@ public class ComparatorService {
                     Agency agency = agenciesDao.getAgency(ex.getAgencyId());
 
                     note.setBEST_AGENCY(agency.getName());
-                    
-                    logger.writeLog("info", "Aplicando exclusión...", null);
-                    logger.writeLog("info", "Forzando agencia " + note.getBEST_AGENCY() + "...", null);
-                    logger.writeLog("info", "Agencia seleccionada: " + note.getBEST_AGENCY(), null);
+
+                    logList.add(new LogModel(Level.INFO, "Aplicando exclusión ..."));
+                    logList.add(new LogModel(Level.INFO, "Forzando agencia " + note.getBEST_AGENCY().toUpperCase() + " ..."));
+                    logList.add(new LogModel(Level.INFO, "<strong>Agencia seleccionada: " + note.getBEST_AGENCY().toUpperCase() + "</strong>"));
 
                     break;
                 case AGENCY_EXCLUDED:
@@ -165,10 +179,10 @@ public class ComparatorService {
                         while (i.hasNext()) {
                             AgencyZone agencyZone = i.next();
                             if (agencyZone.getAgencyId() == ex.getAgencyId()) {
-                                
-                                logger.writeLog("info", "Aplicando exclusión...", null);
-                                logger.writeLog("info", "La agencia " + ex.getAgencyName() + " ha sido excluida", null);
-                                
+
+                                logList.add(new LogModel(Level.INFO, "Aplicando exclusión ..."));
+                                logList.add(new LogModel(Level.INFO, "La agencia " + ex.getAgencyName() + " ha sido excluida"));
+
                                 i.remove();
                             }
                         }
@@ -177,10 +191,10 @@ public class ComparatorService {
                     break;
 
                 default:
-                    
-                    logger.writeLog("info", "Aplicando exclusión...", null);
-                    logger.writeLog("info", "No se puede enviar por ninguna agencia. Acción: Revise las exclusiones", null);
-                    
+
+                    logList.add(new LogModel(Level.INFO, "Aplicando exclusión ..."));
+                    logList.add(new LogModel(Level.INFO, "No se puede enviar por ninguna agencia. Acción: Revise las exclusiones"));
+
                     AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "Aviso de exclusión:\n"
                             + "Referencia:  " + note.getRef() + "\nCP  " + note.getDestinationPostalCode() + "", "\n"
                             + "El código postal está excluido");
@@ -208,7 +222,7 @@ public class ComparatorService {
 
         } catch (NumberFormatException e) {
 
-            logger.writeLog("severe", "No se ha podido parsear el peso con valor: " + weight, e);
+            logList.add(new LogModel(Level.SEVERE, "No se ha podido parsear el peso con valor: " + weight));
             AlertExceptionService weightAlert = new AlertExceptionService("Error", "Error en parseo de peso", e);
 
             weightAlert.show();
@@ -226,25 +240,25 @@ public class ComparatorService {
 
                         result = rateDao.ratesNotesCompare(maxKilos, note.getZone().getZoneId(), agencyZone.getAgencyId());
                         double increment = (weight - maxKilos * agencyZone.getIncrease());
+
                         double newPrice = result.getPrice() + increment;
-                        
-                        logger.writeLog("info", "Aplicando incremento de precio...", null);
-                        logger.writeLog("info", "Se ha aplicado un incremento por kilos en la agencia " + result.getAgencyName(), null);
-                        logger.writeLog("info", "-Precio inicial: " + result.getPrice() + "€", null);
-                        logger.writeLog("info", "-Incremento " + increment + "€", null);
-                        logger.writeLog("info", "-Precio final: " + newPrice + "€", null);
-                        
+                        logList.add(new LogModel(Level.INFO, "Aplicando incremento de precio ..."));
+                        logList.add(new LogModel(Level.INFO, "Se ha aplicado un incremento por kilos en la agencia " + result.getAgencyName()));
+                        logList.add(new LogModel(Level.INFO, "Precio inicial: " + result.getPrice() + "€"));
+                        logList.add(new LogModel(Level.INFO, "Incremento " + increment + "€"));
+                        logList.add(new LogModel(Level.INFO, "Precio final: " + newPrice + "€"));
+
                         result.setPrice(result.getPrice() + increment);
 
                     } else {
-                        logger.writeLog("warning", "No hay registrada tarifa para los kilos " + weight + " en la zona "
-                                + note.getZone().getName() + " para la agencia" + agencyZone.getAgencyName() + ". Acción: Revise las tarifas de la zona", null);
+                        logList.add(new LogModel(Level.WARNING, "No hay registrada tarifa para los kilos " + weight + " en la zona "
+                                + note.getZone().getName() + " para la agencia" + agencyZone.getAgencyName() + "( Revise las tarifas de la zona )"));
                     }
                 }
             }
         } else {
-            logger.writeLog("warning", "No hay registrada tarifas para la agencia " + agencyZone.getAgencyName() + "en la zona "
-                    + note.getZone().getName() + ". Acción: Revise las tarifas de la zona", null);
+            logList.add(new LogModel(Level.WARNING, "No hay registrada tarifas para la agencia " + agencyZone.getAgencyName() + "en la zona "
+                    + note.getZone().getName() + " ( Revise las tarifas de la zona )"));
         }
 
         return result;
@@ -262,8 +276,8 @@ public class ComparatorService {
             });
         }
         if (result.size() == 0) {
-            logger.writeLog("warning", "No se ha encontrado agencia. Acción: Revise los bultos", null);
-            
+            logList.add(new LogModel(Level.WARNING, "No se ha encontrado agencia ( Revise los bultos )"));
+
             AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "El albaran con REF: " + note.getRef() + " no se puede enviar por ninguna agencia", "Revise los bultos");
             alert.show();
         }
@@ -285,12 +299,12 @@ public class ComparatorService {
                             && list.get(i).getPrice() - first.getPrice() < urgencyPrice) {
 
                         note.setBEST_AGENCY(list.get(i).getAgencyName());
-                        
-                        logger.writeLog("info", "Aplicando porcentaje de urgencia...", null);
-                        logger.writeLog("info", "Se ha aplicado el porcentaje de urgencia:", null);
-                        logger.writeLog("info", "-Mejor precio: " + first.getPrice() + "€", null);
-                        logger.writeLog("info", "-Precio elegido: " + list.get(i).getPrice() + "€", null);
-                        
+
+                        logList.add(new LogModel(Level.INFO, "Aplicando porcentaje de urgencia ..."));
+                        logList.add(new LogModel(Level.INFO, "Se ha aplicado el porcentaje de urgencia:"));
+                        logList.add(new LogModel(Level.INFO, "Mejor precio: " + first.getPrice() + "€"));
+                        logList.add(new LogModel(Level.INFO, "Precio elegido: " + list.get(i).getPrice() + "€"));
+
                         break;
                     }
                 }
@@ -299,22 +313,22 @@ public class ComparatorService {
     }
 
     private ArrayList<RateComparator> checkPrice(ArrayList<RateComparator> list, Note note) {
-        
-        logger.writeLog("info", "Comprobando precio...", null);
-        
+
+        logList.add(new LogModel(Level.INFO, "Comprobando precio ..."));
+
         list.forEach(item -> {
 
             if (item.getSurchargeFuel() > 0) { //Check surcharge fuel
 
                 double percent = item.getSurchargeFuel() * item.getPrice() / 100;
                 double newPrice = item.getPrice() + percent;
-              
-                logger.writeLog("info", "Aplicando incremento...", null);
-                logger.writeLog("info", "Se ha aplicado un incremento por RECARGO DE COMBUSTIBLE a la agencia " + item.getAgencyName() , null);
-                logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
-                logger.writeLog("info", "-Incremento: " + percent, null);
-                logger.writeLog("info", "-Nuevo precio: " + newPrice+ "€", null);
-               
+
+                logList.add(new LogModel(Level.INFO, "Aplicando incremento ..."));
+                logList.add(new LogModel(Level.INFO, "Se ha aplicado un incremento por RECARGO DE COMBUSTIBLE a la agencia " + item.getAgencyName()));
+                logList.add(new LogModel(Level.INFO, "Precio inicial: " + item.getPrice() + "€"));
+                logList.add(new LogModel(Level.INFO, "Incremento: " + percent));
+                logList.add(new LogModel(Level.INFO, "Nuevo precio: " + newPrice + "€"));
+
                 item.setPrice(newPrice);
 
             }
@@ -339,23 +353,23 @@ public class ComparatorService {
                 }
 
                 if (comisionPrice > 0 && comisionPrice >= minRefundPrice) {
-                    
-                    logger.writeLog("info", "Aplicando incremento...", null);
-                    logger.writeLog("info", "Se ha aplicado un incremento por COMISIÖN a la agencia " + item.getAgencyName(), null);
-                    logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
-                    logger.writeLog("info", "-Incremento: " + percent +"€", null);
-                    logger.writeLog("info", "-Nuevo precio: " + comisionPrice + "€", null);
-                    
+
+                    logList.add(new LogModel(Level.INFO, "Aplicando incremento ..."));
+                    logList.add(new LogModel(Level.INFO, "Se ha aplicado un incremento por COMISION a la agencia " + item.getAgencyName()));
+                    logList.add(new LogModel(Level.INFO, "Precio inicial: " + item.getPrice() + "€"));
+                    logList.add(new LogModel(Level.INFO, "Incremento: " + percent + "€"));
+                    logList.add(new LogModel(Level.INFO, "Nuevo precio: " + comisionPrice + "€"));
+
                     item.setPrice(comisionPrice);
                 }
 
                 if (minRefundPrice > 0 && minRefundPrice > comisionPrice) {
-                  
-                    logger.writeLog("info", "Se ha aplicado un incremento por MINIMO REEMBOLSO a la agencia " + item.getAgencyName(), null);
-                    logger.writeLog("info", "-Precio inicial: " + item.getPrice() + "€", null);
-                    logger.writeLog("info", "-Incremento: " + item.getMinimumRefund() + "€", null);
-                    logger.writeLog("info", "-Nuevo precio: " + minRefundPrice + "€", null);
-                    
+
+                    logList.add(new LogModel(Level.INFO, "Se ha aplicado un incremento por MINIMO REEMBOLSO a la agencia " + item.getAgencyName()));
+                    logList.add(new LogModel(Level.INFO, "Precio inicial: " + item.getPrice() + "€"));
+                    logList.add(new LogModel(Level.INFO, "Incremento: " + item.getMinimumRefund() + "€"));
+                    logList.add(new LogModel(Level.INFO, "Nuevo precio: " + minRefundPrice + "€"));
+
                     item.setPrice(minRefundPrice);
                 }
 
@@ -375,9 +389,9 @@ public class ComparatorService {
             }
         }
         if (list.size() == 0) {
-          
-            logger.writeLog("warning", "No se puede enviar por ninguna agencia. Acción: Revise los las agencias con envío voluminoso", null);
-            
+
+            logList.add(new LogModel(Level.WARNING, "No se puede enviar por ninguna agencia. Acción: Revise los las agencias con envío voluminoso"));
+
             AlertService alert = new AlertService(Alert.AlertType.INFORMATION, "Información de Salida", "El albaran con REF: " + note.getRef() + " no se puede enviar por ninguna agencia", "Revise las"
                     + " agencias con envío voluminoso");
             alert.show();

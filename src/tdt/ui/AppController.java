@@ -30,6 +30,7 @@ import tdt.services.AlertExceptionService;
 import tdt.services.AlertService;
 import tdt.services.ConfigStage;
 import tdt.services.FileService;
+import tdt.services.logger.LoggerService;
 import tdt.services.RegisterFactory;
 import tdt.ui.notes.NotesController;
 
@@ -84,13 +85,13 @@ public class AppController implements Initializable {
     private ImageView disableImg;
 
     private ImageView backGroundImg;
-    
+
     @FXML
     private AnchorPane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         ConfigStage.setIcon(btnFileChooser, "file.png", 22);
 
         enableIcon = new Image("file:resources/img/enable.png");
@@ -131,7 +132,7 @@ public class AppController implements Initializable {
             agenciesStage.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Agencias", e);
 
             alert.showAndWait();
@@ -173,7 +174,7 @@ public class AppController implements Initializable {
                 }
             }
 
-                showNotes(notesList);
+            showNotes(notesList);
         }
     }
 
@@ -247,7 +248,7 @@ public class AppController implements Initializable {
             stageMapFIle.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Tarifas", e);
 
             alert.showAndWait();
@@ -271,7 +272,7 @@ public class AppController implements Initializable {
             postalStage.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Códigos postales", e);
 
             alert.showAndWait();
@@ -295,7 +296,7 @@ public class AppController implements Initializable {
             citiesStage.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Provincias", e);
 
             alert.showAndWait();
@@ -319,7 +320,7 @@ public class AppController implements Initializable {
             exclusionStage.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Excepciones", e);
 
             alert.showAndWait();
@@ -344,7 +345,7 @@ public class AppController implements Initializable {
             urgencyStage.show();
 
         } catch (Exception e) {
-            
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de Porcentaje de urgencia", e);
 
             alert.showAndWait();
@@ -373,7 +374,7 @@ public class AppController implements Initializable {
                             logedIn();
                         } else {
                             AlertService alert = new AlertService(Alert.AlertType.ERROR, "Error en inicio de sesión", "La contraseña introducida no es correcta", "");
-                            alert.showAndWait();
+                            alert.show();
                         }
                     }
                 }
@@ -392,7 +393,7 @@ public class AppController implements Initializable {
             loginStage.show();
 
         } catch (Exception e) {
-           
+
             AlertExceptionService alert = new AlertExceptionService("Carga de ventanas", "No se ha podido abrir la ventana de inicio de sesión", e);
 
             alert.showAndWait();
