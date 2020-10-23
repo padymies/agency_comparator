@@ -80,6 +80,10 @@ public class NotesController implements Initializable {
     private CheckBox chkSelectAll;
     @FXML
     private Text noNotesText;
+    @FXML
+    private Label lbCountSelected;
+    @FXML
+    private Label lbselected;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,6 +105,7 @@ public class NotesController implements Initializable {
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                setCount();
                 if (chkSelectAll.isSelected()) {
                     chkSelectAll.setSelected(false);
                     listView.getSelectionModel().clearSelection();
@@ -135,10 +140,21 @@ public class NotesController implements Initializable {
                 } else {
                     listView.getSelectionModel().clearSelection();
                 }
-
+                setCount();
             }
         });
 
+    }
+
+    private void setCount() {
+        int count = listView.getSelectionModel().getSelectedItems().size();
+        if (count > 0) {
+            lbCountSelected.setText(String.valueOf(count));
+            lbselected.setVisible(true);
+        } else {
+            lbCountSelected.setText("");
+            lbselected.setVisible(false);
+        }
     }
 
     private void findNote() {
@@ -198,19 +214,19 @@ public class NotesController implements Initializable {
     private void parseCountryFailure(ObservableList<Note> notes) {
 
         final String SPAIN_CODE = "724";
-        
+
         notes.forEach(note -> {
             if (note.getCountry().equals(SPAIN_CODE)) {
                 note.setCountry("España");
                 FileService.updateNote(note);
             }
         });
-        
-        
+
     }
 
     @FXML
     private void compare(ActionEvent event) {
+
 
         ObservableList<Note> items = listView.getItems();
         items.forEach(item -> {
@@ -231,12 +247,13 @@ public class NotesController implements Initializable {
 
             ArrayList<Note> notes = new ArrayList<>();
 
-            selectedRows.forEach(action -> {
-                if (ValidatorService.noteValidator(action)) {
-                    notes.add(action);
+            for (Note note : selectedRows) {
+                boolean validation = ValidatorService.noteValidator(note);
+                if (validation) {
+                    notes.add(note);
 
-                }
-            });
+                } 
+            }
 
             ComparatorService service = new ComparatorService();
 
@@ -285,6 +302,7 @@ public class NotesController implements Initializable {
 
                 }
                 chkSelectAll.setSelected(false);
+                setCount();
             }
 
         }
@@ -310,7 +328,6 @@ public class NotesController implements Initializable {
                 Zone zone = NoteService.setNoteZone(note, cell.lbZone, listView);
 
                 note.setZone(zone);
-
                 if (note.getZone() != null) {
                     cell.lbZone.setText(note.getZone().getName());
 
@@ -421,8 +438,6 @@ public class NotesController implements Initializable {
                         note.setBigShipment(true);
                     } else {
                         note.setBigShipment(false);
-                        System.out.println("No new Value");
-
                     }
                 });
 

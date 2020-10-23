@@ -25,7 +25,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="388.0" prefWidth="1235.0">
                      <children>
-                        <ListView id="listView" fx:id="listView" layoutX="-14.0" layoutY="-5.0" prefHeight="434.0" prefWidth="1235.0" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
+                        <ListView id="listView" fx:id="listView" layoutX="-14.0" layoutY="-5.0" prefHeight="434.0" prefWidth="1235.0" visible="false" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-5.0">
                            <padding>
                               <Insets bottom="15.0" top="15.0" />
                            </padding>
@@ -83,6 +83,22 @@
                   <Insets left="30.0" />
                </HBox.margin>
             </CheckBox>
+            <Label fx:id="lbselected" layoutX="440.0" layoutY="31.0" prefHeight="19.0" prefWidth="92.0" text="seleccionados:">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="35.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="lbCountSelected" prefHeight="19.0" prefWidth="26.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
          </children>
       </HBox>
       <Separator layoutX="20.0" layoutY="57.0" prefHeight="6.0" prefWidth="1211.0" />
