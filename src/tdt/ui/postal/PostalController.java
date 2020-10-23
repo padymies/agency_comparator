@@ -63,21 +63,31 @@ public class PostalController implements Initializable {
     @FXML
     private void addCity(ActionEvent event) {
 
-        if (!txtPostalCode.getText().isEmpty() && !txtCity.getText().isEmpty()) {
-            City p = new City(txtCity.getText().trim(), txtPostalCode.getText().trim());
+        if (!isRepeatName(cityList, txtCity.getText().toUpperCase())) {
+            if (!txtPostalCode.getText().isEmpty() && !txtCity.getText().isEmpty()) {
+                City p = new City(txtCity.getText().trim(), txtPostalCode.getText().trim());
 
-            int result = cityDao.addCity(p);
-            if (result != -1) {
-                citiesTable.getItems().add(p);
-                txtCity.clear();
-                txtPostalCode.clear();
+                int result = cityDao.addCity(p);
+                if (result != -1) {
+                    citiesTable.getItems().add(p);
+                    txtCity.clear();
+                    txtPostalCode.clear();
+                }
+
+            } else {
+                AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal", "Se deben rellenar los dos campos",
+                        "");
+                alert.showAndWait();
             }
-            
         } else {
-            AlertService alert = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal", "Se deben rellenar los dos campos",
-                    "");
-            alert.showAndWait();
+            AlertService repeatName = new AlertService((Alert.AlertType.INFORMATION), "Añadir codigo postal",
+                    "No puede haber dos códigos postales con el mismo nombre", "");
+            repeatName.showAndWait();
         }
+    }
+
+    private boolean isRepeatName(ObservableList<City> cityList, String name) {
+        return !cityList.stream().noneMatch(predicate -> predicate.getName().toUpperCase().equals(name.toUpperCase()));
     }
 
     @FXML
