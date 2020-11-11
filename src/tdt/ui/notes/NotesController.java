@@ -3,12 +3,15 @@ package tdt.ui.notes;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -181,7 +184,7 @@ public class NotesController implements Initializable {
                 zone = "No se ha encontrado una Zona";
             }
 
-            return (data.getRef().matches("(.*)" + lowerCaseBusqueda + "(.*)")
+            return (data.getRef().toLowerCase().matches("(.*)" + lowerCaseBusqueda + "(.*)")
                     || name.matches("(.*)" + lowerCaseBusqueda + "(.*)")
                     || zone.matches("(.*)" + lowerCaseBusqueda + "(.*)")
                     || city.matches("(.*)" + lowerCaseBusqueda + "(.*)"));
@@ -190,9 +193,8 @@ public class NotesController implements Initializable {
     }
 
     public void trannsferList(ObservableList<Note> notes) {
-
         if (notes.size() > 0) {
-
+            FXCollections.sort(notes, Comparator.comparing(note -> note.getRef()));
             parseCountryFailure(notes);
             noNotesText.setVisible(false);
 
@@ -290,8 +292,10 @@ public class NotesController implements Initializable {
 
                         notesStage.show();
 
-                        trannsferList(unprocessedNotes);
+                        filteredList = new FilteredList<>(unprocessedNotes, data -> true);
 
+                        listView.setItems(filteredList);
+                        
                         FileService.overrideFile(unprocessedNotes);
 
                     } catch (IOException e) {
